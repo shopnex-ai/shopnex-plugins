@@ -67,7 +67,7 @@ const createOrUpdateProduct = async (
   if (totalDocs === 0) {
     return payload.create({
       collection: 'products',
-      data: { ...product },
+      data: { ...product } as any,
     })
   }
 }

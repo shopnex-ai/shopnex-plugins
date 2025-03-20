@@ -3,7 +3,7 @@
 import type { TextFieldClientComponent } from 'payload'
 
 import { TextInput, useField } from '@payloadcms/ui'
-import { EyeClosedIcon, EyeIcon } from 'lucide-react'
+// import { EyeClosedIcon, EyeIcon } from 'lucide-react'
 import React, { useState } from 'react'
 
 export const PasswordField: TextFieldClientComponent = ({ field, path }) => {
@@ -23,7 +23,7 @@ export const PasswordField: TextFieldClientComponent = ({ field, path }) => {
         onClick={() => setShowPassword((prev) => !prev)}
         type="button"
       >
-        {showPassword ? <EyeIcon /> : <EyeClosedIcon />}
+        {/* {showPassword ? <EyeIcon /> : <EyeClosedIcon />} */}
       </button>
     </div>
   )

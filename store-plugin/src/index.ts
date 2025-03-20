@@ -82,27 +82,27 @@ export const storePlugin =
         { name: 'cj-plugin', displayName: 'CJ Dropshipping', plugin: undefined, shortName: 'cj' },
       ]
 
-      for (const { name: pluginName, displayName } of plugins) {
-        const { totalDocs } = await payload.count({
-          collection: 'plugins-store',
-          where: {
-            pluginName: {
-              equals: pluginName,
-            },
-          },
-        })
+      // for (const { name: pluginName, displayName } of plugins) {
+      //   const { totalDocs } = await payload.count({
+      //     collection: 'plugins-store',
+      //     where: {
+      //       pluginName: {
+      //         equals: pluginName,
+      //       },
+      //     },
+      //   })
 
-        if (totalDocs === 0) {
-          await payload.create({
-            collection: 'plugins-store',
-            data: {
-              displayName,
-              pluginName,
-              pluginVersion: '1.0.0',
-            },
-          })
-        }
-      }
+      //   if (totalDocs === 0) {
+      //     await payload.create({
+      //       collection: 'plugins-store',
+      //       data: {
+      //         displayName,
+      //         pluginName,
+      //         pluginVersion: '1.0.0',
+      //       },
+      //     })
+      //   }
+      // }
     }
 
     return config

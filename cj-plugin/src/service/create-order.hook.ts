@@ -49,7 +49,7 @@ export const createOrderHook: CollectionAfterChangeHook<Orders> = async ({ doc, 
   const orderResult = await payload.update({
     collection: 'orders',
     data: {
-      orderStatus: 'completed',
+      orderStatus: 'shipped',
     },
     where: {
       id: {
