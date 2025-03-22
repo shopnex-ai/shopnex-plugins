@@ -4,4 +4,8 @@ node_modules
 .next
 .env
 
+.DS_Store
+
 .turbo
+
+tsconfig.tsbuildinfo
