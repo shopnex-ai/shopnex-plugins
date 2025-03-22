@@ -1,89 +1,92 @@
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig } from "payload";
 
 export const PluginStore: CollectionConfig = {
-  slug: 'plugins-store',
-  // access: {
-  //   create: () => false,
-  //   delete: () => false,
-  //   read: () => true,
-  //   update: () => false,
-  // },
-  admin: {
-    defaultColumns: ['displayName', 'pluginVersion', 'pluginIcon'],
-    group: 'Plugins',
-    hideAPIURL: true,
-    useAsTitle: 'displayName',
-  },
-  disableDuplicate: true,
-  fields: [
-    {
-      name: 'pluginIcon',
-      type: 'ui',
-
-      admin: {
+    slug: "plugins-space",
+    admin: {
+        defaultColumns: ["displayName", "pluginVersion", "pluginIcon"],
+        group: "Plugins",
+        hideAPIURL: true,
+        useAsTitle: "displayName",
         components: {
-          Cell: 'store-plugin/rsc#PluginIcon',
+            views: {
+                list: {
+                    Component: "store-plugin/rsc#PluginListView",
+                },
+                edit: {
+                    root: {
+                        Component: "store-plugin/rsc#PluginEditView",
+                        path: "plugins/:pluginId",
+                    },
+                },
+            },
         },
-      },
-      label: '',
     },
-    {
-      name: 'pluginName',
-      type: 'text',
-      admin: {
-        disabled: true,
-      },
-    },
-    {
-      type: 'row',
-      fields: [
+    disableDuplicate: true,
+    fields: [
         {
-          name: 'displayName',
-          type: 'text',
+            name: "pluginIcon",
+            type: "ui",
 
-          label: 'Plugin Name',
+            admin: {
+                components: {
+                    Cell: "store-plugin/rsc#PluginIcon",
+                },
+            },
+            label: "",
         },
         {
-          name: 'pluginVersion',
-          type: 'text',
+            name: "pluginName",
+            type: "text",
+            admin: {
+                disabled: true,
+            },
         },
-      ],
-    },
+        {
+            type: "row",
+            fields: [
+                {
+                    name: "displayName",
+                    type: "text",
 
-    {
-      name: 'pluginDescription',
-      type: 'textarea',
-      defaultValue:
-        'A function that accepts req - PayloadRequest object which contains Web Request properties, currently authenticated user and the Local API instance payload.',
-    },
-    {
-      name: 'test123',
-      type: 'text',
-      defaultValue: () => {
-        return 'testing...'
-      },
-    },
-    {
-      name: 'test999',
-      type: 'text',
-      defaultValue: 'testing...,,',
-    },
-    {
-      name: 'actions',
-      type: 'ui',
-      admin: {
-        components: {
-          // Cell: 'store-plugin/rsc#Actions',
-          Field: 'store-plugin/rsc#Actions',
+                    label: "Plugin Name",
+                },
+                {
+                    name: "pluginVersion",
+                    type: "text",
+                },
+            ],
         },
-      },
-      custom: {
-        test: 'me',
-      },
+
+        {
+            name: "pluginDescription",
+            type: "textarea",
+            defaultValue: "",
+        },
+        {
+            name: "test123",
+            type: "text",
+            defaultValue: () => {
+                return "testing...";
+            },
+        },
+        {
+            name: "test999",
+            type: "text",
+            defaultValue: "testing...,,",
+        },
+        {
+            name: "actions",
+            type: "ui",
+            admin: {
+                components: {
+                    // Cell: 'store-plugin/rsc#Actions',
+                    Field: "store-plugin/rsc#Actions",
+                },
+            },
+        },
+    ],
+    labels: {
+        plural: "Plugins Space",
+        singular: "Plugin Space",
     },
-  ],
-  labels: {
-    plural: 'Plugins Store',
-    singular: 'Plugin Store',
-  },
-}
+};
