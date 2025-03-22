@@ -70,6 +70,10 @@ export function PluginListView(props: ClientComponentProps & { collectionSlug: s
         <ListQueryProvider onQueryChange={handleSearchChange} {...{ data }}>
             <DefaultListView
                 {...props}
+                newDocumentURL=""
+                hasCreatePermission={false}
+                columnState={[]}
+                collectionSlug="plugins-space"
                 Table={
                     <Table
                         columns={[

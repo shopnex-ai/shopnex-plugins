@@ -10,11 +10,11 @@ export const PluginStore: CollectionConfig = {
         components: {
             views: {
                 list: {
-                    Component: "store-plugin/rsc#PluginListView",
+                    Component: "@shopnex/store-plugin/client#PluginListView",
                 },
                 edit: {
                     root: {
-                        Component: "store-plugin/rsc#PluginEditView",
+                        Component: "@shopnex/store-plugin/client#PluginEditView",
                         path: "plugins/:pluginId",
                     },
                 },
@@ -23,17 +23,6 @@ export const PluginStore: CollectionConfig = {
     },
     disableDuplicate: true,
     fields: [
-        {
-            name: "pluginIcon",
-            type: "ui",
-
-            admin: {
-                components: {
-                    Cell: "store-plugin/rsc#PluginIcon",
-                },
-            },
-            label: "",
-        },
         {
             name: "pluginName",
             type: "text",
@@ -55,34 +44,6 @@ export const PluginStore: CollectionConfig = {
                     type: "text",
                 },
             ],
-        },
-
-        {
-            name: "pluginDescription",
-            type: "textarea",
-            defaultValue: "",
-        },
-        {
-            name: "test123",
-            type: "text",
-            defaultValue: () => {
-                return "testing...";
-            },
-        },
-        {
-            name: "test999",
-            type: "text",
-            defaultValue: "testing...,,",
-        },
-        {
-            name: "actions",
-            type: "ui",
-            admin: {
-                components: {
-                    // Cell: 'store-plugin/rsc#Actions',
-                    Field: "store-plugin/rsc#Actions",
-                },
-            },
         },
     ],
     labels: {
