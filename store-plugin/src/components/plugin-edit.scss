@@ -1,0 +1,41 @@
+.plugin-edit-view {
+    max-width: 1200px;
+    margin: auto;
+    input:disabled, textarea:disabled {
+        color: initial;
+    }
+
+    &__header {
+        // Styles for the header container
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+
+    &__image {
+        margin-top: 2rem;
+    }
+    &__title {
+        // Styles for the title
+    }
+
+    &__inputs {
+        // Styles for the inputs container
+        margin-top: 1rem;
+        display: flex;
+        gap: 1rem;
+    }
+
+    &__input {
+        // Styles for individual text inputs
+        width: 100%;
+        padding: 0.5rem;
+    }
+
+    &__textarea {
+        // Styles for the textarea input
+        padding: 0.5rem;
+        margin-top: 1rem;
+    }
+}
