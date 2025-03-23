@@ -2,17 +2,11 @@
 
 import { ClientComponentProps, ListQuery, PaginatedDocs, Where } from "payload";
 import React, { useCallback, useEffect, useState } from "react";
-import {
-    Table,
-    ListQueryProvider,
-    DefaultListView,
-    Pill,
-    LoadingOverlay,
-    Link,
-} from "@payloadcms/ui";
+import { Table, ListQueryProvider, DefaultListView, LoadingOverlay, Link } from "@payloadcms/ui";
 import { useListQuery } from "@payloadcms/ui";
 import "./index.scss";
 import { stringify } from "qs-esm";
+import "./plugin-list.scss";
 
 export function PluginListView(props: ClientComponentProps & { collectionSlug: string }) {
     const [data, setData] = useState<PaginatedDocs | null>(null);
@@ -62,6 +56,7 @@ export function PluginListView(props: ClientComponentProps & { collectionSlug: s
         fetchData(query);
     }, [query, fetchData]);
 
+
     if (!data) {
         return <LoadingOverlay />;
     }
@@ -79,6 +74,7 @@ export function PluginListView(props: ClientComponentProps & { collectionSlug: s
                         columns={[
                             {
                                 accessor: "name",
+                                CustomLabel: "Plugin Name",
                                 Heading: "Plugin Name",
                                 renderedCells: data.docs?.map((element) => {
                                     return (
@@ -100,7 +96,9 @@ export function PluginListView(props: ClientComponentProps & { collectionSlug: s
                                 accessor: "pluginVersion",
                                 Heading: "Plugin Version",
                                 renderedCells: data.docs?.map((element) => {
-                                    return <p key={element.id}>{element.pluginVersion}</p>;
+                                    return (
+                                        <p key={element.id}>{element.pluginVersion || "0.0.1"}</p>
+                                    );
                                 }),
                                 field: {
                                     name: "pluginVersion",

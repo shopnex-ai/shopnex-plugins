@@ -1,0 +1,62 @@
+@import "~@payloadcms/ui/scss";
+
+.collection-list--plugins-space {
+    .table table {
+        min-width: unset !important;
+    }
+    /* Hide the table headers */
+    table thead {
+        display: none;
+    }
+
+    /* Set the tbody to display as a grid */
+    table tbody {
+        display: grid;
+        grid-template-columns: repeat(
+            auto-fit,
+            minmax(250px, 1fr)
+        ); /* 3 cards per row, responsive */
+        gap: 2rem;
+    }
+
+    table tbody tr {
+        display: flex;
+        flex-direction: column;
+        padding: 2rem;
+
+        background: var(--theme-elevation-50);
+        padding: 16px;
+        min-height: 80px;
+        border-radius: var(--style-radius-m);
+        border: 1px solid var(--theme-border-color);
+        transition-property: border, box-shadow, background;
+        transition-duration: 100ms;
+        transition-timing-function: cubic-bezier(0, 0.2, 0.2, 1);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 16px;
+        &:hover {
+            color: var(--hover-color);
+            box-shadow: var(--hover-box-shadow);
+            background-color: var(--hover-bg);
+        }
+    }
+
+    /* Style the individual cells inside the "card" */
+    table tbody .cell-name,
+    table tbody .cell-pluginVersion {
+        display: flex;
+        justify-content: space-between;
+        padding: 4px 0;
+    }
+
+    /* Make the name (title) bold */
+    table tbody .cell-name a {
+        font-weight: bold;
+        text-decoration: none;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
