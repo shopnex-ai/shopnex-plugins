@@ -19,6 +19,20 @@
         gap: 2rem;
     }
 
+    .list-item {
+        display: flex;
+        gap: 1rem;
+        .list-item-icon {
+            width: 60px;
+            border-radius: 1rem;
+            object-fit: cover;
+        }
+        .list-item-author {
+            font-size: 0.8rem;
+            color: var(--theme-text-color-secondary);
+        }
+    }
+
     table tbody tr {
         display: flex;
         flex-direction: column;
@@ -37,9 +51,8 @@
         justify-content: space-between;
         gap: 16px;
         &:hover {
-            color: var(--hover-color);
-            box-shadow: var(--hover-box-shadow);
-            background-color: var(--hover-bg);
+            border: 1px solid var(--theme-elevation-250);
+            box-shadow: 0 4px 8px -2px #0000000d;
         }
     }
 

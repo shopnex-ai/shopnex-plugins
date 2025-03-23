@@ -5,12 +5,17 @@
         color: initial;
     }
 
+    &__block {
+        margin-top: 2rem;
+    }
+
     &__header {
-        // Styles for the header container
         display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 1rem;
+        gap: 1rem;
+    }
+    &__info {
+        display: flex;
+        gap: 0.5rem;
     }
 
     &__image {

@@ -35,20 +35,31 @@ export function PluginEditView() {
     return (
         <Gutter className={baseClass}>
             <div className={`${baseClass}__header`}>
-                <RenderTitle className={`${baseClass}__title`} title={plugin?.title} />
+                <img
+                    src={plugin?.variants?.[0]?.gallery?.[0]?.url || ""}
+                    alt={plugin.title}
+                    className={`${baseClass}__image`}
+                    style={{
+                        maxHeight: "75px",
+                        objectFit: "cover",
+                        borderRadius: "8px",
+                    }}
+                />
+                <div className={`${baseClass}__block`}>
+                    <RenderTitle className={`${baseClass}__title`} title={plugin?.title} />
+                    <div className={`${baseClass}__info`}>
+                        <div className={`${baseClass}__author`}>
+                            By {plugin?.authorName || "Unknown"}
+                        </div>{" "}
+                        |
+                        <div className={`${baseClass}__price`}>
+                            {plugin?.variants[0]?.price === 0
+                                ? "Free"
+                                : `From $${plugin?.variants[0]?.price}`}
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <img
-                src={plugin?.variants?.[0]?.imageUrl || ""}
-                alt={plugin.title}
-                className={`${baseClass}__image`}
-                style={{
-                    maxHeight: "200px",
-                    objectFit: "cover",
-                    borderRadius: "8px",
-                    marginBottom: "16px",
-                }}
-            />
 
             <div className={`${baseClass}__inputs`}>
                 <TextInput

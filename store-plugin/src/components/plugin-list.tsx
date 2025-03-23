@@ -8,6 +8,8 @@ import "./index.scss";
 import { stringify } from "qs-esm";
 import "./plugin-list.scss";
 
+const baseClass = "plugin-list-view";
+
 export function PluginListView(props: ClientComponentProps & { collectionSlug: string }) {
     const [data, setData] = useState<PaginatedDocs | null>(null);
     const { query } = useListQuery();
@@ -56,7 +58,6 @@ export function PluginListView(props: ClientComponentProps & { collectionSlug: s
         fetchData(query);
     }, [query, fetchData]);
 
-
     if (!data) {
         return <LoadingOverlay />;
     }
@@ -78,30 +79,30 @@ export function PluginListView(props: ClientComponentProps & { collectionSlug: s
                                 Heading: "Plugin Name",
                                 renderedCells: data.docs?.map((element) => {
                                     return (
-                                        <Link
-                                            key={element.id}
-                                            href={`${props.collectionSlug}/plugins/${element.id}`}
-                                        >
-                                            {element.title}
-                                        </Link>
+                                        <div key={element.id} className="list-item">
+                                            <img
+                                                className="list-item-icon"
+                                                src={element?.variants[0]?.gallery?.[0]?.url}
+                                                alt={element.title}
+                                            />
+
+                                            <div>
+                                                <Link
+                                                    className="list-item-link"
+                                                    href={`${props.collectionSlug}/plugins/${element.id}`}
+                                                >
+                                                    {element.title}
+                                                </Link>
+                                                <div className="list-item-author">By {element.authorName || "Unknown"}</div>
+                                                <div className="list-item-price">
+                                                    {element.variants[0]?.price === 0 ? "Free" : `From $${element.variants[0]?.price}`}
+                                                </div>
+                                            </div>
+                                        </div>
                                     );
                                 }),
                                 field: {
                                     name: "pluginName",
-                                    type: "text",
-                                },
-                                active: true,
-                            },
-                            {
-                                accessor: "pluginVersion",
-                                Heading: "Plugin Version",
-                                renderedCells: data.docs?.map((element) => {
-                                    return (
-                                        <p key={element.id}>{element.pluginVersion || "0.0.1"}</p>
-                                    );
-                                }),
-                                field: {
-                                    name: "pluginVersion",
                                     type: "text",
                                 },
                                 active: true,
