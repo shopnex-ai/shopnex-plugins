@@ -1,5 +1,11 @@
 # @shoplyjs/store-plugin
 
+## 1.0.11
+
+### Patch Changes
+
+- Improve UI of list and edit views
+
 ## 1.0.10
 
 ### Patch Changes
