@@ -72,7 +72,7 @@ export function PluginEditView() {
                 <TextInput
                     label="Plugin Version"
                     path="pluginVersion"
-                    value={plugin?.version || "0.0.1"}
+                    value={plugin?.packageVersion || "1.0.0"}
                     className={`${baseClass}__input`}
                     readOnly
                 />
