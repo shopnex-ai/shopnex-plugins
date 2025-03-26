@@ -14,10 +14,10 @@ export interface Orders extends Document {
 }
 
 export const createOrderHook: CollectionAfterChangeHook<Orders> = async ({ doc, req }) => {
-    const payload: BasePayload = req.payload;
     if (doc.orderStatus !== "processing") {
         return;
     }
+    const payload: BasePayload = req.payload;
     const cjSettings = await payload.findGlobal({
         slug: "cj-settings",
     });
