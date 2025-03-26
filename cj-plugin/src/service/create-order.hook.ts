@@ -18,7 +18,6 @@ export const createOrderHook: CollectionAfterChangeHook<Orders> = async ({ doc, 
         return;
     }
     const payload: BasePayload = req.payload;
-    
     const cjSettings: any = await payload.findGlobal({
         slug: "cj-settings",
     });
