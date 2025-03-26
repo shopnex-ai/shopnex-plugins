@@ -1,7 +1,8 @@
 .plugin-edit-view {
     max-width: 1200px;
     margin: auto;
-    input:disabled, textarea:disabled {
+    input:disabled,
+    textarea:disabled {
         color: initial;
     }
 
@@ -19,6 +20,7 @@
     }
 
     &__image {
+        margin: auto 0;
         margin-top: 2rem;
     }
     &__title {
@@ -35,12 +37,14 @@
     &__input {
         // Styles for individual text inputs
         width: 100%;
-        padding: 0.5rem;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
     }
 
     &__textarea {
         // Styles for the textarea input
-        padding: 0.5rem;
+        padding: 1rem;
         margin-top: 1rem;
+        background: var(--theme-elevation-100);
     }
 }

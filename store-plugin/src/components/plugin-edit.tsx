@@ -4,6 +4,9 @@ import React from "react";
 import { Gutter, LoadingOverlay, RenderTitle, TextareaInput, TextInput } from "@payloadcms/ui";
 import { useParams } from "next/navigation";
 import "./plugin-edit.scss";
+import { RichText } from "@payloadcms/richtext-lexical/react";
+import { Puzzle } from "lucide-react";
+import Image from "next/image";
 
 const baseClass = "plugin-edit-view";
 
@@ -28,6 +31,8 @@ export function PluginEditView() {
             });
     }, [pluginId]);
 
+    const imageUrl = plugin?.variants[0]?.gallery?.[0]?.url || "";
+
     if (!plugin) {
         return <LoadingOverlay />;
     }
@@ -35,16 +40,22 @@ export function PluginEditView() {
     return (
         <Gutter className={baseClass}>
             <div className={`${baseClass}__header`}>
-                <img
-                    src={plugin?.variants?.[0]?.gallery?.[0]?.url || ""}
-                    alt={plugin.title}
-                    className={`${baseClass}__image`}
-                    style={{
-                        maxHeight: "75px",
-                        objectFit: "cover",
-                        borderRadius: "8px",
-                    }}
-                />
+                {imageUrl ? (
+                    <Image
+                        src={imageUrl}
+                        alt={plugin.title}
+                        width={60}
+                        height={60}
+                        className={`${baseClass}__image`}
+                        style={{
+                            maxHeight: "75px",
+                            objectFit: "cover",
+                            borderRadius: "8px",
+                        }}
+                    />
+                ) : (
+                    <Puzzle className={`${baseClass}__image`} width={40} height={40} />
+                )}
                 <div className={`${baseClass}__block`}>
                     <RenderTitle className={`${baseClass}__title`} title={plugin?.title} />
                     <div className={`${baseClass}__info`}>
@@ -77,13 +88,7 @@ export function PluginEditView() {
                     readOnly
                 />
             </div>
-            <TextareaInput
-                label="Plugin Description"
-                path="pluginDescription"
-                value={""}
-                className={`${baseClass}__textarea`}
-                readOnly
-            />
+            <RichText className={`${baseClass}__textarea`} data={plugin.description} />
         </Gutter>
     );
 }
