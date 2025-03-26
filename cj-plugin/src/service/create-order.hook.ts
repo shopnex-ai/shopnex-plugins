@@ -18,7 +18,7 @@ export const createOrderHook: CollectionAfterChangeHook<Orders> = async ({ doc, 
         return;
     }
     const payload: BasePayload = req.payload;
-    const cjSettings = await payload.findGlobal({
+    const cjSettings: any = await payload.findGlobal({
         slug: "cj-settings",
     });
     const podProperties = cjSettings?.pod?.url
