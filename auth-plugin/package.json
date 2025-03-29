@@ -1,0 +1,85 @@
+{
+  "name": "@shopnex/auth-plugin",
+  "version": "0.6.5",
+  "type": "module",
+  "sideEffects": false,
+  "author": "Arseniy <arseniy.v.n@gmail.com>",
+  "license": "MIT",
+  "homepage:": "https://github.com/authsmith/payload-auth-plugin",
+  "repository": "git@github.com:authsmith/payload-auth-plugin.git",
+  "description": "Authentication plugin for Payload CMS",
+  "main": "dist/esm/index.js",
+  "types": "dist/types/index.d.ts",
+  "keywords": [
+    "payload",
+    "cms",
+    "authentication",
+    "payload-plugin",
+    "typescript",
+    "react",
+    "oauth",
+    "oauth2.0",
+    "oidc"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "types": "./dist/types/index.d.ts"
+    },
+    "./providers": {
+      "import": "./dist/esm/providers/index.js",
+      "types": "./dist/types/providers/index.d.ts"
+    },
+    "./client": {
+      "import": "./dist/esm/client/index.js",
+      "types": "./dist/types/client/index.d.ts"
+    },
+    "./client/hooks": {
+      "import": "./dist/esm/client/hooks.js",
+      "types": "./dist/types/client/hooks.d.ts"
+    },
+    "./collection": {
+      "import": "./dist/esm/collection/index.js",
+      "types": "./dist/types/collection/index.d.ts"
+    },
+    "./collection/hooks": {
+      "import": "./dist/esm/collection/hooks.js",
+      "types": "./dist/types/collection/hooks.d.ts"
+    }
+  },
+  "files": [
+    "src",
+    "dist"
+  ],
+  "scripts": {
+    "build": "pnpm copyfiles && pnpm build:types && pnpm build:swc",
+    "build:swc": "swc ./src -d ./dist --config-file .swcrc --strip-leading-paths",
+    "build:types": "tsc --emitDeclarationOnly --outDir dist",
+    "clean": "rimraf dist && rimraf tsconfig.tsbuildinfo",
+    "copyfiles": "copyfiles -u 1 \"src/**/*.{html,css,scss,ttf,woff,woff2,eot,svg,jpg,png,json}\" dist/",
+    "lint": "eslint src",
+    "lint:fix": "eslint --fix --ext .ts,.tsx src",
+    "prepublishOnly": "pnpm clean && pnpm build"
+  },
+  "peerDependencies": {
+    "payload": "latest"
+  },
+  "devDependencies": {
+    "@changesets/cli": "2.27.10",
+    "@tsconfig/node22": "22.0.0",
+    "@types/bun": "latest",
+    "@types/jsonwebtoken": "^9.0.7",
+    "cross-env": "^7.0.3",
+    "git-cliff": "2.7.0",
+    "globals": "^15.14.0",
+    "prettier": "3.4.2",
+    "typescript": "^5.7.3"
+  },
+  "dependencies": {
+    "@simplewebauthn/browser": "^13.1.0",
+    "@simplewebauthn/server": "^13.1.0",
+    "jose": "6.0.8",
+    "oauth4webapi": "^3.1.4",
+    "qs-esm": "7.0.2"
+  }
+}
