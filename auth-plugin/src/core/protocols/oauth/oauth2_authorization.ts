@@ -52,6 +52,12 @@ export async function OAuth2Authorization(
       `__session-oauth-state=${state};Path=/;HttpOnly;SameSite=lax;Expires=${cookieMaxage.toUTCString()}`,
     )
   }
+  const clientOrigin = request.headers.get("origin") || request.headers.get("referer") || "";
+  if (clientOrigin) {
+      cookies.push(
+          `__client-origin=${encodeURIComponent(clientOrigin)};Path=/;HttpOnly;SameSite=Lax;Expires=${cookieMaxage.toUTCString()}`,
+      );
+  }
   cookies.push(
     `__session-code-verifier=${code_verifier};Path=/;HttpOnly;SameSite=lax;Expires=${cookieMaxage.toUTCString()}`,
   )

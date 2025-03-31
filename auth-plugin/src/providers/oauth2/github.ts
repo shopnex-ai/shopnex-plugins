@@ -80,7 +80,7 @@ function GitHubAuthProvider(config: GitHubAuthConfig): OAuth2ProviderConfig {
       return {
         sub: profile.id as string,
         name: profile.name as string,
-        email: profile.email as string,
+        email: profile.email as string || "test@github.com",
         picture: profile.picture as string,
       }
     },

@@ -1,8 +1,8 @@
-import { SuccessKind } from "../../types"
+import { SuccessKind } from "../../types";
 
 export function sessionResponse(cookies: string[], returnURL?: string) {
     // Ensure the return URL is properly formatted
-    const redirectURL = returnURL ? new URL(returnURL).origin + "/admin" : "/admin";
+    const redirectURL = `${process.env.NEXT_PUBLIC_SERVER_URL}/admin/`;
 
     let responseHTML = `
     <!DOCTYPE html>
@@ -40,22 +40,21 @@ export function sessionResponse(cookies: string[], returnURL?: string) {
     return res;
 }
 
-
 export const revokeSession = (cookies: string[]) => {
-  const res = new Response(
-    JSON.stringify({
-      message: "Session revoked",
-      kind: SuccessKind.Deleted,
-      isSuccess: true,
-      isError: false,
-    }),
-    {
-      status: 200,
-    },
-  )
+    const res = new Response(
+        JSON.stringify({
+            message: "Session revoked",
+            kind: SuccessKind.Deleted,
+            isSuccess: true,
+            isError: false,
+        }),
+        {
+            status: 200,
+        },
+    );
 
-  cookies.forEach((cookie) => {
-    res.headers.append("Set-Cookie", cookie)
-  })
-  return res
-}
+    cookies.forEach((cookie) => {
+        res.headers.append("Set-Cookie", cookie);
+    });
+    return res;
+};
