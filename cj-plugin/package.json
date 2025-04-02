@@ -1,64 +1,67 @@
 {
-  "name": "@shoplyjs/cj-plugin",
-  "version": "1.0.2",
-  "description": "A blank template to get started with Payload 3.0",
-  "type": "module",
-  "exports": {
-    ".": {
-      "import": "./src/index.ts",
-      "types": "./src/index.ts",
-      "default": "./src/index.ts"
-    },
-    "./client": {
-      "import": "./src/exports/client.ts",
-      "types": "./src/exports/client.ts",
-      "default": "./src/exports/client.ts"
-    },
-    "./rsc": {
-      "import": "./src/exports/rsc.ts",
-      "types": "./src/exports/rsc.ts",
-      "default": "./src/exports/rsc.ts"
-    }
-  },
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
-  "files": [
-    "dist"
-  ],
-  "scripts": {
-    "build": "pnpm copyfiles && pnpm build:types && pnpm build:swc",
-    "build:swc": "swc ./src -d ./dist --config-file .swcrc --strip-leading-paths",
-    "build:types": "tsc --outDir dist --rootDir ./src",
-    "clean": "rimraf {dist,*.tsbuildinfo}",
-    "copyfiles": "copyfiles -u 1 \"src/**/*.{html,css,scss,ttf,woff,woff2,eot,svg,jpg,png,json}\" dist/"
-  },
-  "publishConfig": {
+    "name": "@shoplyjs/cj-plugin",
+    "version": "1.0.2",
+    "description": "A blank template to get started with Payload 3.0",
+    "type": "module",
     "exports": {
-      ".": {
-        "import": "./dist/index.js",
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
-      },
-      "./client": {
-        "import": "./dist/exports/client.js",
-        "types": "./dist/exports/client.d.ts",
-        "default": "./dist/exports/client.js"
-      },
-      "./rsc": {
-        "import": "./dist/exports/rsc.js",
-        "types": "./dist/exports/rsc.d.ts",
-        "default": "./dist/exports/rsc.js"
-      }
+        ".": {
+            "import": "./src/index.ts",
+            "types": "./src/index.ts",
+            "default": "./src/index.ts"
+        },
+        "./client": {
+            "import": "./src/exports/client.ts",
+            "types": "./src/exports/client.ts",
+            "default": "./src/exports/client.ts"
+        },
+        "./rsc": {
+            "import": "./src/exports/rsc.ts",
+            "types": "./src/exports/rsc.ts",
+            "default": "./src/exports/rsc.ts"
+        }
     },
-    "main": "./dist/index.js",
-    "types": "./dist/index.d.ts"
-  },
-  "registry": "https://registry.npmjs.org/",
-  "dependencies": {
-    "axios": "^1.8.3",
-    "jsdom": "^26.0.0"
-  },
-  "devDependencies": {
-    "@types/jsdom": "^21.1.7"
-  }
+    "main": "./src/index.ts",
+    "types": "./src/index.ts",
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "build": "pnpm copyfiles && pnpm build:types && pnpm build:swc",
+        "build:swc": "swc ./src -d ./dist --config-file .swcrc --strip-leading-paths",
+        "build:types": "tsc --outDir dist --rootDir ./src",
+        "clean": "rimraf {dist,*.tsbuildinfo}",
+        "copyfiles": "copyfiles -u 1 \"src/**/*.{html,css,scss,ttf,woff,woff2,eot,svg,jpg,png,json}\" dist/"
+    },
+    "publishConfig": {
+        "exports": {
+            ".": {
+                "import": "./dist/index.js",
+                "types": "./dist/index.d.ts",
+                "default": "./dist/index.js"
+            },
+            "./client": {
+                "import": "./dist/exports/client.js",
+                "types": "./dist/exports/client.d.ts",
+                "default": "./dist/exports/client.js"
+            },
+            "./rsc": {
+                "import": "./dist/exports/rsc.js",
+                "types": "./dist/exports/rsc.d.ts",
+                "default": "./dist/exports/rsc.js"
+            }
+        },
+        "main": "./dist/index.js",
+        "types": "./dist/index.d.ts"
+    },
+    "registry": "https://registry.npmjs.org/",
+    "dependencies": {
+        "@lexical/headless": "0.21.0",
+        "@lexical/html": "0.21.0",
+        "axios": "^1.8.3",
+        "jsdom": "^26.0.0",
+        "lexical": "0.21.0"
+    },
+    "devDependencies": {
+        "@types/jsdom": "^21.1.7"
+    }
 }
