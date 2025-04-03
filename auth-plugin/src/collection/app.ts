@@ -101,7 +101,7 @@ export const withAppAccountCollection = (
     {
       name: "user",
       type: "relationship",
-      relationTo: usersCollectionSlug,
+      relationTo: usersCollectionSlug as any,
       hasMany: false,
       required: true,
       label: "User",
