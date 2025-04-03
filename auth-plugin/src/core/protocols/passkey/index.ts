@@ -10,7 +10,7 @@ export async function InitPasskey(request: PayloadRequest): Promise<Response> {
     }
 
     const existingRecord = await request.payload.find({
-        collection: "accounts",
+        collection: "accounts" as any,
         where: {
             sub: {
                 equals: hashCode(data.email + request.payload.secret).toString(),

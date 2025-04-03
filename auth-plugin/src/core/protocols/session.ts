@@ -90,7 +90,7 @@ export const UserSession = async (
   }
 
   const doc = await request.payload.findByID({
-    collection: internal.usersCollectionSlug,
+    collection: internal.usersCollectionSlug as any,
     id: jwtResponse.payload.id,
   })
   if (!doc?.id) {

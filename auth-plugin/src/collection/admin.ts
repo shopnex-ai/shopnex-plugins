@@ -34,7 +34,7 @@ export const withAdminAccountCollection = (
     {
       name: "user",
       type: "relationship",
-      relationTo: usersCollectionSlug,
+      relationTo: usersCollectionSlug as any,
       hasMany: false,
       required: true,
       label: "User",

@@ -23,28 +23,34 @@
   ],
   "exports": {
     ".": {
-      "import": "./dist/esm/index.js",
-      "types": "./dist/types/index.d.ts"
+      "import": "./src/index.ts",
+      "types": "./src/index.d.ts",
+      "default": "./src/index.js"
     },
     "./providers": {
-      "import": "./dist/esm/providers/index.js",
-      "types": "./dist/types/providers/index.d.ts"
+      "import": "./src/providers/index.ts",
+      "types": "./src/providers/index.d.ts",
+      "default": "./src/providers/index.ts"
     },
     "./client": {
-      "import": "./dist/esm/client/index.js",
-      "types": "./dist/types/client/index.d.ts"
+      "import": "./src/client/index.ts",
+      "types": "./src/client/index.d.ts",
+      "default": "./src/client/index.ts"
     },
     "./client/hooks": {
-      "import": "./dist/esm/client/hooks.js",
-      "types": "./dist/types/client/hooks.d.ts"
+      "import": "./src/client/hooks.ts",
+      "types": "./src/client/hooks.d.ts",
+      "default": "./src/client/hooks.ts"
     },
     "./collection": {
-      "import": "./dist/esm/collection/index.js",
-      "types": "./dist/types/collection/index.d.ts"
+      "import": "./src/collection/index.ts",
+      "types": "./src/collection/index.d.ts",
+      "default": "./src/collection/index.ts"
     },
     "./collection/hooks": {
-      "import": "./dist/esm/collection/hooks.js",
-      "types": "./dist/types/collection/hooks.d.ts"
+      "import": "./src/collection/hooks.ts",
+      "types": "./src/collection/hooks.d.ts",
+      "default": "./src/collection/hooks.ts"
     }
   },
   "files": [
@@ -80,6 +86,42 @@
     "@simplewebauthn/server": "^13.1.0",
     "jose": "6.0.8",
     "oauth4webapi": "^3.1.4"
-    
+  },
+  "publishConfig": {
+      "exports": {
+          ".": {
+              "import": "./dist/index.js",
+              "require": "./dist/index.js",
+              "types": "./dist/index.d.ts"
+          },
+          "./providers": {
+              "import": "./dist/providers/index.js",
+              "require": "./dist/providers/index.js",
+              "types": "./dist/providers/index.d.ts"
+          },
+          "./client": {
+              "import": "./dist/client/index.js",
+              "require": "./dist/client/index.js",
+              "types": "./dist/client/index.d.ts"
+          },
+          "./client/hooks": {
+              "import": "./dist/client/hooks.js",
+              "require": "./dist/client/hooks.js",
+              "types": "./dist/client/hooks.d.ts"
+          },
+          "./collection": {
+              "import": "./dist/collection/index.js",
+              "require": "./dist/collection/index.js",
+              "types": "./dist/collection/index.d.ts"
+          },
+          "./collection/hooks": {
+              "import": "./dist/collection/hooks.js",
+              "require": "./dist/collection/hooks.js",
+              "types": "./dist/collection/hooks.d.ts"
+          }
+      },
+      "main": "./dist/src/index.js",
+      "registry": "https://registry.npmjs.org/",
+      "types": "./dist/src/index.d.ts"
   }
 }

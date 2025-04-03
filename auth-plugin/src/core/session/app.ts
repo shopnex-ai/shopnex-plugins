@@ -35,7 +35,7 @@ export class AppSession {
     }
 
     const accountRecords = await payload.find({
-      collection: this.collections.accountsCollection,
+      collection: this.collections.accountsCollection as any,
       where: {
         sub: { equals: oauthAccountInfo.sub },
       },
@@ -43,7 +43,7 @@ export class AppSession {
 
     if (accountRecords.docs && accountRecords.docs.length === 1) {
       return await payload.update({
-        collection: this.collections.accountsCollection,
+        collection: this.collections.accountsCollection as any,
         id: accountRecords.docs[0].id,
         data,
       })
@@ -51,9 +51,9 @@ export class AppSession {
       data["sub"] = oauthAccountInfo.sub
       data["user"] = userId
       return await payload.create({
-        collection: this.collections.accountsCollection,
-        data,
-      })
+          collection: this.collections.accountsCollection as any,
+          data,
+      });
     }
   }
 
@@ -66,23 +66,23 @@ export class AppSession {
   ) {
     const { payload } = request
     const userRecords = await payload.find({
-      collection: this.collections.usersCollection,
-      where: {
-        email: {
-          equals: oauthAccountInfo.email,
+        collection: this.collections.usersCollection as any,
+        where: {
+            email: {
+                equals: oauthAccountInfo.email,
+            },
         },
-      },
-    })
+    });
     let userRecord: JsonObject & TypeWithID
     if (userRecords.docs.length === 1) {
       userRecord = userRecords.docs[0]
     } else if (this.allowAutoSignUp) {
       const userRecords = await payload.create({
-        collection: this.collections.usersCollection,
-        data: {
-          email: oauthAccountInfo.email,
-        },
-      })
+          collection: this.collections.usersCollection as any,
+          data: {
+              email: oauthAccountInfo.email,
+          },
+      });
       userRecord = userRecords
     } else {
       throw new UserNotFoundAPIError()

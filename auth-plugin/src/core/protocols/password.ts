@@ -1,4 +1,4 @@
-import { getCookieExpiration, parseCookies, PayloadRequest } from "payload";
+import { CollectionSlug, getCookieExpiration, parseCookies, PayloadRequest } from "payload";
 import {
     AuthenticationFailed,
     EmailAlreadyExistError,
@@ -33,7 +33,7 @@ export const PasswordSignin = async (
 
     const { payload } = request;
     const { docs } = await payload.find({
-        collection: internal.usersCollectionSlug,
+        collection: internal.usersCollectionSlug as CollectionSlug,
         where: {
             email: { equals: body.email },
         },
@@ -44,7 +44,7 @@ export const PasswordSignin = async (
         return new UserNotFoundAPIError();
     }
 
-    const user = docs[0];
+    const user: any = docs[0];
     const isVerifed = await verifyPassword(
         body.password,
         user["hashedPassword"],
@@ -82,7 +82,7 @@ export const PasswordSignup = async (
 
     const { payload } = request;
     const { docs } = await payload.find({
-        collection: internal.usersCollectionSlug,
+        collection: internal.usersCollectionSlug as any,
         where: {
             email: { equals: body.email },
         },
@@ -96,7 +96,7 @@ export const PasswordSignup = async (
     const { hash: hashedPassword, salt, iterations } = await hashPassword(body.password);
 
     const user = await payload.create({
-        collection: internal.usersCollectionSlug,
+        collection: internal.usersCollectionSlug as any,
         data: {
             email: body.email,
             hashedPassword: hashedPassword,
@@ -143,7 +143,7 @@ export const ForgotPasswordInit = async (
     }
 
     const { docs } = await payload.find({
-        collection: internal.usersCollectionSlug,
+        collection: internal.usersCollectionSlug as any,
         where: {
             email: { equals: body.email },
         },
@@ -212,7 +212,7 @@ export const ForgotPasswordVerify = async (
         return new AuthenticationFailed();
     }
     const { docs } = await payload.find({
-        collection: internal.usersCollectionSlug,
+        collection: internal.usersCollectionSlug as any,
         where: {
             email: { equals: body.email },
         },
@@ -226,7 +226,7 @@ export const ForgotPasswordVerify = async (
     const { hash: hashedPassword, salt, iterations } = await hashPassword(body.password);
 
     await payload.update({
-        collection: internal.usersCollectionSlug,
+        collection: internal.usersCollectionSlug as any,
         id: docs[0].id,
         data: {
             hashedPassword,
@@ -285,7 +285,7 @@ export const ResetPassword = async (
     }
 
     const { docs } = await payload.find({
-        collection: internal.usersCollectionSlug,
+        collection: internal.usersCollectionSlug as any,
         where: {
             email: { equals: body.email },
         },
@@ -310,7 +310,7 @@ export const ResetPassword = async (
     const { hash: hashedPassword, salt, iterations } = await hashPassword(body.newPassword);
 
     await payload.update({
-        collection: internal.usersCollectionSlug,
+        collection: internal.usersCollectionSlug as any,
         id: user.id,
         data: {
             hashedPassword,

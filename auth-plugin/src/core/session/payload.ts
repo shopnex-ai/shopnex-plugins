@@ -30,13 +30,13 @@ export class PayloadSession {
     let userID: string | number
 
     const userQueryResults = await payload.find({
-      collection: this.#collections.usersCollectionSlug,
-      where: {
-        email: {
-          equals: accountInfo.email,
+        collection: this.#collections.usersCollectionSlug as any,
+        where: {
+            email: {
+                equals: accountInfo.email,
+            },
         },
-      },
-    })
+    });
 
     if (userQueryResults.docs.length === 0) {
       if (!this.#allowSignUp) {
@@ -44,24 +44,24 @@ export class PayloadSession {
       }
 
       const newUser = await payload.create({
-        collection: this.#collections.usersCollectionSlug,
-        data: {
-          email: accountInfo.email,
-          emailVerified: true,
-          password: hashCode(accountInfo.email + payload.secret).toString(),
-        },
-      })
+          collection: this.#collections.usersCollectionSlug as any,
+          data: {
+              email: accountInfo.email,
+              emailVerified: true,
+              password: hashCode(accountInfo.email + payload.secret).toString(),
+          },
+      });
       userID = newUser.id
     } else {
       userID = userQueryResults.docs[0].id as string
     }
 
     const accounts = await payload.find({
-      collection: this.#collections.accountsCollectionSlug,
-      where: {
-        sub: { equals: accountInfo.sub },
-      },
-    })
+        collection: this.#collections.accountsCollectionSlug as any,
+        where: {
+            sub: { equals: accountInfo.sub },
+        },
+    });
     const data: Record<string, unknown> = {
       scope,
       name: accountInfo.name,
@@ -79,22 +79,22 @@ export class PayloadSession {
       data["issuerName"] = issuerName
       data["user"] = userID
       await payload.update({
-        collection: this.#collections.accountsCollectionSlug,
-        where: {
-          id: {
-            equals: accounts.docs[0].id,
+          collection: this.#collections.accountsCollectionSlug as any,
+          where: {
+              id: {
+                  equals: accounts.docs[0].id,
+              },
           },
-        },
-        data,
-      })
+          data,
+      });
     } else {
       data["sub"] = accountInfo.sub
       data["issuerName"] = issuerName
       data["user"] = userID
       await payload.create({
-        collection: this.#collections.accountsCollectionSlug,
-        data,
-      })
+          collection: this.#collections.accountsCollectionSlug as any,
+          data,
+      });
     }
     return userID
   }
@@ -115,10 +115,10 @@ export class PayloadSession {
     )
 
     const fieldsToSign = {
-      id: userID,
-      email: accountInfo.email,
-      collection: this.#collections.usersCollectionSlug,
-    }
+        id: userID,
+        email: accountInfo.email,
+        collection: this.#collections.usersCollectionSlug as any,
+    };
 
     let cookies: string[] = []
     cookies = [
