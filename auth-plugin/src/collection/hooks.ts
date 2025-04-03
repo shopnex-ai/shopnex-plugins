@@ -6,7 +6,7 @@ export const deleteLinkedAccounts =
     const { payload } = args.req
     const { doc: user } = args
     await payload.delete({
-      collection: accountsSlug,
+      collection: accountsSlug as any,
       where: {
         user: { equals: user["id"] },
       },
