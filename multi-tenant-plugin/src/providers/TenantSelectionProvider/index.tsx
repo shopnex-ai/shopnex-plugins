@@ -41,7 +41,7 @@ export const TenantSelectionProvider = async ({
 
     const cookies = await getCookies();
     let tenantCookie = cookies.get("payload-tenant")?.value;
-    let initialValue = undefined;
+    let initialValue: string;
 
     if (tenantOptions.length > 1 && tenantCookie === SELECT_ALL) {
         initialValue = SELECT_ALL;

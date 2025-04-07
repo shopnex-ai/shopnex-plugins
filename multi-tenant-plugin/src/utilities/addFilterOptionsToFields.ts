@@ -180,7 +180,7 @@ const filterOptionsByTenant = ({
     tenantsCollectionSlug,
 }: Args) => {
     const idType = getCollectionIDType({
-        collectionSlug: tenantsCollectionSlug,
+        collectionSlug: tenantsCollectionSlug as any,
         payload: req.payload,
     });
     const selectedTenant = getTenantFromCookie(req.headers, idType);

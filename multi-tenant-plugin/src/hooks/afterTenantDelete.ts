@@ -64,7 +64,7 @@ export const afterTenantDelete =
     }: Omit<Args, "collection">): CollectionAfterDeleteHook =>
     async ({ id, req }) => {
         const idType = getCollectionIDType({
-            collectionSlug: tenantsCollectionSlug,
+            collectionSlug: tenantsCollectionSlug as any,
             payload: req.payload,
         });
         const currentTenantCookieID = getTenantFromCookie(req.headers, idType);
@@ -87,7 +87,7 @@ export const afterTenantDelete =
         enabledSlugs.forEach((slug) => {
             cleanupPromises.push(
                 req.payload.delete({
-                    collection: slug,
+                    collection: slug as any,
                     where: {
                         [tenantFieldName]: {
                             equals: id,
@@ -99,7 +99,7 @@ export const afterTenantDelete =
 
         try {
             const usersWithTenant = (await req.payload.find({
-                collection: usersSlug,
+                collection: usersSlug as any,
                 depth: 0,
                 limit: 0,
                 where: {
@@ -113,7 +113,7 @@ export const afterTenantDelete =
                 cleanupPromises.push(
                     req.payload.update({
                         id: user.id,
-                        collection: usersSlug,
+                        collection: usersSlug as any,
                         data: {
                             [usersTenantsArrayFieldName]: (
                                 user[usersTenantsArrayFieldName] || []

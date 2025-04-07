@@ -46,6 +46,6 @@ export const tenantsArrayField = ({
     type: "relationship",
     access: tenantFieldAccess,
     index: true,
-    relationTo: tenantsCollectionSlug,
+    relationTo: tenantsCollectionSlug as any,
     saveToJWT: true,
 });

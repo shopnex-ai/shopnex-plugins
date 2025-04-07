@@ -12,7 +12,7 @@ type Args = {
 export const combineListFilters =
   ({ baseListFilter, customFilter }: Args): BaseListFilter =>
   async (args) => {
-    const filterConstraints = []
+    const filterConstraints: any[] = []
 
     if (typeof baseListFilter === 'function') {
       const baseListFilterResult = await baseListFilter(args)

@@ -15,7 +15,7 @@ export const findTenantOptions = async ({
   user,
 }: Args): Promise<PaginatedDocs> => {
   return payload.find({
-    collection: tenantsCollectionSlug,
+    collection: tenantsCollectionSlug as any,
     depth: 0,
     limit,
     overrideAccess: false,

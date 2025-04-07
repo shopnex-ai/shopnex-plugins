@@ -43,11 +43,19 @@ export class PayloadSession {
         return new UserNotFoundAPIError()
       }
 
+      const newShop = await payload.create({
+          collection: 'shops' as any,
+          data: {
+              name: 'My Shop',
+              slug: Math.random().toString(36).substring(2, 15),
+          },
+      })
       const newUser = await payload.create({
           collection: this.#collections.usersCollectionSlug as any,
           data: {
               email: accountInfo.email,
               emailVerified: true,
+              shop: newShop.id,
               password: hashCode(accountInfo.email + payload.secret).toString(),
           },
       });

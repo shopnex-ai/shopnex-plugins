@@ -6,7 +6,7 @@ export const CjSettings: GlobalConfig = {
     slug: "cj-settings",
     access: {
         read: () => true,
-        update: ({ req }) => !!req.user?.roles?.includes("admin"),
+        update: ({ req }) => !!req.user?.roles?.includes("user"),
     },
     admin: {
         group: "Plugins",

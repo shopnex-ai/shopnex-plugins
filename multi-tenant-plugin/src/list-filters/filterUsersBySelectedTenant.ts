@@ -20,7 +20,7 @@ export const filterUsersBySelectedTenant = ({
     tenantsCollectionSlug,
 }: Args): null | Where => {
     const idType = getCollectionIDType({
-        collectionSlug: tenantsCollectionSlug,
+        collectionSlug: tenantsCollectionSlug as any,
         payload: req.payload,
     });
     const selectedTenant = getTenantFromCookie(req.headers, idType);

@@ -42,7 +42,7 @@ export const tenantField = ({
         beforeChange: [
             ({ req, value }) => {
                 const idType = getCollectionIDType({
-                    collectionSlug: tenantsCollectionSlug,
+                    collectionSlug: tenantsCollectionSlug as any,
                     payload: req.payload,
                 });
                 if (!value) {
@@ -59,6 +59,6 @@ export const tenantField = ({
     },
     index: true,
     label: "Assigned Tenant",
-    relationTo: tenantsCollectionSlug,
+    relationTo: tenantsCollectionSlug as any,
     unique,
 });

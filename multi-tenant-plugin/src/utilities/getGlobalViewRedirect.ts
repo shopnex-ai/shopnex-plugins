@@ -28,7 +28,7 @@ export async function getGlobalViewRedirect({
     view,
 }: Args): Promise<string | void> {
     const idType = getCollectionIDType({
-        collectionSlug: tenantsCollectionSlug,
+        collectionSlug: tenantsCollectionSlug as any,
         payload,
     });
     let tenant = getTenantFromCookie(headers, idType);
@@ -48,7 +48,7 @@ export async function getGlobalViewRedirect({
 
     try {
         const { docs } = await payload.find({
-            collection: slug,
+            collection: slug as any,
             depth: 0,
             limit: 1,
             overrideAccess: false,

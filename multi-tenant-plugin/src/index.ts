@@ -88,7 +88,8 @@ export const multiTenantPlugin =
                     incomingConfig.i18n.translations[locale] = {};
                 }
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                if (!("multiTenant" in incomingConfig.i18n.translations[locale])) {
+                // @ts-ignore
+                if (!("multiTenant" in incomingConfig?.i18n?.translations?.[locale])) {
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-expect-error
                     incomingConfig.i18n.translations[locale].multiTenant = {};
@@ -161,6 +162,7 @@ export const multiTenantPlugin =
             pluginConfig.collections,
         ).reduce<[string[], string[]]>(
             (acc, slug) => {
+                // @ts-ignore
                 if (pluginConfig?.collections?.[slug]?.isGlobal) {
                     acc[1].push(slug);
                 } else {
@@ -232,7 +234,9 @@ export const multiTenantPlugin =
                         usersTenantsArrayTenantFieldName: tenantsArrayTenantFieldName,
                     });
                 }
+            // @ts-ignore
             } else if (pluginConfig.collections?.[collection.slug]) {
+                // @ts-ignore
                 const isGlobal = Boolean(pluginConfig.collections[collection.slug]?.isGlobal);
 
                 if (isGlobal) {
