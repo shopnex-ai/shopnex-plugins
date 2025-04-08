@@ -8,7 +8,6 @@ import { JSDOM } from "jsdom";
 import type { ProductDetails } from "../sdk/products/product-types";
 
 import * as cjSdk from "../sdk/cj-sdk";
-import { customConvertHTMLToLexical } from "./convert-html-to-lexical";
 import path, { dirname, join } from "path";
 import fs from "fs";
 import { promisify } from "util";
@@ -115,13 +114,13 @@ function mapMockProductToSchema(
     payload: BasePayload,
 ) {
     return {
-        description: customConvertHTMLToLexical({
+        description: convertHTMLToLexical({
             editorConfig,
             html: product.description || "",
             JSDOM,
-            uploadImage: async (src: string) => {
-                return uploadImageToPayload(src, payload);
-            },
+            // uploadImage: async (src: string) => {
+            //     return uploadImageToPayload(src, payload);
+            // },
         }),
         pid: product.pid,
         title: product.productNameEn,
