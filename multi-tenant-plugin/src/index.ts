@@ -279,15 +279,15 @@ export const multiTenantPlugin =
                         collection.admin = {};
                     }
 
-                    // collection.admin.baseListFilter = combineListFilters({
-                    //     baseListFilter: collection.admin?.baseListFilter,
-                    //     customFilter: (args) =>
-                    //         filterDocumentsBySelectedTenant({
-                    //             req: args.req,
-                    //             tenantFieldName,
-                    //             tenantsCollectionSlug,
-                    //         }),
-                    // });
+                    collection.admin.baseListFilter = combineListFilters({
+                        baseListFilter: collection.admin?.baseListFilter,
+                        customFilter: (args) =>
+                            filterDocumentsBySelectedTenant({
+                                req: args.req,
+                                tenantFieldName,
+                                tenantsCollectionSlug,
+                            }),
+                    });
                 }
 
                 if (pluginConfig.collections[collection.slug]?.useTenantAccess !== false) {
