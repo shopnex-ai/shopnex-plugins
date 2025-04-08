@@ -2,7 +2,6 @@ import type { OptionObject, Payload, User } from "payload";
 
 import { cookies as getCookies } from "next/headers";
 
-import { SELECT_ALL } from "../../constants";
 import { findTenantOptions } from "../../queries/findTenantOptions";
 import { TenantSelectionProviderClient } from "./index.client";
 
@@ -41,20 +40,26 @@ export const TenantSelectionProvider = async ({
 
     const cookies = await getCookies();
     let tenantCookie = cookies.get("payload-tenant")?.value;
-    let initialValue: string;
+    let initialValue: string | undefined = undefined;
 
-    if (tenantOptions.length > 1 && tenantCookie === SELECT_ALL) {
-        initialValue = SELECT_ALL;
-    } else {
+    /**
+     * Ensure the cookie is a valid tenant
+     */
+    if (tenantCookie) {
         const matchingOption = tenantOptions.find(
             (option) => String(option.value) === tenantCookie,
         );
         if (matchingOption) {
             initialValue = matchingOption.value;
-        } else {
-            tenantCookie = undefined;
-            initialValue = tenantOptions.length > 1 ? SELECT_ALL : tenantOptions[0]?.value;
         }
+    }
+
+    /**
+     * If the there was no cookie or the cookie was an invalid tenantID set intialValue
+     */
+    if (!initialValue) {
+        tenantCookie = undefined;
+        initialValue = tenantOptions.length > 1 ? undefined : tenantOptions[0]?.value;
     }
 
     return (

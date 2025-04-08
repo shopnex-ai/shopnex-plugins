@@ -91,11 +91,11 @@ export const multiTenantPlugin =
                 // @ts-ignore
                 if (!("multiTenant" in incomingConfig?.i18n?.translations?.[locale])) {
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-expect-error
+                    // @ts-ignore
                     incomingConfig.i18n.translations[locale].multiTenant = {};
                 }
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-expect-error
+                // @ts-ignore
                 incomingConfig.i18n.translations[locale].multiTenant.selectorLabel = label;
                 tenantSelectorLabel = "multiTenant:selectorLabel";
             });

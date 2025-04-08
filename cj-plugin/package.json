@@ -55,11 +55,11 @@
     },
     "registry": "https://registry.npmjs.org/",
     "dependencies": {
-        "@lexical/headless": "0.21.0",
-        "@lexical/html": "0.21.0",
+        "@lexical/headless": "0.28.0",
+        "@lexical/html": "0.28.0",
         "axios": "^1.8.3",
         "jsdom": "^26.0.0",
-        "lexical": "0.21.0"
+        "lexical": "0.28.0"
     },
     "devDependencies": {
         "@types/jsdom": "^21.1.7"

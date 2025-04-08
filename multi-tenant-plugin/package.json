@@ -1,6 +1,6 @@
 {
   "name": "@shopnex/multi-tenant-plugin",
-  "version": "3.26.2",
+  "version": "3.27.0",
   "description": "Multi Tenant plugin for Payload",
   "keywords": [
     "payload",
@@ -77,9 +77,9 @@
     "prepublishOnly": "pnpm clean && pnpm build"
   },
   "peerDependencies": {
-    "@payloadcms/ui": "3.26.0",
+    "@payloadcms/ui": "3.31.0",
     "next": "^15.0.3",
-    "payload": "3.26.0"
+    "payload": "3.31.0"
   },
   "publishConfig": {
     "exports": {

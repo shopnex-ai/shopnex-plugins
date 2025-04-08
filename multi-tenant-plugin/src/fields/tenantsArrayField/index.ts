@@ -41,11 +41,21 @@ export const tenantsArrayField = ({
     tenantsArrayFieldName = defaults.tenantsArrayFieldName,
     tenantsArrayTenantFieldName = defaults.tenantsArrayTenantFieldName,
     tenantsCollectionSlug = defaults.tenantCollectionSlug,
-}: Args): RelationshipField => ({
-    name: tenantsArrayTenantFieldName,
-    type: "relationship",
-    access: tenantFieldAccess,
-    index: true,
-    relationTo: tenantsCollectionSlug as any,
+}: Args): ArrayField => ({
+    name: tenantsArrayFieldName,
+    type: "array",
+    access: arrayFieldAccess,
+    fields: [
+        {
+            name: tenantsArrayTenantFieldName,
+            type: "relationship",
+            access: tenantFieldAccess,
+            index: true,
+            relationTo: tenantsCollectionSlug as any,
+            required: true,
+            saveToJWT: true,
+        },
+        ...(rowFields || []),
+    ],
     saveToJWT: true,
 });

@@ -1,6 +1,5 @@
 import type { PayloadRequest, Where } from "payload";
 
-import { SELECT_ALL } from "../constants";
 import { getCollectionIDType } from "../utilities/getCollectionIDType";
 import { getTenantFromCookie } from "../utilities/getTenantFromCookie";
 
@@ -18,13 +17,13 @@ export const filterTenantsBySelectedTenant = ({
     });
     const selectedTenant = getTenantFromCookie(req.headers, idType);
 
-    if (selectedTenant === SELECT_ALL) {
-        return {};
+    if (selectedTenant) {
+        return {
+            id: {
+                equals: selectedTenant,
+            },
+        };
     }
 
-    return {
-        id: {
-            equals: selectedTenant,
-        },
-    };
+    return {};
 };

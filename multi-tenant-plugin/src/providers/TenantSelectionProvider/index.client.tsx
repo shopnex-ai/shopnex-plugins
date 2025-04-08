@@ -6,8 +6,6 @@ import { useAuth } from "@payloadcms/ui";
 import { useRouter } from "next/navigation";
 import React, { createContext } from "react";
 
-import { SELECT_ALL } from "../../constants";
-
 type ContextType = {
     /**
      * Array of options to select from
@@ -65,7 +63,7 @@ export const TenantSelectionProviderClient = ({
 
     const setCookie = React.useCallback((value?: string) => {
         const expires = "; expires=Fri, 31 Dec 9999 23:59:59 GMT";
-        document.cookie = "payload-tenant=" + (value || "0") + expires + "; path=/";
+        document.cookie = "payload-tenant=" + (value || "") + expires + "; path=/";
     }, []);
 
     const deleteCookie = React.useCallback(() => {
@@ -76,11 +74,10 @@ export const TenantSelectionProviderClient = ({
         ({ id, refresh }) => {
             if (id === undefined) {
                 if (tenantOptions.length > 1) {
-                    setSelectedTenantID(SELECT_ALL);
-                    setCookie(SELECT_ALL);
+                    setSelectedTenantID(undefined);
+                    deleteCookie();
                 } else {
                     setSelectedTenantID(tenantOptions[0]?.value);
-                    debugger
                     setCookie(String(tenantOptions[0]?.value));
                 }
             } else {
@@ -91,16 +88,21 @@ export const TenantSelectionProviderClient = ({
                 router.refresh();
             }
         },
-        [setSelectedTenantID, setCookie, router, preventRefreshOnChange, tenantOptions],
+        [
+            deleteCookie,
+            preventRefreshOnChange,
+            router,
+            setCookie,
+            setSelectedTenantID,
+            tenantOptions,
+        ],
     );
 
     React.useEffect(() => {
         if (
             selectedTenantID &&
-            selectedTenantID !== SELECT_ALL &&
             !tenantOptions.find((option) => option.value === selectedTenantID)
         ) {
-            debugger
             if (tenantOptions?.[0]?.value) {
                 setTenant({ id: tenantOptions[0].value, refresh: true });
             } else {
@@ -113,9 +115,13 @@ export const TenantSelectionProviderClient = ({
         if (userID && !tenantCookie) {
             // User is logged in, but does not have a tenant cookie, set it
             setSelectedTenantID(initialValue);
-            setCookie(String(initialValue));
+            if (initialValue) {
+                setCookie(String(initialValue));
+            } else {
+                deleteCookie();
+            }
         }
-    }, [userID, tenantCookie, initialValue, setCookie, router]);
+    }, [userID, tenantCookie, initialValue, setCookie, deleteCookie, router]);
 
     React.useEffect(() => {
         if (!userID && tenantCookie) {
@@ -133,7 +139,7 @@ export const TenantSelectionProviderClient = ({
             data-selected-tenant-id={selectedTenantID}
             data-selected-tenant-title={selectedTenantLabel}
         >
-            <Context.Provider
+            <Context
                 value={{
                     options: tenantOptions,
                     selectedTenantID,
@@ -142,9 +148,9 @@ export const TenantSelectionProviderClient = ({
                 }}
             >
                 {children}
-            </Context.Provider>
+            </Context>
         </span>
     );
 };
 
-export const useTenantSelection = () => React.useContext(Context);
+export const useTenantSelection = () => React.use(Context);
