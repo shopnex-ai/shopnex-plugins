@@ -1,5 +1,11 @@
 # @shoplyjs/store-plugin
 
+## 1.0.12
+
+### Patch Changes
+
+- Patch plugin description
+
 ## 1.0.11
 
 ### Patch Changes
