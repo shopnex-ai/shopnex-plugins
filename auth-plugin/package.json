@@ -1,127 +1,127 @@
 {
-  "name": "@shopnex/auth-plugin",
-  "version": "0.6.5",
-  "type": "module",
-  "sideEffects": false,
-  "author": "Arseniy <arseniy.v.n@gmail.com>",
-  "license": "MIT",
-  "homepage:": "https://github.com/authsmith/payload-auth-plugin",
-  "repository": "git@github.com:authsmith/payload-auth-plugin.git",
-  "description": "Authentication plugin for Payload CMS",
-  "main": "dist/esm/index.js",
-  "types": "dist/types/index.d.ts",
-  "keywords": [
-    "payload",
-    "cms",
-    "authentication",
-    "payload-plugin",
-    "typescript",
-    "react",
-    "oauth",
-    "oauth2.0",
-    "oidc"
-  ],
-  "exports": {
-    ".": {
-      "import": "./src/index.ts",
-      "types": "./src/index.d.ts",
-      "default": "./src/index.js"
+    "name": "@shopnex/auth-plugin",
+    "version": "0.6.6",
+    "type": "module",
+    "sideEffects": false,
+    "author": "Arseniy <arseniy.v.n@gmail.com>",
+    "license": "MIT",
+    "homepage:": "https://github.com/authsmith/payload-auth-plugin",
+    "repository": "git@github.com:authsmith/payload-auth-plugin.git",
+    "description": "Authentication plugin for Payload CMS",
+    "main": "dist/esm/index.js",
+    "types": "dist/types/index.d.ts",
+    "keywords": [
+        "payload",
+        "cms",
+        "authentication",
+        "payload-plugin",
+        "typescript",
+        "react",
+        "oauth",
+        "oauth2.0",
+        "oidc"
+    ],
+    "exports": {
+        ".": {
+            "import": "./src/index.ts",
+            "types": "./src/index.d.ts",
+            "default": "./src/index.js"
+        },
+        "./providers": {
+            "import": "./src/providers/index.ts",
+            "types": "./src/providers/index.d.ts",
+            "default": "./src/providers/index.ts"
+        },
+        "./client": {
+            "import": "./src/client/index.ts",
+            "types": "./src/client/index.d.ts",
+            "default": "./src/client/index.ts"
+        },
+        "./client/hooks": {
+            "import": "./src/client/hooks.ts",
+            "types": "./src/client/hooks.d.ts",
+            "default": "./src/client/hooks.ts"
+        },
+        "./collection": {
+            "import": "./src/collection/index.ts",
+            "types": "./src/collection/index.d.ts",
+            "default": "./src/collection/index.ts"
+        },
+        "./collection/hooks": {
+            "import": "./src/collection/hooks.ts",
+            "types": "./src/collection/hooks.d.ts",
+            "default": "./src/collection/hooks.ts"
+        }
     },
-    "./providers": {
-      "import": "./src/providers/index.ts",
-      "types": "./src/providers/index.d.ts",
-      "default": "./src/providers/index.ts"
+    "files": [
+        "src",
+        "dist"
+    ],
+    "scripts": {
+        "build": "pnpm copyfiles && pnpm build:types && pnpm build:swc",
+        "build:swc": "swc ./src -d ./dist --config-file .swcrc --strip-leading-paths",
+        "build:types": "tsc --emitDeclarationOnly --outDir dist",
+        "clean": "rimraf dist && rimraf tsconfig.tsbuildinfo",
+        "copyfiles": "copyfiles -u 1 \"src/**/*.{html,css,scss,ttf,woff,woff2,eot,svg,jpg,png,json}\" dist/",
+        "lint": "eslint src",
+        "lint:fix": "eslint --fix --ext .ts,.tsx src",
+        "prepublishOnly": "pnpm clean && pnpm build"
     },
-    "./client": {
-      "import": "./src/client/index.ts",
-      "types": "./src/client/index.d.ts",
-      "default": "./src/client/index.ts"
+    "peerDependencies": {
+        "payload": "3.26.0",
+        "qs-esm": "7.0.2"
     },
-    "./client/hooks": {
-      "import": "./src/client/hooks.ts",
-      "types": "./src/client/hooks.d.ts",
-      "default": "./src/client/hooks.ts"
+    "devDependencies": {
+        "@changesets/cli": "2.27.10",
+        "@tsconfig/node22": "22.0.0",
+        "@types/jsonwebtoken": "^9.0.7",
+        "cross-env": "^7.0.3",
+        "git-cliff": "2.7.0",
+        "globals": "^15.14.0",
+        "prettier": "3.4.2",
+        "typescript": "^5.7.3"
     },
-    "./collection": {
-      "import": "./src/collection/index.ts",
-      "types": "./src/collection/index.d.ts",
-      "default": "./src/collection/index.ts"
+    "dependencies": {
+        "@simplewebauthn/browser": "^13.1.0",
+        "@simplewebauthn/server": "^13.1.0",
+        "jose": "6.0.8",
+        "oauth4webapi": "^3.1.4"
     },
-    "./collection/hooks": {
-      "import": "./src/collection/hooks.ts",
-      "types": "./src/collection/hooks.d.ts",
-      "default": "./src/collection/hooks.ts"
+    "publishConfig": {
+        "exports": {
+            ".": {
+                "import": "./dist/index.js",
+                "require": "./dist/index.js",
+                "types": "./dist/index.d.ts"
+            },
+            "./providers": {
+                "import": "./dist/providers/index.js",
+                "require": "./dist/providers/index.js",
+                "types": "./dist/providers/index.d.ts"
+            },
+            "./client": {
+                "import": "./dist/client/index.js",
+                "require": "./dist/client/index.js",
+                "types": "./dist/client/index.d.ts"
+            },
+            "./client/hooks": {
+                "import": "./dist/client/hooks.js",
+                "require": "./dist/client/hooks.js",
+                "types": "./dist/client/hooks.d.ts"
+            },
+            "./collection": {
+                "import": "./dist/collection/index.js",
+                "require": "./dist/collection/index.js",
+                "types": "./dist/collection/index.d.ts"
+            },
+            "./collection/hooks": {
+                "import": "./dist/collection/hooks.js",
+                "require": "./dist/collection/hooks.js",
+                "types": "./dist/collection/hooks.d.ts"
+            }
+        },
+        "main": "./dist/src/index.js",
+        "registry": "https://registry.npmjs.org/",
+        "types": "./dist/src/index.d.ts"
     }
-  },
-  "files": [
-    "src",
-    "dist"
-  ],
-  "scripts": {
-    "build": "pnpm copyfiles && pnpm build:types && pnpm build:swc",
-    "build:swc": "swc ./src -d ./dist --config-file .swcrc --strip-leading-paths",
-    "build:types": "tsc --emitDeclarationOnly --outDir dist",
-    "clean": "rimraf dist && rimraf tsconfig.tsbuildinfo",
-    "copyfiles": "copyfiles -u 1 \"src/**/*.{html,css,scss,ttf,woff,woff2,eot,svg,jpg,png,json}\" dist/",
-    "lint": "eslint src",
-    "lint:fix": "eslint --fix --ext .ts,.tsx src",
-    "prepublishOnly": "pnpm clean && pnpm build"
-  },
-  "peerDependencies": {
-    "payload": "3.26.0",
-    "qs-esm": "7.0.2"
-  },
-  "devDependencies": {
-    "@changesets/cli": "2.27.10",
-    "@tsconfig/node22": "22.0.0",
-    "@types/jsonwebtoken": "^9.0.7",
-    "cross-env": "^7.0.3",
-    "git-cliff": "2.7.0",
-    "globals": "^15.14.0",
-    "prettier": "3.4.2",
-    "typescript": "^5.7.3"
-  },
-  "dependencies": {
-    "@simplewebauthn/browser": "^13.1.0",
-    "@simplewebauthn/server": "^13.1.0",
-    "jose": "6.0.8",
-    "oauth4webapi": "^3.1.4"
-  },
-  "publishConfig": {
-      "exports": {
-          ".": {
-              "import": "./dist/index.js",
-              "require": "./dist/index.js",
-              "types": "./dist/index.d.ts"
-          },
-          "./providers": {
-              "import": "./dist/providers/index.js",
-              "require": "./dist/providers/index.js",
-              "types": "./dist/providers/index.d.ts"
-          },
-          "./client": {
-              "import": "./dist/client/index.js",
-              "require": "./dist/client/index.js",
-              "types": "./dist/client/index.d.ts"
-          },
-          "./client/hooks": {
-              "import": "./dist/client/hooks.js",
-              "require": "./dist/client/hooks.js",
-              "types": "./dist/client/hooks.d.ts"
-          },
-          "./collection": {
-              "import": "./dist/collection/index.js",
-              "require": "./dist/collection/index.js",
-              "types": "./dist/collection/index.d.ts"
-          },
-          "./collection/hooks": {
-              "import": "./dist/collection/hooks.js",
-              "require": "./dist/collection/hooks.js",
-              "types": "./dist/collection/hooks.d.ts"
-          }
-      },
-      "main": "./dist/src/index.js",
-      "registry": "https://registry.npmjs.org/",
-      "types": "./dist/src/index.d.ts"
-  }
 }

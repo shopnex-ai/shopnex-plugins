@@ -1,5 +1,11 @@
 # @shoplyjs/cj-plugin
 
+## 1.0.2
+
+### Patch Changes
+
+- republish
+
 ## 1.0.1
 
 ### Patch Changes
