@@ -55,7 +55,10 @@ export class PayloadSession {
           data: {
               email: accountInfo.email,
               emailVerified: true,
-              shop: newShop.id,
+              shops: {
+                  shop: newShop.id,
+                  roles: ['shop-admin'],
+              },
               password: hashCode(accountInfo.email + payload.secret).toString(),
           },
       });
