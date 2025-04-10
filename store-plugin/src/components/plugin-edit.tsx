@@ -18,7 +18,7 @@ export function PluginEditView() {
     const [plugin, setPlugin] = React.useState<any>(null);
 
     React.useEffect(() => {
-        getPlugin(pluginId)
+        getPlugin(pluginId as string)
             .then((data) => {
                 if (data) {
                     setPlugin(data);
