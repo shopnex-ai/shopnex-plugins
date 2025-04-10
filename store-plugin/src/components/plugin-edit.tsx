@@ -7,6 +7,7 @@ import "./plugin-edit.scss";
 import { RichText } from "@payloadcms/richtext-lexical/react";
 import { Puzzle } from "lucide-react";
 import Image from "next/image";
+import { getPlugin } from "../actions/actions";
 
 const baseClass = "plugin-edit-view";
 
@@ -17,17 +18,14 @@ export function PluginEditView() {
     const [plugin, setPlugin] = React.useState<any>(null);
 
     React.useEffect(() => {
-        fetch(`https://shopnex-studio.onrender.com/api/products/${pluginId}`, {
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
-            .then((response) => response.json())
+        getPlugin(pluginId)
             .then((data) => {
-                setPlugin(data);
+                if (data) {
+                    setPlugin(data);
+                }
             })
             .catch((error) => {
-                console.error(error);
+                console.error("Error fetching plugin data:", error);
             });
     }, [pluginId]);
 

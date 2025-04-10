@@ -9,6 +9,7 @@ import { stringify } from "qs-esm";
 import "./plugin-list.scss";
 import Image from "next/image";
 import { Puzzle } from "lucide-react";
+import { getPluginSpace } from "../actions/actions";
 
 const baseClass = "plugin-list-view";
 
@@ -20,7 +21,7 @@ export function PluginListView(props: ClientComponentProps & { collectionSlug: s
         fetchData(data);
     }, []);
 
-    const fetchData = useCallback((query: ListQuery) => {
+    const fetchData = useCallback(async (query: ListQuery) => {
         const whereQuery: Where = {};
 
         if (query.search) {
@@ -41,19 +42,13 @@ export function PluginListView(props: ClientComponentProps & { collectionSlug: s
             { addQueryPrefix: true },
         );
 
-        fetch(`https://shopnex-studio.onrender.com/api/products${queryString}`, {
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                setData(data);
-            })
-            .catch((error) => {
-                console.error(error);
-                setData(null);
-            });
+        try {
+            const data = await getPluginSpace(queryString);
+            setData(data);
+        } catch (error) {
+            console.error(error);
+            setData(null);
+        }
     }, []);
 
     useEffect(() => {
