@@ -57,6 +57,7 @@
     },
     "registry": "https://registry.npmjs.org/",
     "dependencies": {
-        "qs-esm": "^7.0.2"
+        "qs-esm": "^7.0.2",
+        "react-markdown": "^10.1.0"
     }
 }

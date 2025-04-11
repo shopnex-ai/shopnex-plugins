@@ -4,10 +4,11 @@ import React from "react";
 import { Gutter, LoadingOverlay, RenderTitle, TextareaInput, TextInput } from "@payloadcms/ui";
 import { useParams } from "next/navigation";
 import "./plugin-edit.scss";
-import { RichText } from "@payloadcms/richtext-lexical/react";
+import Markdown from "react-markdown";
 import { Puzzle } from "lucide-react";
 import Image from "next/image";
 import { getPlugin } from "../actions/actions";
+import './markdown-styles.scss'
 
 const baseClass = "plugin-edit-view";
 
@@ -18,15 +19,15 @@ export function PluginEditView() {
     const [plugin, setPlugin] = React.useState<any>(null);
 
     React.useEffect(() => {
-        getPlugin(pluginId as string)
-            .then((data) => {
-                if (data) {
-                    setPlugin(data);
-                }
-            })
-            .catch((error) => {
-                console.error("Error fetching plugin data:", error);
-            });
+        (async () => {
+            const data = await getPlugin(pluginId as string);
+            const readmeResult = await fetch(
+                `https://cdn.jsdelivr.net/npm/${data.packageName}@latest/README.md`,
+            );
+            const readme = await readmeResult.text();
+            data.description = readme;
+            setPlugin(data);
+        })();
     }, [pluginId]);
 
     const imageUrl = plugin?.variants[0]?.gallery?.[0]?.url || "";
@@ -86,7 +87,9 @@ export function PluginEditView() {
                     readOnly
                 />
             </div>
-            <RichText className={`${baseClass}__textarea`} data={plugin.description} />
+            <div className={`${baseClass}__textarea`}>
+                <Markdown>{plugin.description}</Markdown>
+            </div>
         </Gutter>
     );
 }
