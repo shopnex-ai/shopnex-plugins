@@ -23,16 +23,16 @@ export const filterDocumentsBySelectedTenant = ({
     const selectedTenant = getTenantFromCookie(req.headers, idType);
     const isSuperAdmin = userHasAccessToAllTenants(req.user);
 
-    if (isSuperAdmin) {
-        return {};
-    }
-
     if (selectedTenant) {
         return {
             [tenantFieldName]: {
                 equals: selectedTenant,
             },
         };
+    }
+
+    if (isSuperAdmin) {
+        return {};
     }
     return {
         [tenantFieldName]: {
