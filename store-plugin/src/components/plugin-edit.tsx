@@ -21,15 +21,20 @@ export function PluginEditView() {
     React.useEffect(() => {
         (async () => {
             const data = await getPlugin(pluginId as string);
-            const packageName = data.customFields?.find(field => {
+            const packageInfo = data.customFields?.find(field => {
                 return field.name === 'packageName'
-            })?.value
+            })
+            if (!packageInfo?.packageName) return;
             const readmeResult = await fetch(
-                `https://cdn.jsdelivr.net/npm/${packageName}@latest/README.md`,
+                `https://cdn.jsdelivr.net/npm/${packageInfo.packageName}@latest/README.md`,
             );
             const readme = await readmeResult.text();
-            data.description = readme;
-            setPlugin(data);
+
+            setPlugin({
+                ...data,
+                ...packageInfo,
+                description: readme
+            });
         })();
     }, [pluginId]);
 
