@@ -22,7 +22,11 @@ export function PluginListView(props: ClientComponentProps & { collectionSlug: s
     }, []);
 
     const fetchData = useCallback(async (query: ListQuery) => {
-        const whereQuery: Where = {};
+        const whereQuery: Where = {
+            shop: {
+                equals: 1
+            }
+        };
 
         if (query.search) {
             whereQuery.or = [{ title: { like: query.search } }];
