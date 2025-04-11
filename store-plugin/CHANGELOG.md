@@ -1,5 +1,11 @@
 # @shoplyjs/store-plugin
 
+## 1.0.13
+
+### Patch Changes
+
+- fix cors issue by using server actions
+
 ## 1.0.12
 
 ### Patch Changes
