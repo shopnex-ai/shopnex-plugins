@@ -7,17 +7,25 @@ type Args = {
     req: PayloadRequest;
     tenantFieldName: string;
     tenantsCollectionSlug: string;
+    userHasAccessToAllTenants: (user: any) => boolean;
 };
 export const filterDocumentsBySelectedTenant = ({
     req,
     tenantFieldName,
     tenantsCollectionSlug,
+    userHasAccessToAllTenants,
 }: Args): null | Where => {
     const idType = getCollectionIDType({
         collectionSlug: tenantsCollectionSlug as any,
         payload: req.payload,
     });
+
     const selectedTenant = getTenantFromCookie(req.headers, idType);
+    const isSuperAdmin = userHasAccessToAllTenants(req.user);
+
+    if (isSuperAdmin) {
+        return {};
+    }
 
     if (selectedTenant) {
         return {
@@ -26,6 +34,9 @@ export const filterDocumentsBySelectedTenant = ({
             },
         };
     }
-
-    return {};
+    return {
+        [tenantFieldName]: {
+            equals: null,
+        },
+    };
 };

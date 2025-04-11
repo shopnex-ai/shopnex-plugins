@@ -286,6 +286,7 @@ export const multiTenantPlugin =
                                 req: args.req,
                                 tenantFieldName,
                                 tenantsCollectionSlug,
+                                userHasAccessToAllTenants,
                             }),
                     });
                 }
