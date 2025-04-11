@@ -21,8 +21,11 @@ export function PluginEditView() {
     React.useEffect(() => {
         (async () => {
             const data = await getPlugin(pluginId as string);
+            const packageName = data.customFields?.find(field => {
+                return field.name === 'packageName'
+            })?.value
             const readmeResult = await fetch(
-                `https://cdn.jsdelivr.net/npm/${data.packageName}@latest/README.md`,
+                `https://cdn.jsdelivr.net/npm/${packageName}@latest/README.md`,
             );
             const readme = await readmeResult.text();
             data.description = readme;
