@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Gutter, LoadingOverlay, RenderTitle, TextareaInput, TextInput } from "@payloadcms/ui";
+import { Gutter, LoadingOverlay, RenderTitle, TextareaInput, TextInput, toast } from "@payloadcms/ui";
 import { useParams } from "next/navigation";
 import "./plugin-edit.scss";
 import Markdown from "react-markdown";
@@ -21,18 +21,20 @@ export function PluginEditView() {
     React.useEffect(() => {
         (async () => {
             const data = await getPlugin(pluginId as string);
-            const packageInfo = data.customFields?.find(field => {
+            const packageName = data.customFields?.find(field => {
                 return field.name === 'packageName'
             })
-            if (!packageInfo?.packageName) return;
+            if (!packageName?.value) {
+                toast('Plugin not found!')
+            }
             const readmeResult = await fetch(
-                `https://cdn.jsdelivr.net/npm/${packageInfo.packageName}@latest/README.md`,
+                `https://cdn.jsdelivr.net/npm/${packageName.value}@latest/README.md`,
             );
             const readme = await readmeResult.text();
 
             setPlugin({
                 ...data,
-                ...packageInfo,
+                ...packageName,
                 description: readme
             });
         })();
@@ -85,7 +87,7 @@ export function PluginEditView() {
                     label="Install Plugin"
                     readOnly
                     className={`${baseClass}__input`}
-                    value={`pnpm install ${plugin?.packageName}`}
+                    value={`pnpm install ${plugin?.value}`}
                 />
                 <TextInput
                     label="Plugin Version"

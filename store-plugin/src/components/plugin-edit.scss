@@ -39,12 +39,18 @@
         width: 100%;
         padding-top: 0.5rem;
         padding-bottom: 0.5rem;
+        .field-type__wrap {
+            input {
+                background-color: var(--color-base-50);
+
+            }
+        }
     }
 
     &__textarea {
         // Styles for the textarea input
         padding: 1rem;
         margin-top: 1rem;
-        background: var(--theme-elevation-100);
+        background: var(--color-base-50);
     }
 }
