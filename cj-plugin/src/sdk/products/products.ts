@@ -42,7 +42,7 @@ export async function getProductList(
   const query = { ...defaultParams, ...params }
 
   try {
-    const accessToken = await getCurrentAccessToken()
+    const accessToken = await getCurrentAccessToken();
     const response = await cjApiClient.get<ProductListResponse>(
       'https://developers.cjdropshipping.com/api2.0/v1/product/list',
       {

@@ -1,14 +1,20 @@
 "use client";
 
 import React from "react";
-import { Gutter, LoadingOverlay, RenderTitle, TextareaInput, TextInput, toast } from "@payloadcms/ui";
+import {
+    Gutter,
+    LoadingOverlay,
+    RenderTitle,
+    TextInput,
+    toast,
+} from "@payloadcms/ui";
 import { useParams } from "next/navigation";
 import "./plugin-edit.scss";
 import Markdown from "react-markdown";
 import { Puzzle } from "lucide-react";
 import Image from "next/image";
 import { getPlugin } from "../actions/actions";
-import './markdown-styles.scss'
+import "./markdown-styles.scss";
 
 const baseClass = "plugin-edit-view";
 
@@ -21,11 +27,11 @@ export function PluginEditView() {
     React.useEffect(() => {
         (async () => {
             const data = await getPlugin(pluginId as string);
-            const packageName = data.customFields?.find(field => {
-                return field.name === 'packageName'
-            })
+            const packageName = data.customFields?.find((field) => {
+                return field.name === "packageName";
+            });
             if (!packageName?.value) {
-                toast('Plugin not found!')
+                toast("Plugin not found!");
             }
             const readmeResult = await fetch(
                 `https://cdn.jsdelivr.net/npm/${packageName.value}@latest/README.md`,
@@ -35,7 +41,7 @@ export function PluginEditView() {
             setPlugin({
                 ...data,
                 ...packageName,
-                description: readme
+                description: readme,
             });
         })();
     }, [pluginId]);
@@ -98,7 +104,8 @@ export function PluginEditView() {
                 />
             </div>
             <div className={`${baseClass}__textarea`}>
-                <Markdown>{plugin.description}</Markdown>
+                {/*// @ts-ignore */}
+                <Markdown>{plugin?.description}</Markdown>
             </div>
         </Gutter>
     );

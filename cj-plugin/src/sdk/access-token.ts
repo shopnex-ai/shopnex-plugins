@@ -1,25 +1,35 @@
-import * as cjSdk from './cj-sdk'
+import { cookies } from "next/headers";
+import * as cjSdk from "./cj-sdk";
 
 type Credentials = {
-  emailAddress: string
-  password: string
-  refreshToken?: string
-}
+    emailAddress: string;
+    password: string;
+    refreshToken?: string;
+};
 
-let credentials: Credentials | null = null
+const tenantCredentialsMap = new Map<string, Credentials>();
 
 export const getCurrentAccessToken = async () => {
-  if (!credentials?.emailAddress || !credentials?.password) {
-    throw new Error('Email address and password token are required')
-  }
-  const { emailAddress, password, refreshToken } = credentials
-  let accessToken = (await cjSdk.refreshAccessToken(refreshToken || '')).accessToken
-  if (!accessToken) {
-    accessToken = (await cjSdk.getAccessToken(emailAddress, password)).accessToken
-  }
-  return accessToken
-}
+    const shopId = (await cookies()).get("shopId") as unknown as string;
+    const accessToken = await getTenantAccessToken(shopId);
+    return accessToken
+};
 
-export const setCurrentAccessToken = ({ emailAddress, password, refreshToken }: Credentials) => {
-  credentials = { emailAddress, password, refreshToken }
-}
+export const setTenantCredentials = (shopId: string, creds: Credentials) => {
+    tenantCredentialsMap.set(shopId, creds);
+};
+
+export const getTenantAccessToken = async (shopId: string) => {
+    const creds = tenantCredentialsMap.get(shopId);
+
+    if (!creds?.emailAddress || !creds?.password) {
+        throw new Error(`Credentials for tenant ${shopId} are missing or incomplete`);
+    }
+
+    const { emailAddress, password, refreshToken } = creds;
+    let accessToken = (await cjSdk.refreshAccessToken(refreshToken || "")).accessToken;
+    if (!accessToken) {
+        accessToken = (await cjSdk.getAccessToken(emailAddress, password)).accessToken;
+    }
+    return accessToken;
+};

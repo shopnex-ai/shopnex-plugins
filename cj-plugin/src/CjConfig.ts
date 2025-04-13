@@ -1,13 +1,17 @@
-import type { GlobalConfig } from "payload";
-
-import { syncProducts } from "./service/sync-products";
+import { CollectionConfig } from "payload";
 import { decryptToken, encryptToken } from "./util/manage-tokens";
+import { syncProducts } from "./service/sync-products";
 
-export const CjSettings: GlobalConfig = {
+export type CjCollectionProps = {
+    overrides?: {
+        access: CollectionConfig["access"];
+    };
+};
+
+export const CjConfigCollection = ({ overrides }: CjCollectionProps): CollectionConfig => ({
     slug: "cj-settings",
     access: {
-        read: () => true,
-        // update: ({ req }) => !!req.user?.roles?.includes("user"),
+        ...overrides?.access,
     },
     admin: {
         group: "Plugins",
@@ -72,7 +76,7 @@ export const CjSettings: GlobalConfig = {
         ],
         beforeRead: [
             ({ doc }) => {
-                doc.apiToken = doc.apiToken && decryptToken(doc.apiToken);
+                doc.apiToken = doc?.apiToken && decryptToken(doc.apiToken);
             },
         ],
         afterChange: [
@@ -88,5 +92,8 @@ export const CjSettings: GlobalConfig = {
             },
         ],
     },
-    label: "CJ Dropshipping",
-};
+    labels: {
+        singular: "CJ Dropshipping",
+        plural: "CJ Configs",
+    },
+});

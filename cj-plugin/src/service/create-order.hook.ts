@@ -18,14 +18,20 @@ export const createOrderHook: CollectionAfterChangeHook<Orders> = async ({ doc, 
         return;
     }
     const payload: BasePayload = req.payload;
-    const cjSettings: any = await payload.findGlobal({
-        slug: "cj-settings",
+    const cjSettings = await payload.find({
+        collection: "cj-settings",
+        where: {
+            shop: {
+                equals: doc.shopId,
+            },
+        },
     });
-    const podProperties = cjSettings?.pod?.url
+    const cjConfig: any = cjSettings?.docs[0];
+    const podProperties = cjConfig?.pod?.url
         ? [
               {
                   areaName: "LogoArea",
-                  links: [cjSettings?.pod?.url],
+                  links: [cjConfig?.pod?.url],
                   type: "1",
                   layer: [],
               },

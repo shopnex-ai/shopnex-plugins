@@ -41,6 +41,5 @@ export const storePlugin =
       config.admin.components.beforeDashboard = []
     }
 
-
     return config
   }

@@ -1,4 +1,3 @@
-
 export interface CJApiResponse<T> {
     code: number;
     result: boolean;
@@ -20,8 +19,6 @@ export interface AccessTokenResponse {
     } | null;
     requestId: string;
 }
-
-
 
 export interface Variant {
     vid: string;
@@ -78,4 +75,3 @@ export interface ProductDetailResponseData {
     variants: Variant[];
     createrTime: string;
 }
-
