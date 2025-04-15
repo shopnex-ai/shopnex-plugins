@@ -1,4 +1,3 @@
-import { cookies } from "next/headers";
 import * as cjSdk from "./cj-sdk";
 
 type Credentials = {
@@ -10,7 +9,7 @@ type Credentials = {
 const tenantCredentialsMap = new Map<string, Credentials>();
 
 export const getCurrentAccessToken = async () => {
-    const shopId = (await cookies()).get("shopId") as unknown as string;
+    const shopId = '1'
     const accessToken = await getTenantAccessToken(shopId);
     return accessToken
 };

@@ -64,7 +64,7 @@ export const createExport = async (args: CreateExportArgs) => {
     const isCSV = format === "csv";
 
     const findArgs = {
-        collection: collectionSlug,
+        collection: collectionSlug as any,
         depth: 0,
         draft: drafts === "yes",
         limit: 100,
@@ -83,7 +83,7 @@ export const createExport = async (args: CreateExportArgs) => {
         const encoder = new TextEncoder();
         const stream = new Readable({
             async read() {
-                let result = await payload.find(findArgs);
+                let result = await payload.find(findArgs as any);
                 let isFirstBatch = true;
 
                 while (result.docs.length > 0) {
@@ -98,7 +98,7 @@ export const createExport = async (args: CreateExportArgs) => {
                     }
 
                     findArgs.page += 1;
-                    result = await payload.find(findArgs);
+                    result = await payload.find(findArgs as any);
                 }
             },
         });
@@ -116,7 +116,7 @@ export const createExport = async (args: CreateExportArgs) => {
 
     while (result.hasNextPage) {
         findArgs.page += 1;
-        result = await payload.find(findArgs);
+        result = await payload.find(findArgs as any);
 
         if (isCSV) {
             const csvInput = result.docs.map((doc) => flattenObject(doc));
@@ -142,7 +142,7 @@ export const createExport = async (args: CreateExportArgs) => {
     } else {
         await req.payload.update({
             id,
-            collection: exportsCollection,
+            collection: exportsCollection as any,
             data: {},
             file: {
                 name,

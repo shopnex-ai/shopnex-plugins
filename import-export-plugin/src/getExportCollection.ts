@@ -74,7 +74,7 @@ export const getExportCollection = ({
             const input = {
                 ...doc,
                 exportsCollection: collection.slug,
-                user: req?.user?.id || req?.user?.user?.id,
+                user: req?.user?.id,
                 userCollection: "users",
             };
             await req.payload.jobs.queue({
