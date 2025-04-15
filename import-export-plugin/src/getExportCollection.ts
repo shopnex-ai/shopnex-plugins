@@ -73,13 +73,13 @@ export const getExportCollection = ({
 
             const input = {
                 ...doc,
-                exportsCollection: collection.slug,
+                exportsCollection: collection.slug as any,
                 user: req?.user?.id,
                 userCollection: "users",
             };
             await req.payload.jobs.queue({
-                input,
-                task: "createCollectionExport",
+                input: input as any,
+                task: "createCollectionExport" as any,
             });
         });
     }
