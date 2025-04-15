@@ -14,7 +14,7 @@ const CSVImporterDynamic = dynamic(() => import("csv-import-react").then((mod) =
     ssr: false,
 });
 
-export const ImportListMenuItem = ({ collectionSlug, exportCollectionSlug }) => {
+export const ImportListMenuItem = ({ collectionSlug, customColumns }) => {
     const { getEntityConfig } = useConfig();
     const { i18n } = useTranslation();
     const [isOpen, setIsOpen] = useState(false);
@@ -61,7 +61,7 @@ export const ImportListMenuItem = ({ collectionSlug, exportCollectionSlug }) => 
                     "color-background-modal": "var(--external-colors-white)",
                 }}
                 template={{
-                    columns: importColumns[collectionSlug],
+                    columns: customColumns || importColumns[collectionSlug],
                 }}
             />
         </>

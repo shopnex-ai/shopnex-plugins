@@ -12,8 +12,8 @@ type ImportColumn = {
      * @example variants[0].gallery[0].url
      */
     key: string;
-    data_type: "string" | "number" | "datetime" | "boolean";
-    required: boolean;
+    data_type?: "string" | "number" | "datetime" | "boolean";
+    required?: boolean;
     description: string;
     suggested_mappings: string[];
 };

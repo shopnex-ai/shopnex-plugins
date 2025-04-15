@@ -79,9 +79,12 @@ export const importExportPlugin =
                 },
                 path: "@shopnex/import-export-plugin/rsc#ExportListMenuItem",
             });
+            const customColumns = pluginConfig.importCollections?.find(
+                ({ collectionSlug }) => collectionSlug === collection.slug,
+            )?.columns;
             components.listMenuItems.push({
                 clientProps: {
-                    exportCollectionSlug: exportCollection.slug,
+                    customColumns
                 },
                 path: "@shopnex/import-export-plugin/rsc#ImportListMenuItem",
             });
