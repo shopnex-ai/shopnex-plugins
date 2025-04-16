@@ -136,12 +136,3 @@ importExportPlugin({
 ## 📃 License
 
 MIT – © 2025 [ShopNex](https://github.com/shopnex)
-
----
-
-Let me know if you'd like help with:
-- Auto-generating docs from types
-- A badge or banner
-- Deploying this as a public plugin on NPM or GitHub Marketplace
-
-Happy to help polish it!

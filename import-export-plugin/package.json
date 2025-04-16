@@ -1,6 +1,6 @@
 {
     "name": "@shopnex/import-export-plugin",
-    "version": "3.31.3",
+    "version": "3.31.5",
     "description": "Import-Export plugin for Payload",
     "keywords": [
         "payload",
