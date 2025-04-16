@@ -1,5 +1,11 @@
 # @shopnex/import-export-plugin
 
+## 3.31.3
+
+### Patch Changes
+
+- Fix reload after import
+
 ## 3.31.2
 
 ### Patch Changes
