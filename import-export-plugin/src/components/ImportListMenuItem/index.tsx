@@ -7,6 +7,7 @@ import { CSVImporter } from "csv-import-react";
 import useThemeEnforcer from "./useThemeEnforcer";
 import { importColumns } from "./importColumns";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
 
 const baseClass = "export-list-menu-item";
 
@@ -21,6 +22,7 @@ export const ImportListMenuItem = ({ collectionSlug, customColumns }) => {
     const { getEntityConfig } = useConfig();
     const { i18n } = useTranslation();
     const [isOpen, setIsOpen] = useState(false);
+    const router = useRouter()
     const { theme } = useTheme();
     useThemeEnforcer(theme);
     const {
@@ -29,6 +31,7 @@ export const ImportListMenuItem = ({ collectionSlug, customColumns }) => {
             serverURL,
         },
     } = useConfig();
+
 
     const currentCollectionConfig = getEntityConfig({ collectionSlug });
 
@@ -54,6 +57,7 @@ export const ImportListMenuItem = ({ collectionSlug, customColumns }) => {
                         },
                         method: "POST",
                     });
+                    router.refresh()
                 }}
                 customStyles={{
                     "color-primary": "var(--color-success-500)",
