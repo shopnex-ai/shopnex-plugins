@@ -35,22 +35,23 @@
     }
 
     &__input {
-        // Styles for individual text inputs
         width: 100%;
         padding-top: 0.5rem;
         padding-bottom: 0.5rem;
         .field-type__wrap {
             input {
-                background-color: var(--color-base-50);
-
+                background-color: var(--theme-input-bg);
+                box-shadow: 0 2px 2px -1px #0000001a;
             }
         }
     }
 
     &__textarea {
-        // Styles for the textarea input
         padding: 1rem;
         margin-top: 1rem;
-        background: var(--color-base-50);
+        background: var(--theme-input-bg);
+        border: 1px solid var(--theme-elevation-150);
+        box-shadow: 0 2px 2px -1px #0000001a;
+        border-radius: var(--style-radius-s);
     }
 }
