@@ -1,5 +1,11 @@
 # @shopnex/import-export-plugin
 
+## 3.31.6
+
+### Patch Changes
+
+- Make it work as standalone
+
 ## 3.31.5
 
 ### Patch Changes
