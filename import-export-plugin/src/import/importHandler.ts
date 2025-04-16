@@ -3,6 +3,32 @@ import { APIError } from "payload";
 import { unflatten } from "flat";
 import { parse as parseCookie } from "cookie";
 
+function normalizePrices(products) {
+    return products.map((product) => ({
+        ...product,
+        variants: product.variants.map((variant) => ({
+            ...variant,
+            price: Number(variant.price),
+        })),
+    }));
+}
+
+function mergeProductsByHandle(products) {
+    const mergedMap = new Map();
+
+    for (const product of products) {
+        const { handle, variants } = product;
+
+        if (mergedMap.has(handle)) {
+            const existing = mergedMap.get(handle);
+            existing.variants.push(...variants);
+        } else {
+            mergedMap.set(handle, { ...product, variants: [...variants] });
+        }
+    }
+    return Array.from(mergedMap.values());
+}
+
 export const importHandler: PayloadHandler = async (req) => {
     const body = await req.json?.();
 
@@ -39,8 +65,11 @@ export const importHandler: PayloadHandler = async (req) => {
         };
     });
 
+    const normalized = normalizePrices(documents);
+    const products = mergeProductsByHandle(normalized);
+
     const createdDocs = await Promise.all(
-        documents.map((doc: any) =>
+        products.map((doc: any) =>
             req.payload.create({
                 collection: body.collectionSlug,
                 data: doc,
