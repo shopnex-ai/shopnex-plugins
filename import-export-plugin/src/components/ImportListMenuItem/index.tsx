@@ -10,9 +10,12 @@ import dynamic from "next/dynamic";
 
 const baseClass = "export-list-menu-item";
 
-const CSVImporterDynamic = dynamic(() => import("csv-import-react").then((mod) => mod.CSVImporter), {
-    ssr: false,
-});
+const CSVImporterDynamic = dynamic(
+    () => import("csv-import-react").then((mod) => mod.CSVImporter),
+    {
+        ssr: false,
+    },
+);
 
 export const ImportListMenuItem = ({ collectionSlug, customColumns }) => {
     const { getEntityConfig } = useConfig();
