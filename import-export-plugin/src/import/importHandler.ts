@@ -3,29 +3,42 @@ import { APIError } from "payload";
 import { unflatten } from "flat";
 import { parse as parseCookie } from "cookie";
 
-function normalizePrices(products) {
-    return products.map((product) => ({
-        ...product,
-        variants: product.variants.map((variant) => ({
-            ...variant,
-            price: Number(variant.price),
-        })),
-    }));
+// Normalize prices if there are variants
+function normalizePrices(documents: any[]) {
+    return documents.map((doc) => {
+        if (Array.isArray(doc.variants)) {
+            return {
+                ...doc,
+                variants: doc.variants.map((variant: any) => ({
+                    ...variant,
+                    price: Number(variant.price),
+                })),
+            };
+        }
+        return doc;
+    });
 }
 
-function mergeProductsByHandle(products) {
+// Merge by handle if exists
+function mergeByHandle(documents: any[]) {
     const mergedMap = new Map();
 
-    for (const product of products) {
-        const { handle, variants } = product;
+    for (const doc of documents) {
+        const { handle, variants } = doc;
 
-        if (mergedMap.has(handle)) {
-            const existing = mergedMap.get(handle);
-            existing.variants.push(...variants);
+        if (handle && Array.isArray(variants)) {
+            if (mergedMap.has(handle)) {
+                const existing = mergedMap.get(handle);
+                existing.variants.push(...variants);
+            } else {
+                mergedMap.set(handle, { ...doc, variants: [...variants] });
+            }
         } else {
-            mergedMap.set(handle, { ...product, variants: [...variants] });
+            // No handle or variants? Just push as-is with a unique key
+            mergedMap.set(Symbol(), doc);
         }
     }
+
     return Array.from(mergedMap.values());
 }
 
@@ -52,7 +65,7 @@ export const importHandler: PayloadHandler = async (req) => {
     const user = req.user;
 
     const documents = body.data.rows.map((row: any) => {
-        const normalizedValue = {};
+        const normalizedValue: Record<string, any> = {};
         for (const key in row.values) {
             const normalizedKey = key.replace(/\[/g, ".").replace(/\]/g, "");
             normalizedValue[normalizedKey] = row.values[key];
@@ -66,10 +79,10 @@ export const importHandler: PayloadHandler = async (req) => {
     });
 
     const normalized = normalizePrices(documents);
-    const products = mergeProductsByHandle(normalized);
+    const finalDocuments = mergeByHandle(normalized);
 
     const createdDocs = await Promise.all(
-        products.map((doc: any) =>
+        finalDocuments.map((doc: any) =>
             req.payload.create({
                 collection: body.collectionSlug,
                 data: doc,
