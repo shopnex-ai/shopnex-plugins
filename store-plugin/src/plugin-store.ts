@@ -47,7 +47,7 @@ export const PluginStore: CollectionConfig = {
         },
     ],
     labels: {
-        plural: "Plugins Space",
+        plural: "Plugin Space",
         singular: "Plugin Space",
     },
 };
