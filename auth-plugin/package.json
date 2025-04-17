@@ -1,6 +1,6 @@
 {
     "name": "@shopnex/auth-plugin",
-    "version": "0.6.6",
+    "version": "0.6.7",
     "type": "module",
     "sideEffects": false,
     "author": "Arseniy <arseniy.v.n@gmail.com>",

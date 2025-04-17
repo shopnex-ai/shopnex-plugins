@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.7
+
+### Patch Changes
+
+- fix tenant not selected issue
+
 ## 0.6.6
 
 ### Patch Changes

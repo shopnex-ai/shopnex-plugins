@@ -47,7 +47,6 @@ export class PayloadSession {
                     slug: Math.random().toString(36).substring(2, 15),
                 },
             });
-            data["shop"] = newShop.id;
             const newUser = await payload.create({
                 collection: this.#collections.usersCollectionSlug as any,
                 data: {
