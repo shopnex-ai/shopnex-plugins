@@ -23,8 +23,8 @@ import { askToRunDevServer } from "./ask-to-run-dev-server.js";
 const args = process.argv.slice(2);
 const flags = {
     fresh: args.includes("--fresh"),
-    skipEnv: args.includes("--no-env"), // or --skip-env
-    noDev: args.includes("--no-dev"), // or --skip-dev
+    skipEnv: args.includes("--skip-env"), 
+    noDev: args.includes("--skip-dev"),
     db: (() => {
         const dbArg = args.find((arg) => arg.startsWith("--db="));
         if (dbArg) {
@@ -202,7 +202,6 @@ const displayNextSteps = (projectName: string, dbType: string) => {
     }
     console.log(`  2. Start the development server:`);
     console.log(chalk.cyan(`     pnpm dev`));
-    console.log(`     (Payload CMS often handles initial setup or migrations on first start)`);
     console.log(
         chalk.dim(
             `     (Consult Payload documentation for manual migration commands if needed.)\n`,
@@ -210,6 +209,7 @@ const displayNextSteps = (projectName: string, dbType: string) => {
     );
 
     console.log(`Happy coding with ${ORG_NAME}! 🎉`);
+    process.exit(0);
 };
 
 // --- Main Execution ---
@@ -270,7 +270,7 @@ const run = async () => {
         console.log(chalk.yellow("⚠️ Skipping database seeding (--fresh)"));
     }
 
-    const shouldRun = !flags.noDev && (await askToRunDevServer());
+    const shouldRun = flags.noDev && (await askToRunDevServer());
     if (shouldRun) {
         startDevServer();
     } else if (flags.noDev) {

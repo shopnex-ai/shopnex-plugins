@@ -26,8 +26,8 @@ export const askDatabaseType = async (): Promise<"sqlite" | "postgres" | "mongo"
             message: "Select your database type:",
             choices: [
                 { name: "PostgreSQL (Production-ready relational database)", value: "postgres" },
+                { name: "SQLite (For local development/testing)", value: "sqlite" },
                 { name: "MongoDB (Production-ready NoSQL database)", value: "mongo" },
-                { name: "SQLite (Recommended for local development/testing)", value: "sqlite" },
             ],
         },
     ]);
