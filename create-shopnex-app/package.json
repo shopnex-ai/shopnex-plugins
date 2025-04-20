@@ -1,6 +1,6 @@
 {
     "name": "create-shopnex-app",
-    "version": "1.0.0",
+    "version": "1.0.3",
     "description": "CLI to set up the Shopnex e-commerce platform",
     "main": "dist/index.js",
     "type": "module",
@@ -10,7 +10,9 @@
     "scripts": {
         "build": "tsc",
         "start": "node dist/index.js",
-        "dev": "nodemon --watch src --ext ts --exec \"pnpm build && node dist/index.js\""
+        "dev": "nodemon --watch src --ext ts --exec \"pnpm build && node dist/index.js\"",
+        "clean": "rimraf {dist,*.tsbuildinfo}",
+        "prepublishOnly": "pnpm clean && pnpm build"
     },
     "keywords": [
         "cli",

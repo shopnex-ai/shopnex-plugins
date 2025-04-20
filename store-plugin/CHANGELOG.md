@@ -1,5 +1,11 @@
 # @shoplyjs/store-plugin
 
+## 1.0.14
+
+### Patch Changes
+
+- Fix where query per shop
+
 ## 1.0.13
 
 ### Patch Changes
