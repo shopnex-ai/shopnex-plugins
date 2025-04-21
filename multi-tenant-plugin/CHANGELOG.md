@@ -1,5 +1,18 @@
 # @shopnex/multi-tenant-plugin
 
+## 3.27.2
+
+### Patch Changes
+
+- bump
+- bump
+
+## 3.27.1
+
+### Patch Changes
+
+- bump
+
 ## 3.27.0
 
 ### Minor Changes

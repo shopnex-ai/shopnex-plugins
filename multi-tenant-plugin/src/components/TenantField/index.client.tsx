@@ -17,7 +17,7 @@ type Props = {
 
 export const TenantField = (args: Props) => {
     const { debug, path, unique } = args;
-    const { setValue, value } = useField<number | string>({ path });
+    const { value, setValue } = useField<number | string>({ path });
     const { options, selectedTenantID, setPreventRefreshOnChange, setTenant } =
         useTenantSelection();
 
