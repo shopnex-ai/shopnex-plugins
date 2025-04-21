@@ -1,0 +1,30 @@
+.store-preview {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    margin-left: 8px;
+
+    .store-avatar {
+        background-color: var(--theme-elevation-50);
+        border-radius: 4px;
+        font-weight: 600;
+        font-size: 1rem;
+        width: 2.75rem;
+        height: 2.75rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 0.75rem;
+        text-transform: uppercase;
+    }
+
+    .store-info {
+        .store-name {
+            font-weight: 600;
+        }
+
+        .store-domain {
+            font-size: 0.875rem;
+        }
+    }
+}

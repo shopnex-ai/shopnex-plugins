@@ -15,6 +15,8 @@ type ContextType = {
      * The currently selected tenant ID
      */
     selectedTenantID: number | string | undefined;
+
+    selectedTenantSlug: string | undefined;
     /**
      * Prevents a refresh when the tenant is changed
      *
@@ -46,7 +48,7 @@ export const TenantSelectionProviderClient = ({
     children: React.ReactNode;
     initialValue?: number | string;
     tenantCookie?: string;
-    tenantOptions: OptionObject[];
+    tenantOptions: (OptionObject & { slug: string })[];
 }) => {
     const [selectedTenantID, setSelectedTenantID] = React.useState<number | string | undefined>(
         initialValue,
@@ -56,6 +58,11 @@ export const TenantSelectionProviderClient = ({
     const userID = React.useMemo(() => user?.id, [user?.id]);
     const selectedTenantLabel = React.useMemo(
         () => tenantOptions.find((option) => option.value === selectedTenantID)?.label,
+        [selectedTenantID, tenantOptions],
+    );
+
+    const selectedTenantSlug = React.useMemo(
+        () => tenantOptions.find((option) => option.value === selectedTenantID)?.slug,
         [selectedTenantID, tenantOptions],
     );
 
@@ -143,6 +150,7 @@ export const TenantSelectionProviderClient = ({
                 value={{
                     options: tenantOptions,
                     selectedTenantID,
+                    selectedTenantSlug,
                     setPreventRefreshOnChange,
                     setTenant,
                 }}

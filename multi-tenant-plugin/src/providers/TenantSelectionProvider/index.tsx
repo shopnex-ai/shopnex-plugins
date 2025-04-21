@@ -20,7 +20,7 @@ export const TenantSelectionProvider = async ({
     useAsTitle,
     user,
 }: Args) => {
-    let tenantOptions: OptionObject[] = [];
+    let tenantOptions: (OptionObject & { slug: string })[] = [];
 
     try {
         const { docs } = await findTenantOptions({
@@ -32,6 +32,7 @@ export const TenantSelectionProvider = async ({
         });
         tenantOptions = docs.map((doc) => ({
             label: String(doc[useAsTitle]),
+            slug: String(doc.slug),
             value: doc.id,
         }));
     } catch (_) {

@@ -234,7 +234,7 @@ export const multiTenantPlugin =
                         usersTenantsArrayTenantFieldName: tenantsArrayTenantFieldName,
                     });
                 }
-            // @ts-ignore
+                // @ts-ignore
             } else if (pluginConfig.collections?.[collection.slug]) {
                 // @ts-ignore
                 const isGlobal = Boolean(pluginConfig.collections[collection.slug]?.isGlobal);
@@ -346,6 +346,11 @@ export const multiTenantPlugin =
             },
             path: "@shopnex/multi-tenant-plugin/client#TenantSelector",
         });
-
+        incomingConfig.admin.components.beforeNavLinks.push({
+            clientProps: {
+                label: "test",
+            },
+            path: "@shopnex/multi-tenant-plugin/client#TenantDetails",
+        });
         return incomingConfig;
     };
