@@ -35,6 +35,7 @@ type ContextType = {
 const Context = createContext<ContextType>({
     options: [],
     selectedTenantID: undefined,
+    selectedTenantSlug: undefined,
     setPreventRefreshOnChange: () => null,
     setTenant: () => null,
 });

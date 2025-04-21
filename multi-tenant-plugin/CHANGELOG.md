@@ -1,5 +1,11 @@
 # @shopnex/multi-tenant-plugin
 
+## 3.27.3
+
+### Patch Changes
+
+- Add Store preview component for quick navigation
+
 ## 3.27.2
 
 ### Patch Changes
