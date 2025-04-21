@@ -76,7 +76,7 @@
     "pack:plugin": "pnpm prepublishOnly && pnpm copyfiles && pnpm pack",
     "prepublishOnly": "pnpm clean && pnpm build"
   },
-  "peerDependencies": {
+  "dependencies": {
     "@payloadcms/ui": "3.31.0",
     "next": "^15.0.3",
     "payload": "3.31.0"
