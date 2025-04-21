@@ -3,15 +3,18 @@
 import { Link } from "@payloadcms/ui";
 import { useTenantSelection } from "../../providers/TenantSelectionProvider/index.client";
 import "./index.scss";
+import { useMemo } from "react";
 
-export const TenantDetails = () => {
+export const TenantDetails = ({ label: selectedTenantName }: { label: string }) => {
     const data = useTenantSelection();
-    const selectedTenantName = data.options.find((option) => option.value === data.selectedTenantID)
-        ?.label as string;
 
-    const avatarText = selectedTenantName?.slice(0, 2).toUpperCase() || "SN";
+    const avatarText = useMemo(() => {
+        return selectedTenantName?.slice(0, 2).toUpperCase() || "SN";
+    }, [selectedTenantName]);
 
-    const tenantDomain = `${data.selectedTenantSlug ? data.selectedTenantSlug + "." : ""}shopnexai.com`;
+    const tenantDomain = useMemo(() => {
+        return `https://${data.selectedTenantSlug ? data.selectedTenantSlug + "." : ""}shopnex.ai`;
+    }, [data.selectedTenantSlug]);
 
     return (
         <div className="store-preview">
@@ -19,7 +22,7 @@ export const TenantDetails = () => {
             <div className="store-info">
                 <div className="store-name">{selectedTenantName || "ShopNex"}</div>
                 <Link target="_blank" href={tenantDomain} className="store-domain">
-                    {tenantDomain}
+                    {tenantDomain.replace("https://", "")}
                 </Link>
             </div>
         </div>

@@ -348,7 +348,7 @@ export const multiTenantPlugin =
         });
         incomingConfig.admin.components.beforeNavLinks.push({
             clientProps: {
-                label: "test",
+                label: tenantSelectorLabel,
             },
             path: "@shopnex/multi-tenant-plugin/client#TenantDetails",
         });
