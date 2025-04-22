@@ -5,11 +5,21 @@ import { useTenantSelection } from "../../providers/TenantSelectionProvider/inde
 import "./index.scss";
 import { useMemo } from "react";
 
-export const TenantDetails = ({ label: selectedTenantName }: { label: string }) => {
+const getInitials = (name: string) => {
+    const names = name.split(" ");
+    return names.map((n) => n[0]).join("");
+};
+
+export const TenantDetails = () => {
     const data = useTenantSelection();
 
+    const selectedTenantName = useMemo(
+        () => data.options.find((option) => option.value === data.selectedTenantID)?.label,
+        [data.selectedTenantID, data.options],
+    ) as string;
+
     const avatarText = useMemo(() => {
-        return selectedTenantName?.slice(0, 2).toUpperCase() || "SN";
+        return getInitials(selectedTenantName) || "SN";
     }, [selectedTenantName]);
 
     const tenantDomain = useMemo(() => {
