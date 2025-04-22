@@ -70,9 +70,10 @@ export const importExportPlugin =
             if (!components.edit) {
                 components.edit = {};
             }
-            if (!components.edit.SaveButton) {
-                components.edit.SaveButton = "@shopnex/import-export-plugin/rsc#ExportSaveButton";
-            }
+            // TODO: remove this when we have a better way to handle this
+            // if (!components.edit.SaveButton) {
+            //     components.edit.SaveButton = "@shopnex/import-export-plugin/rsc#ExportSaveButton";
+            // }
             components.listMenuItems.push({
                 clientProps: {
                     exportCollectionSlug: exportCollection.slug,
@@ -84,7 +85,7 @@ export const importExportPlugin =
             )?.columns;
             components.listMenuItems.push({
                 clientProps: {
-                    customColumns
+                    customColumns,
                 },
                 path: "@shopnex/import-export-plugin/rsc#ImportListMenuItem",
             });
