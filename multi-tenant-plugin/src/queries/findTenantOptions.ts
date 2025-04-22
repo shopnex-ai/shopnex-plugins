@@ -21,7 +21,7 @@ export const findTenantOptions = async ({
         overrideAccess: false,
         select: {
             [useAsTitle]: true,
-            slug: true,
+            handle: true,
         },
         sort: useAsTitle,
         user,

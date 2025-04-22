@@ -32,7 +32,7 @@ export const TenantSelectionProvider = async ({
         });
         tenantOptions = docs.map((doc) => ({
             label: String(doc[useAsTitle]),
-            slug: String(doc.slug),
+            slug: String(doc.handle),
             value: doc.id,
         }));
     } catch (_) {
