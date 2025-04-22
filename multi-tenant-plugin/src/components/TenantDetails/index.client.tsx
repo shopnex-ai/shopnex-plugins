@@ -6,6 +6,7 @@ import "./index.scss";
 import { useMemo } from "react";
 
 const getInitials = (name: string) => {
+    if (!name) return "";
     const names = name.split(" ");
     return names.map((n) => n[0]).join("");
 };
