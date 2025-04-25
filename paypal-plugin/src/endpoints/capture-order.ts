@@ -24,7 +24,7 @@ export const captureOrder = async (req: PayloadRequest): Promise<Response> => {
     // --- Get paypalOrderId from request body ---
     let paypalOrderId: string | undefined;
     try {
-        const body = await req.json(); // Parse body explicitly
+        const body = await req.json?.(); // Parse body explicitly
         paypalOrderId = body?.paypalOrderId;
     } catch (e) {
         console.error("Error parsing request body for capture:", e);
@@ -43,10 +43,11 @@ export const captureOrder = async (req: PayloadRequest): Promise<Response> => {
     }
 
     // Retrieve plugin config (example)
-    const paymentCollectionSlug = (
-        payload.config.plugins?.find((p) => p.name === "paypal-plugin")
-            ?.config as PayPalPluginConfig
-    )?.paymentCollectionSlug;
+    // const paymentCollectionSlug = (
+    //     payload.config.plugins?.find((p) => p.name === "paypal-plugin")
+    //         ?.config as PayPalPluginConfig
+    // )?.paymentCollectionSlug;
+    const paymentCollectionSlug = "payments";
     if (!paymentCollectionSlug) {
         console.error(
             "PayPal Plugin Error: Could not retrieve paymentCollectionSlug from config in endpoint.",

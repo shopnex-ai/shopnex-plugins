@@ -1,4 +1,4 @@
-import type { CollectionConfig, Payload, PayloadRequest } from "payload";
+import type { CollectionConfig, Config, Payload, PayloadRequest } from "payload";
 
 export type PayPalPluginConfig = {
     isTestMode?: boolean;
@@ -20,7 +20,7 @@ export type PayPalPluginConfig = {
 export type SanitizedPayPalPluginConfig = PayPalPluginConfig;
 
 export type PayPalWebhookHandler<T = any> = (args: {
-    config: PayloadConfig;
+    config: Config;
     event: T;
     payload: Payload;
     pluginConfig?: PayPalPluginConfig;

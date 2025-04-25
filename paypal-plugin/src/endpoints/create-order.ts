@@ -27,10 +27,13 @@ export const createOrder = async (req: PayloadRequest): Promise<Response> => {
     // Fetch Plugin Config (if needed, though usually available in closure scope)
     // This example assumes pluginConfig is available via closure or context
     // If not, you'll need a way to retrieve it (e.g., from payload.config)
-    const paymentCollectionSlug = (
-        payload.config.plugins?.find((p) => p.name === "paypal-plugin")
-            ?.config as PayPalPluginConfig
-    )?.paymentCollectionSlug; // Example retrieval
+    // const paymentCollectionSlug = (
+    //     payload.config.plugins?.find((p) => p.name === "paypal-plugin")
+    //         ?.config as PayPalPluginConfig
+    // )?.paymentCollectionSlug; // Example retrieval
+
+    const paymentCollectionSlug = "payments";
+
     if (!paymentCollectionSlug) {
         console.error(
             "PayPal Plugin Error: Could not retrieve paymentCollectionSlug from config in endpoint.",

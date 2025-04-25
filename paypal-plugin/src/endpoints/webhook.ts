@@ -1,6 +1,7 @@
 // src/plugins/paypal/endpoints/webhook.ts
 import type { PayloadRequest } from "payload";
 import { PayPalBlockData } from "../blocks/PayPalBlock";
+import { getPayPalClient } from "../paypal-client";
 
 interface PayPalPluginConfig {
     paymentCollectionSlug: string;
@@ -17,15 +18,15 @@ interface PaymentDocForWebhook {
 export const handleWebhook = async (req: PayloadRequest): Promise<Response> => {
     const { payload, headers } = req; // Destructure payload and headers
 
-    let rawBody: string;
+    let rawBody: string | undefined;
     let webhookEvent: any;
 
     try {
         // --- Read raw body first for verification ---
         // This consumes the body stream.
-        rawBody = await req.text();
+        rawBody = await req.text?.();
         // --- Then parse the JSON from the raw string ---
-        webhookEvent = JSON.parse(rawBody);
+        webhookEvent = JSON.parse(rawBody || "");
     } catch (e) {
         console.error("PayPal Webhook Error: Could not read or parse request body.", e);
         // Use new Response for non-JSON body
@@ -78,10 +79,11 @@ export const handleWebhook = async (req: PayloadRequest): Promise<Response> => {
     );
 
     // Retrieve plugin config (example)
-    const paymentCollectionSlug = (
-        payload.config.plugins?.find((p) => p.name === "paypal-plugin")
-            ?.config as PayPalPluginConfig
-    )?.paymentCollectionSlug;
+    // const paymentCollectionSlug = (
+    //     payload.config.plugins?.find((p) => p.name === "paypal-plugin")
+    //         ?.config as PayPalPluginConfig
+    // )?.paymentCollectionSlug;
+    const paymentCollectionSlug = "payments";
     if (!paymentCollectionSlug) {
         console.error(
             "PayPal Plugin Error: Could not retrieve paymentCollectionSlug from config in webhook.",
