@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import { PasswordField } from "@payloadcms/ui";
 import "./ApiToken.scss";

@@ -85,7 +85,6 @@ export const StripeConfig = ({ overrides }: StripConfigProps): CollectionConfig 
                 }
             },
         ],
-
         afterChange: [
             ({ doc }) => {
                 const tokens = {

@@ -1,4 +1,4 @@
-import type { Config, Endpoint } from "payload";
+import type { BlocksField, Config, Endpoint } from "payload";
 
 import type { SanitizedStripePluginConfig, StripePluginConfig } from "./types";
 
@@ -10,6 +10,7 @@ import { stripeREST } from "./routes/rest";
 import { stripeWebhooks } from "./routes/webhooks";
 import { setTenantCredentials } from "./utilities/stripeConfig";
 import { StripeConfig } from "./collections/StripeConfig";
+import { StripeBlock } from "./blocks/StripeBlock";
 
 export { stripeProxy } from "./utilities/stripeProxy";
 
@@ -113,7 +114,18 @@ export const stripePlugin =
 
         config.endpoints = endpoints;
 
-        collections?.push(StripeConfig({ overrides: pluginConfig.collectionOverrides }));
+        const paymentsCollection = collections?.find(
+            (c) => c.slug === incomingStripeConfig?.paymentCollectionSlug,
+        );
+
+        if (paymentsCollection) {
+            const providerField = paymentsCollection.fields.find(
+                (f: any) => f.name === "provider",
+            ) as BlocksField;
+            providerField.blocks.push(StripeBlock);
+        }
+
+        // collections?.push(StripeConfig({ overrides: pluginConfig.collectionOverrides }));
 
         const incomingOnInit = config.onInit;
 
@@ -121,16 +133,16 @@ export const stripePlugin =
             if (incomingOnInit) {
                 await incomingOnInit(payload);
             }
-            const stripeSettings = await payload.find({
-                collection: "stripe-settings",
-            });
-            stripeSettings.docs.forEach((config: any) => {
-                setTenantCredentials(config?.shop?.slug || "default", {
-                    secretKey: config.secretKey,
-                    webhooksEndpointSecret: config.webhooksEndpointSecret,
-                    publishableKey: config.publishableKey,
-                });
-            });
+            // const stripeSettings = await payload.find({
+            //     collection: "stripe-settings",
+            // });
+            // stripeSettings.docs.forEach((config: any) => {
+            //     setTenantCredentials(config?.shop?.slug || "default", {
+            //         secretKey: config.secretKey,
+            //         webhooksEndpointSecret: config.webhooksEndpointSecret,
+            //         publishableKey: config.publishableKey,
+            //     });
+            // });
         };
 
         return config;
