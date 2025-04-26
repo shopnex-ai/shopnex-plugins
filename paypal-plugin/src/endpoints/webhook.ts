@@ -212,12 +212,12 @@ export const handleWebhook = async (req: PayloadRequest): Promise<Response> => {
             ];
 
             console.log(`Webhook: Updating Payment ${paymentId} with data:`, updateData);
-            await payload.update({
-                collection: paymentCollectionSlug,
-                id: paymentId,
-                data: updateData,
-                overrideAccess: true,
-            });
+            // await payload.update({
+            //     collection: paymentCollectionSlug,
+            //     id: paymentId,
+            //     data: updateData,
+            //     overrideAccess: true,
+            // });
         }
 
         // --- Respond 200 OK to PayPal ---

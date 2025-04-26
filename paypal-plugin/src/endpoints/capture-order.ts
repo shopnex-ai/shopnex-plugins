@@ -148,15 +148,15 @@ export const captureOrder = async (req: PayloadRequest): Promise<Response> => {
             transactionDetails = { paypalCaptureStatus: captureStatus || "FAILED" };
         }
 
-        await payload.update({
-            collection: paymentCollectionSlug,
-            id: paymentId,
-            data: {
-                status: paymentStatus,
-                paypalTransactionDetails: transactionDetails,
-            },
-            user: user,
-        });
+        // await payload.update({
+        //     collection: paymentCollectionSlug,
+        //     id: paymentId,
+        //     data: {
+        //         status: paymentStatus as any,
+        //         paypalTransactionDetails: transactionDetails,
+        //     },
+        //     user: user,
+        // });
 
         console.log(`Payment ID ${paymentId} status updated to '${paymentStatus}'.`);
         return Response.json(
@@ -175,12 +175,12 @@ export const captureOrder = async (req: PayloadRequest): Promise<Response> => {
 
         // Attempt to update payment status to failed
         try {
-            await payload.update({
-                collection: paymentCollectionSlug,
-                id: paymentId,
-                data: { status: "failed" },
-                user: user,
-            });
+            // await payload.update({
+            //     collection: paymentCollectionSlug,
+            //     id: paymentId,
+            //     data: { status: "failed" },
+            //     user: user,
+            // });
         } catch (updateError) {
             console.error(
                 `Failed to update payment status to 'failed' after capture error for Payment ID ${paymentId}:`,

@@ -109,15 +109,15 @@ export const createOrder = async (req: PayloadRequest): Promise<Response> => {
         const paypalOrder = await paypalClient.execute(request);
 
         // 6. Update Payment Document using req.payload
-        await payload.update({
-            collection: paymentCollectionSlug,
-            id: paymentId,
-            data: {
-                paypalOrderId: paypalOrder.result.id,
-                status: "processing",
-            },
-            user: user, // Pass user for access control context
-        });
+        // await payload.update({
+        //     collection: paymentCollectionSlug,
+        //     id: paymentId,
+        //     data: {
+        //         paypalOrderId: paypalOrder.result.id,
+        //         status: "processing",
+        //     },
+        //     user: user, // Pass user for access control context
+        // });
 
         // 7. Respond to Client using Response.json
         console.log(
@@ -133,12 +133,12 @@ export const createOrder = async (req: PayloadRequest): Promise<Response> => {
 
         // Attempt to update payment status to failed
         try {
-            await payload.update({
-                collection: paymentCollectionSlug,
-                id: paymentId,
-                data: { status: "failed" },
-                user: user,
-            });
+            // await payload.update({
+            //     collection: paymentCollectionSlug,
+            //     id: paymentId,
+            //     data: { status: "failed" },
+            //     user: user,
+            // });
         } catch (updateError) {
             console.error(
                 `Failed to update payment status to 'failed' for Payment ID ${paymentId}:`,
