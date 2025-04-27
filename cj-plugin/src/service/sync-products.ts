@@ -24,6 +24,7 @@ interface Product {
     description: TypedEditorState<DefaultNodeTypes>;
     pid: string;
     title: string;
+    source: "manual" | "cj";
     variants?: Array<{
         imageUrl?: string;
         options?: Array<{ option: string; value: string }>;
@@ -57,7 +58,6 @@ const download = async (uri: string, filename: string): Promise<void> => {
         console.error("Error downloading file:", error);
     }
 };
-
 
 async function uploadImageToPayload(src: string, payload: BasePayload): Promise<any | null> {
     const tempFilePath = path.join(__dirname, "temp-image.jpg");
@@ -122,6 +122,7 @@ function mapMockProductToSchema(
             //     return uploadImageToPayload(src, payload);
             // },
         }),
+        source: "cj",
         pid: product.pid,
         title: product.productNameEn,
         variants: product.variants?.map((variant) => ({

@@ -1,4 +1,4 @@
-import type { CollectionConfig, Config } from "payload";
+import type { CollectionConfig, Config, FieldBase, SelectField } from "payload";
 import { setTenantCredentials } from "./sdk/access-token";
 import { createOrderHook } from "./service/create-order.hook";
 import { CjConfigCollection, CjCollectionProps } from "./CjConfig";
@@ -34,6 +34,19 @@ export const cjPlugin =
                 CjConfigCollection({ overrides: pluginOptions.collectionOverrides }),
             );
         }
+
+        const productCollection = updatedCollections.find(
+            (collection) => collection.slug === "products",
+        );
+
+        const sourceField = productCollection?.fields?.find(
+            (field) => (field as SelectField).name === "source",
+        ) as SelectField;
+
+        sourceField.options.push({
+            label: "CJ",
+            value: "cj",
+        });
 
         const incomingOnInit = config.onInit;
 
