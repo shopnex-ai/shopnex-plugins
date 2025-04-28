@@ -1,6 +1,6 @@
 {
     "name": "@shopnex/cj-plugin",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "A blank template to get started with Payload 3.0",
     "type": "module",
     "exports": {
