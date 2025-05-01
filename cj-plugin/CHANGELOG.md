@@ -1,5 +1,12 @@
 # @shoplyjs/cj-plugin
 
+## 1.0.4
+
+### Patch Changes
+
+- Improve credentials menagement
+- Improve credentials management
+
 ## 1.0.3
 
 ### Patch Changes

@@ -19,7 +19,11 @@ export const setTenantCredentials = (shopId: string, creds: Credentials) => {
 };
 
 export const getTenantAccessToken = async (shopId: string) => {
-    const creds = tenantCredentialsMap.get(shopId);
+    const creds = tenantCredentialsMap.get(shopId) || {
+        emailAddress: process.env.CJ_EMAIL_ADDRESS || "",
+        password: process.env.CJ_PASSWORD || "",
+        refreshToken: process.env.CJ_REFRESH_TOKEN || "",
+    };
 
     if (!creds?.emailAddress || !creds?.password) {
         throw new Error(`Credentials for tenant ${shopId} are missing or incomplete`);
@@ -34,21 +38,16 @@ export const getTenantAccessToken = async (shopId: string) => {
         const result = await cjSdk.getAccessToken(emailAddress, password);
         newAccessToken = result.accessToken;
         newRefreshToken = result.refreshToken;
-
-        tenantCredentialsMap.set(shopId, {
-            ...creds,
-            refreshToken: newRefreshToken,
-        });
     } else {
         const result = await cjSdk.refreshAccessToken(refreshToken);
         newAccessToken = result.accessToken;
         newRefreshToken = result.refreshToken;
-
-        tenantCredentialsMap.set(shopId, {
-            ...creds,
-            refreshToken: newRefreshToken,
-        });
     }
+
+    tenantCredentialsMap.set(shopId, {
+        ...creds,
+        refreshToken: newRefreshToken,
+    });
 
     return newAccessToken;
 };
