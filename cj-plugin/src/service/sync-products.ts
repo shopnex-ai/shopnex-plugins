@@ -147,6 +147,7 @@ const findProductById = async (productId: string) => {
 const createOrUpdateProduct = async (
     product: Omit<Product, "createdAt" | "id" | "updatedAt">,
     payload: BasePayload,
+    shopId?: string,
 ) => {
     const { totalDocs } = await payload.count({
         collection: "products",
@@ -160,7 +161,10 @@ const createOrUpdateProduct = async (
     if (totalDocs === 0) {
         return payload.create({
             collection: "products",
-            data: { ...product } as any,
+            data: {
+                ...product,
+                shop: shopId,
+            } as any,
         });
     }
 };
@@ -172,7 +176,7 @@ export const fetchExchangeRates = async () => {
     return data;
 };
 
-export const syncProducts = async (productIds: string[], payload: BasePayload) => {
+export const syncProducts = async (productIds: string[], payload: BasePayload, shopId?: string) => {
     const exchangeRates = await fetchExchangeRates();
     const storeSettings = await payload.findGlobal({
         slug: "store-settings",
@@ -196,7 +200,7 @@ export const syncProducts = async (productIds: string[], payload: BasePayload) =
     });
 
     await Promise.all(
-        mappedProducts.map((product) => createOrUpdateProduct(product as any, payload)),
+        mappedProducts.map((product) => createOrUpdateProduct(product as any, payload, shopId)),
     );
 
     return products;

@@ -9,9 +9,9 @@ type Credentials = {
 const tenantCredentialsMap = new Map<string, Credentials>();
 
 export const getCurrentAccessToken = async () => {
-    const shopId = '1'
+    const shopId = "1";
     const accessToken = await getTenantAccessToken(shopId);
-    return accessToken
+    return accessToken;
 };
 
 export const setTenantCredentials = (shopId: string, creds: Credentials) => {
@@ -26,9 +26,29 @@ export const getTenantAccessToken = async (shopId: string) => {
     }
 
     const { emailAddress, password, refreshToken } = creds;
-    let accessToken = (await cjSdk.refreshAccessToken(refreshToken || "")).accessToken;
-    if (!accessToken) {
-        accessToken = (await cjSdk.getAccessToken(emailAddress, password)).accessToken;
+
+    let newAccessToken: string;
+    let newRefreshToken: string | undefined;
+
+    if (!refreshToken) {
+        const result = await cjSdk.getAccessToken(emailAddress, password);
+        newAccessToken = result.accessToken;
+        newRefreshToken = result.refreshToken;
+
+        tenantCredentialsMap.set(shopId, {
+            ...creds,
+            refreshToken: newRefreshToken,
+        });
+    } else {
+        const result = await cjSdk.refreshAccessToken(refreshToken);
+        newAccessToken = result.accessToken;
+        newRefreshToken = result.refreshToken;
+
+        tenantCredentialsMap.set(shopId, {
+            ...creds,
+            refreshToken: newRefreshToken,
+        });
     }
-    return accessToken;
+
+    return newAccessToken;
 };

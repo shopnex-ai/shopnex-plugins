@@ -1,41 +1,50 @@
-import type { CollectionConfig, Config, FieldBase, SelectField } from "payload";
+import type { Config, SelectField } from "payload";
 import { setTenantCredentials } from "./sdk/access-token";
 import { createOrderHook } from "./service/create-order.hook";
-import { CjConfigCollection, CjCollectionProps } from "./CjConfig";
+import { CjCollectionProps, CjConfigCollection, CjGlobalProps, CjSettings } from "./cj-settings";
 
 interface PluginOptions {
+    isEnabled?: boolean;
     cjApiKey: string;
     cjEmailAddress: string;
     cjRefreshToken?: string;
-    asCollection?: boolean;
+    isGlobal?: boolean;
     collectionOverrides?: CjCollectionProps["overrides"];
+    globalOverrides?: CjGlobalProps["overrides"];
+    orderCollectionSlug?: string;
 }
-
-const updateCollection = (collection: CollectionConfig) => {
-    if (collection.slug === "orders") {
-        return {
-            ...collection,
-            hooks: {
-                ...collection.hooks,
-                afterChange: [...(collection.hooks?.afterChange || []), createOrderHook],
-            },
-        };
-    }
-    return collection;
-};
 
 export const cjPlugin =
     (pluginOptions: PluginOptions) =>
     (config: Config): Config => {
-        const updatedCollections = config.collections?.map(updateCollection) || [];
+        const isGlobal = pluginOptions.isGlobal ?? true;
 
-        if (pluginOptions.asCollection) {
-            updatedCollections.push(
+        const isEnabled = pluginOptions.isEnabled ?? true;
+
+        const ordersCollection = config.collections?.find(
+            (collection) => collection.slug === (pluginOptions.orderCollectionSlug || "orders"),
+        );
+
+        if (!ordersCollection) {
+            throw new Error("No orders collection found");
+        }
+
+        if (!ordersCollection.hooks) {
+            ordersCollection.hooks = {};
+        }
+
+        if (!ordersCollection.hooks?.afterChange?.length) {
+            ordersCollection.hooks.afterChange = [];
+        }
+
+        if (isGlobal) {
+            config.globals?.push(CjSettings({ overrides: pluginOptions.globalOverrides }));
+        } else {
+            config.collections?.push(
                 CjConfigCollection({ overrides: pluginOptions.collectionOverrides }),
             );
         }
-
-        const productCollection = updatedCollections.find(
+        const productCollection = config.collections?.find(
             (collection) => collection.slug === "products",
         );
 
@@ -48,26 +57,44 @@ export const cjPlugin =
             value: "cj",
         });
 
+        if (!isEnabled) {
+            return config;
+        }
+        if (ordersCollection.hooks?.afterChange) {
+            ordersCollection.hooks.afterChange.push(createOrderHook);
+        }
+
         const incomingOnInit = config.onInit;
 
         config.onInit = async (payload) => {
             if (incomingOnInit) {
                 await incomingOnInit(payload);
             }
-            const cjSettings = await payload.find({
-                collection: "cj-settings",
-            });
-            cjSettings.docs.forEach((config: any) => {
-                setTenantCredentials(config?.shop?.slug || "default", {
+
+            const cjSettingsDocs: any = [];
+
+            if (isGlobal) {
+                setTenantCredentials("1", {
+                    emailAddress: pluginOptions.cjEmailAddress,
+                    password: pluginOptions.cjApiKey,
+                    refreshToken: pluginOptions.cjRefreshToken,
+                });
+                return;
+            } else {
+                const cjSettings = await payload.find({
+                    collection: "cj-settings",
+                });
+
+                cjSettingsDocs.push(...cjSettings?.docs);
+            }
+
+            cjSettingsDocs.forEach((config: any) => {
+                setTenantCredentials(config?.shop?.slug || "1", {
                     emailAddress: config.email,
                     password: config.apiToken,
                 });
             });
         };
 
-        return {
-            ...config,
-            collections: updatedCollections,
-            globals: [...(config.globals || [])],
-        };
+        return config;
     };
