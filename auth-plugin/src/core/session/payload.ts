@@ -44,7 +44,7 @@ export class PayloadSession {
                 collection: "shops" as any,
                 data: {
                     name: "My Shop",
-                    slug: Math.random().toString(36).substring(2, 15),
+                    handle: Math.random().toString(36).substring(2, 15),
                 },
             });
             const newUser = await payload.create({
@@ -146,7 +146,7 @@ export class PayloadSession {
         });
 
         // assuming shops[0] is the main one and has a `tenant` field
-        const shopID = user.shops?.[0]?.shop?.id
+        const shopID = user.shops?.[0]?.shop?.id;
 
         return shopID;
     }
