@@ -82,7 +82,7 @@ export const cjPlugin =
                 return;
             } else {
                 const cjSettings = await payload.find({
-                    collection: "cj-settings",
+                    collection: "cj-settings" as any,
                 });
 
                 cjSettingsDocs.push(...cjSettings?.docs);
