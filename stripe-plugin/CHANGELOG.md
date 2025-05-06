@@ -1,5 +1,11 @@
 # @shopnex/stripe-plugin
 
+## 3.31.3
+
+### Patch Changes
+
+- Change provider to providers to support multiple
+
 ## 3.31.2
 
 ### Patch Changes

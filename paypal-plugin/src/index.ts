@@ -45,7 +45,7 @@ export const paypalPlugin =
                         const providerField = collection.fields.find(
                             (field): field is Field & { name: string; type: "blocks" } =>
                                 "name" in field &&
-                                field.name === "provider" &&
+                                field.name === "providers" &&
                                 field.type === "blocks",
                         );
 
@@ -107,7 +107,7 @@ export const paypalPlugin =
                 (c) => c.slug === paymentCollectionSlug,
             ) as CollectionConfig;
             const providerField = targetCollection.fields.find(
-                (f) => "name" in f && f.name === "provider",
+                (f) => "name" in f && f.name === "providers",
             ) as any; // Type assertion for simplicity
             if (
                 !providerField?.blocks?.some((b: { slug: string }) => b.slug === PayPalBlock.slug)

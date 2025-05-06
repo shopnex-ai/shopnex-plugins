@@ -120,7 +120,7 @@ export const stripePlugin =
 
         if (paymentsCollection) {
             const providerField = paymentsCollection.fields.find(
-                (f: any) => f.name === "provider",
+                (f: any) => f.name === "providers",
             ) as BlocksField;
             providerField.blocks.push(StripeBlock);
         }
