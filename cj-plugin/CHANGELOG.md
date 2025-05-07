@@ -1,5 +1,11 @@
 # @shoplyjs/cj-plugin
 
+## 1.0.6
+
+### Patch Changes
+
+- Improve accesstoken management
+
 ## 1.0.5
 
 ### Patch Changes
