@@ -64,9 +64,9 @@ const sharedFields: Field[] = [
 
 // Shared hooks definition
 const sharedHooks = {
-    afterChange: [
-        async ({ doc, req }) => {
-            const productIds = doc.items.map((item: any) => {
+    beforeChange: [
+        async ({ data, req }) => {
+            const productIds = data.items.map((item: any) => {
                 const match = item.productUrl.match(/(?<=-p-)([0-9A-Fa-f-]+)(?=\.html)/);
                 return match ? match[0] : null;
             });
