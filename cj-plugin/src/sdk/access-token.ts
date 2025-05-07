@@ -4,6 +4,7 @@ type Credentials = {
     emailAddress: string;
     password: string;
     refreshToken?: string;
+    accessToken?: string;
 };
 
 const tenantCredentialsMap = new Map<string, Credentials>();
@@ -24,6 +25,10 @@ export const getTenantAccessToken = async (shopId: string) => {
         password: process.env.CJ_PASSWORD || "",
         refreshToken: process.env.CJ_REFRESH_TOKEN || "",
     };
+
+    if (creds.accessToken) {
+        return creds.accessToken;
+    }
 
     if (!creds?.emailAddress || !creds?.password) {
         throw new Error(`Credentials for tenant ${shopId} are missing or incomplete`);
@@ -46,6 +51,7 @@ export const getTenantAccessToken = async (shopId: string) => {
 
     tenantCredentialsMap.set(shopId, {
         ...creds,
+        accessToken: newAccessToken,
         refreshToken: newRefreshToken,
     });
 

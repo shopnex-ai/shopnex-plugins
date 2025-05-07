@@ -90,8 +90,8 @@ export const cjPlugin =
 
             cjSettingsDocs.forEach((config: any) => {
                 setTenantCredentials(config?.shop?.slug || "1", {
-                    emailAddress: config.email,
-                    password: config.apiToken,
+                    emailAddress: config.email || process.env.CJ_EMAIL_ADDRESS,
+                    password: config.apiToken || process.env.CJ_PASSWORD,
                 });
             });
         };

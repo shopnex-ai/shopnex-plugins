@@ -66,6 +66,7 @@ const sharedFields: Field[] = [
 const sharedHooks = {
     afterChange: [
         async ({ doc, req }) => {
+            console.log("afterChange", doc);
             const productIds = doc.items.map((item: any) => {
                 const match = item.productUrl.match(/(?<=-p-)([0-9A-Fa-f-]+)(?=\.html)/);
                 return match ? match[0] : null;
