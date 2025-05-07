@@ -6,10 +6,8 @@ import figlet from "figlet";
 import gradient from "gradient-string";
 import path from "path";
 import fs from "fs";
-import { promisify } from "util"; // Needed for async figlet
-import inquirer from "inquirer"; // <--- Import inquirer here
+import { promisify } from "util";
 
-// Assuming these are correctly implemented in separate files as per user's code structure
 import { installDbDependencies } from "./install-db-dependencies.js";
 import { installDependencies } from "./install-dependencies.js";
 import { cleanupAndExit } from "./cleanup-and-exit.js";
@@ -19,11 +17,13 @@ import { runProjectCommand } from "./run-project-command.js";
 import { askAndUpdateEnvUri } from "./ask-and-update-env-uri.js";
 import { startDevServer } from "./start-dev-server.js";
 import { askToRunDevServer } from "./ask-to-run-dev-server.js";
+import { sparseCheckout } from "./sparse-checkout.js";
+import { askThemeTemplate } from "./ask-theme-template.js";
 
 const args = process.argv.slice(2);
 const flags = {
     fresh: args.includes("--fresh"),
-    skipEnv: args.includes("--skip-env"), 
+    skipEnv: args.includes("--skip-env"),
     noDev: args.includes("--skip-dev"),
     db: (() => {
         const dbArg = args.find((arg) => arg.startsWith("--db="));
@@ -236,11 +236,10 @@ const run = async () => {
     } else {
         dbType = flags.db!;
     }
-    
+
     const projectPath = path.resolve(process.cwd(), projectName);
 
     await cloneRepository(projectName, REPO_URL);
-
     try {
         process.chdir(projectPath);
         console.log(chalk.blue(`Changed directory to: ${process.cwd()}`));
@@ -249,6 +248,12 @@ const run = async () => {
         console.error(chalk.red(err.message));
         process.exit(1);
     }
+    const themeType = await askThemeTemplate();
+    let excludePaths = ["src/app/(frontend)"];
+    if (themeType === "custom") {
+        excludePaths = ["src/app/(builder)"];
+    }
+    await sparseCheckout(projectPath, excludePaths);
 
     await runProjectCommand(
         "git remote rename origin shopnex",
@@ -281,7 +286,6 @@ const run = async () => {
         displayNextSteps(projectName, dbType);
     }
 };
-
 
 // Use the catch block that handles Ctrl+C / errors
 run().catch((error: any) => {

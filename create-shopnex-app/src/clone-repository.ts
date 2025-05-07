@@ -14,7 +14,7 @@ export const cloneRepository = async (projectName: string, repoUrl: string) => {
             process.exit(1);
         }
         const git = simpleGit();
-        await git.clone(repoUrl, projectName);
+        await git.clone(repoUrl, projectName, ["--no-checkout"]);
         spinner.succeed(
             chalk.green(`Successfully cloned template into ${chalk.bold(projectName)}`),
         );
