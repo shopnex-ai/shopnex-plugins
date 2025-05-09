@@ -1,5 +1,7 @@
 # @shopnex/import-export-plugin
 
+![import-mapping-feature](https://github.com/user-attachments/assets/656c315b-979e-484b-ae36-ea122e500792)
+
 A flexible plugin for Payload CMS to enable Import/Export functionality on your collections.
 
 ## ✨ Features
