@@ -4,7 +4,6 @@ import fs from "fs";
 import { simpleGit } from "simple-git";
 
 export const cloneRepository = async (projectName: string, repoUrl: string) => {
-    // ... (function remains the same)
     const spinner = ora(
         `Cloning ${chalk.cyan(repoUrl)} into ${chalk.cyan(projectName)}...`,
     ).start();
@@ -14,7 +13,7 @@ export const cloneRepository = async (projectName: string, repoUrl: string) => {
             process.exit(1);
         }
         const git = simpleGit();
-        await git.clone(repoUrl, projectName, ["--no-checkout"]);
+        await git.clone(repoUrl, projectName);
         spinner.succeed(
             chalk.green(`Successfully cloned template into ${chalk.bold(projectName)}`),
         );

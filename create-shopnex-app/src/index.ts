@@ -19,6 +19,7 @@ import { startDevServer } from "./start-dev-server.js";
 import { askToRunDevServer } from "./ask-to-run-dev-server.js";
 import { sparseCheckout } from "./sparse-checkout.js";
 import { askThemeTemplate } from "./ask-theme-template.js";
+import { checkoutBranch } from "./checkout-branch.js";
 
 const args = process.argv.slice(2);
 const flags = {
@@ -249,12 +250,9 @@ const run = async () => {
         process.exit(1);
     }
     const themeType = await askThemeTemplate();
-    let excludePaths = ["src/app/(frontend)"];
-    if (themeType === "custom") {
-        excludePaths = ["src/app/(builder)"];
+    if (themeType === "builder") {
+        await checkoutBranch(projectPath, "builder-io");
     }
-    await sparseCheckout(projectPath, excludePaths);
-
     await runProjectCommand(
         "git remote rename origin shopnex",
         "Updating git remote name to shopnex",
