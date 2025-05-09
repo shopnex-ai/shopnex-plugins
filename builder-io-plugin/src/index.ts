@@ -1,6 +1,7 @@
 import type { Config } from "payload";
 import { BUILDER_IO_PUBLIC_API, SOURCE_BUILDER_IO_PUBLIC_KEY } from "./constants";
 import { importPageHook } from "./hooks/import-page";
+import { createPageHook } from "./hooks/create-page";
 
 interface BuilderIoConfig {
     enabled?: boolean;
@@ -43,14 +44,14 @@ export const builderIoPlugin =
             pagesCollection.hooks.afterChange = [];
         }
 
-        pagesCollection.hooks.afterChange.push(async ({ req, doc, operation }) => {
+        pagesCollection.hooks.afterChange.push(async ({ doc, operation }) => {
             if (operation !== "create") {
                 return;
             }
             if (!finalConfig.privateKey || !finalConfig.publicKey) {
                 throw new Error("Private or public API key is not set");
             }
-            await importPageHook(finalConfig.privateKey, finalConfig.publicKey, doc.handle);
+            await createPageHook(finalConfig.privateKey, doc.handle);
         });
 
         if (!enabled) {

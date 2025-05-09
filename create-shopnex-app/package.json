@@ -1,6 +1,6 @@
 {
     "name": "create-shopnex-app",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "description": "CLI to set up the Shopnex e-commerce platform",
     "main": "dist/index.js",
     "type": "module",

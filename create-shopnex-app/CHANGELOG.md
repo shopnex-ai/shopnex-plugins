@@ -1,5 +1,11 @@
 # create-shopnex-app
 
+## 1.0.5
+
+### Patch Changes
+
+- Use checkout instead of sparse for simplicity
+
 ## 1.0.4
 
 ### Patch Changes
