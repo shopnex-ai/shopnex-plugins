@@ -17,7 +17,6 @@ import { runProjectCommand } from "./run-project-command.js";
 import { askAndUpdateEnvUri } from "./ask-and-update-env-uri.js";
 import { startDevServer } from "./start-dev-server.js";
 import { askToRunDevServer } from "./ask-to-run-dev-server.js";
-import { sparseCheckout } from "./sparse-checkout.js";
 import { askThemeTemplate } from "./ask-theme-template.js";
 import { checkoutBranch } from "./checkout-branch.js";
 
