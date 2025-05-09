@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2018-2024 Payload CMS, Inc. <info@payloadcms.com>
+Copyright (c) 2018-2024 Payload CMS, Inc. <info@payloadcms.com></br>
 Copyright 2025 ShopNex
 
 Permission is hereby granted, free of charge, to any person obtaining
