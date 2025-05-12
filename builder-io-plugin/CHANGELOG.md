@@ -1,5 +1,11 @@
 # @shopnex/stripe-plugin
 
+## 1.0.2
+
+### Patch Changes
+
+- Fix api wrong api token issue
+
 ## 1.0.1
 
 ### Patch Changes
