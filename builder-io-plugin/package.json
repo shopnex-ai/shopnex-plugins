@@ -1,6 +1,6 @@
 {
     "name": "@shopnex/builder-io-plugin",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "PayPal plugin for Payload",
     "keywords": [
         "payload",
@@ -63,9 +63,11 @@
         "prepublishOnly": "pnpm clean && pnpm build"
     },
     "dependencies": {
+        "@builder.io/admin-sdk": "^0.0.8",
         "@builder.io/sdk": "^6.0.7",
         "@paypal/checkout-server-sdk": "^1.0.3",
         "@paypal/paypal-server-sdk": "^1.0.0",
+        "@shopnex/utils": "workspace:*",
         "lodash.get": "^4.4.2",
         "uuid": "10.0.0"
     },

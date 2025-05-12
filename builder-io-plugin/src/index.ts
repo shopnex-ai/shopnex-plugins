@@ -1,9 +1,9 @@
 import type { Config } from "payload";
-import { BUILDER_IO_PUBLIC_API, SOURCE_BUILDER_IO_PUBLIC_KEY } from "./constants";
-import { importPageHook } from "./hooks/import-page";
-import { createPageHook } from "./hooks/create-page";
+import { importPageHook, importSymbolsInit } from "./hooks/import-page";
+import { BuilderIoCollection } from "./collections/BuilderIoCollection";
+export { importSymbolsInit } from "./hooks/import-page";
 
-interface BuilderIoConfig {
+export interface BuilderIoConfig {
     enabled?: boolean;
     publicKey?: string;
     privateKey?: string;
@@ -11,7 +11,7 @@ interface BuilderIoConfig {
     collectionPagesSlug?: string;
 }
 
-const defaultConfig: BuilderIoConfig = {
+export const defaultConfig: BuilderIoConfig = {
     enabled: true,
     publicKey: process.env.BUILDER_IO_PUBLIC_KEY,
     privateKey: process.env.BUILDER_IO_PRIVATE_KEY,
@@ -51,12 +51,27 @@ export const builderIoPlugin =
             if (!finalConfig.privateKey || !finalConfig.publicKey) {
                 throw new Error("Private or public API key is not set");
             }
-            await createPageHook(finalConfig.privateKey, doc.handle);
+            await importPageHook(finalConfig.privateKey, finalConfig.publicKey, doc.handle);
         });
+
+        if (process.env.BUILDER_IO_COLLECTION_ENABLED === "true") {
+            incomingConfig.collections?.push(BuilderIoCollection);
+        }
 
         if (!enabled) {
             return incomingConfig;
         }
+
+        const incomingOnInit = incomingConfig.onInit;
+
+        incomingConfig.onInit = async (payload) => {
+            if (incomingOnInit) {
+                await incomingOnInit(payload);
+            }
+            if (!pluginConfig.privateKey || !pluginConfig.publicKey) {
+                throw new Error("Private or public API key is not set");
+            }
+        };
 
         return incomingConfig;
     };
