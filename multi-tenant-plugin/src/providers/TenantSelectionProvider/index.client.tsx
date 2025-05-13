@@ -56,7 +56,7 @@ export const TenantSelectionProviderClient = ({
     );
     const [preventRefreshOnChange, setPreventRefreshOnChange] = React.useState(false);
     const { user } = useAuth();
-    const userID = React.useMemo(() => user?.id, [user?.id]);
+    const userID = user?.id;
     const selectedTenantLabel = React.useMemo(
         () => tenantOptions.find((option) => option.value === selectedTenantID)?.label,
         [selectedTenantID, tenantOptions],
@@ -80,7 +80,14 @@ export const TenantSelectionProviderClient = ({
 
     const setTenant = React.useCallback<ContextType["setTenant"]>(
         ({ id, refresh }) => {
-            if (id === selectedTenantID) return;
+            if (id === selectedTenantID) return; // Early return if same ID
+
+            // Check if the new ID exists in options before setting
+            if (id && !tenantOptions.find((opt) => opt.value === id)) {
+                console.log("Attempted to set invalid tenant ID");
+                return;
+            }
+
             if (id === undefined) {
                 if (tenantOptions.length > 1) {
                     setSelectedTenantID(undefined);
@@ -93,36 +100,47 @@ export const TenantSelectionProviderClient = ({
                 setSelectedTenantID(id);
                 setCookie(String(id));
             }
+
+            // Maybe add a slight delay before refresh
             if (!preventRefreshOnChange && refresh) {
-                router.refresh();
+                setTimeout(() => router.refresh(), 100);
             }
         },
-        [
-            deleteCookie,
-            preventRefreshOnChange,
-            router,
-            setCookie,
-            setSelectedTenantID,
-            tenantOptions,
-        ],
+        [deleteCookie, preventRefreshOnChange, router, setCookie, tenantOptions, selectedTenantID],
     );
 
     React.useEffect(() => {
-        if (
-            selectedTenantID &&
-            !tenantOptions.find((option) => option.value === selectedTenantID)
-        ) {
+        console.log("[useEffect: selectedTenantID/tenantOptions] fired");
+        console.log("→ selectedTenantID:", selectedTenantID);
+        console.log("→ tenantOptions:", tenantOptions);
+
+        const tenantExists = tenantOptions.find((option) => option.value === selectedTenantID);
+
+        if (selectedTenantID && !tenantExists) {
+            console.log("⚠️ Tenant not found in options. Resetting tenant.");
             if (tenantOptions?.[0]?.value) {
-                setTenant({ id: tenantOptions[0].value, refresh: true });
+                console.log("→ Setting to first tenant:", tenantOptions[0].value);
+                setTenant({ id: tenantOptions[0].value, refresh: false });
             } else {
-                setTenant({ id: undefined, refresh: true });
+                console.log("→ No tenant available, clearing selection");
+                setTenant({ id: undefined, refresh: false });
             }
         }
-    }, [tenantCookie, setTenant, selectedTenantID, tenantOptions, initialValue, setCookie]);
+    }, [selectedTenantID, tenantOptions]);
 
     React.useEffect(() => {
+        console.log("[useEffect: userID/tenantCookie/initialValue] fired");
+        console.log(
+            "→ userID:",
+            userID,
+            "tenantCookie:",
+            tenantCookie,
+            "initialValue:",
+            initialValue,
+        );
+
         if (userID && !tenantCookie) {
-            // User is logged in, but does not have a tenant cookie, set it
+            console.log("✅ Setting cookie for initialValue:", initialValue);
             setSelectedTenantID(initialValue);
             if (initialValue) {
                 setCookie(String(initialValue));
@@ -135,12 +153,19 @@ export const TenantSelectionProviderClient = ({
     const prevUserIDRef = React.useRef<string | number | undefined>(undefined);
 
     React.useEffect(() => {
+        console.log("[useEffect: userID change + cookie check] fired");
+        console.log("→ userID:", userID, "prevUserID:", prevUserIDRef.current);
+        console.log("→ tenantCookie:", tenantCookie);
+
         if (!userID && tenantCookie) {
+            console.log("⚠️ Logged out user with tenantCookie → clearing");
             deleteCookie();
             setSelectedTenantID(undefined);
         } else if (userID && prevUserIDRef.current !== userID) {
+            console.log("🔄 User ID changed → refreshing");
             router.refresh();
         }
+
         prevUserIDRef.current = userID;
     }, [userID, tenantCookie, deleteCookie, router]);
 
