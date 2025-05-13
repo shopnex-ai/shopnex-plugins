@@ -23,20 +23,23 @@ export const TenantField = (args: Props) => {
 
     const hasSetValueRef = React.useRef(false);
 
+    const lastSetValue = React.useRef<number | string | null>(null);
+
     React.useEffect(() => {
         if (!hasSetValueRef.current) {
-            // set value on load
-            if (value && value !== selectedTenantID) {
-                setTenant({ id: value, refresh: unique });
-            } else {
-                // in the document view, the tenant field should always have a value
-                const defaultValue = selectedTenantID || options[0]?.value;
-                setTenant({ id: defaultValue, refresh: unique });
-            }
+            // on first load
+            const initialValue =
+                value && value !== selectedTenantID ? value : selectedTenantID || options[0]?.value;
+            setTenant({ id: initialValue, refresh: unique });
             hasSetValueRef.current = true;
-        } else if (!value || value !== selectedTenantID) {
-            // Update the field on the document value when the tenant is changed
+            lastSetValue.current = initialValue;
+        } else if (
+            selectedTenantID &&
+            selectedTenantID !== value &&
+            selectedTenantID !== lastSetValue.current
+        ) {
             setValue(selectedTenantID);
+            lastSetValue.current = selectedTenantID;
         }
     }, [value, selectedTenantID, setTenant, setValue, options, unique]);
 
