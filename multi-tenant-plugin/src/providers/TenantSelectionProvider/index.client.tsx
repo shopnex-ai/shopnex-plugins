@@ -57,14 +57,15 @@ export const TenantSelectionProviderClient = ({
     const [preventRefreshOnChange, setPreventRefreshOnChange] = React.useState(false);
     const { user } = useAuth();
     const userID = user?.id;
+    const stableTenantOptions = React.useMemo(() => tenantOptions, []);
     const selectedTenantLabel = React.useMemo(
-        () => tenantOptions.find((option) => option.value === selectedTenantID)?.label,
-        [selectedTenantID, tenantOptions],
+        () => stableTenantOptions.find((option) => option.value == selectedTenantID)?.label,
+        [selectedTenantID, stableTenantOptions],
     );
 
     const selectedTenantSlug = React.useMemo(
-        () => tenantOptions.find((option) => option.value === selectedTenantID)?.slug,
-        [selectedTenantID, tenantOptions],
+        () => stableTenantOptions.find((option) => option.value == selectedTenantID)?.slug,
+        [selectedTenantID, stableTenantOptions],
     );
 
     const router = useRouter();
@@ -112,21 +113,21 @@ export const TenantSelectionProviderClient = ({
     React.useEffect(() => {
         console.log("[useEffect: selectedTenantID/tenantOptions] fired");
         console.log("→ selectedTenantID:", selectedTenantID);
-        console.log("→ tenantOptions:", tenantOptions);
+        console.log("→ tenantOptions:", stableTenantOptions);
 
-        const tenantExists = tenantOptions.find((option) => option.value === selectedTenantID);
+        const tenantExists = stableTenantOptions.find((option) => option.value == selectedTenantID);
 
         if (selectedTenantID && !tenantExists) {
             console.log("⚠️ Tenant not found in options. Resetting tenant.");
-            if (tenantOptions?.[0]?.value) {
-                console.log("→ Setting to first tenant:", tenantOptions[0].value);
-                setTenant({ id: tenantOptions[0].value, refresh: false });
+            if (stableTenantOptions?.[0]?.value) {
+                console.log("→ Setting to first tenant:", stableTenantOptions[0].value);
+                setTenant({ id: stableTenantOptions[0].value, refresh: false });
             } else {
                 console.log("→ No tenant available, clearing selection");
                 setTenant({ id: undefined, refresh: false });
             }
         }
-    }, [selectedTenantID, tenantOptions]);
+    }, [selectedTenantID, stableTenantOptions]);
 
     React.useEffect(() => {
         console.log("[useEffect: userID/tenantCookie/initialValue] fired");
