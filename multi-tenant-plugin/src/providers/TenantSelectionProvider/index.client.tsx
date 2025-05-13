@@ -80,6 +80,7 @@ export const TenantSelectionProviderClient = ({
 
     const setTenant = React.useCallback<ContextType["setTenant"]>(
         ({ id, refresh }) => {
+            if (id === selectedTenantID) return;
             if (id === undefined) {
                 if (tenantOptions.length > 1) {
                     setSelectedTenantID(undefined);
@@ -131,15 +132,16 @@ export const TenantSelectionProviderClient = ({
         }
     }, [userID, tenantCookie, initialValue, setCookie, deleteCookie, router]);
 
+    const prevUserIDRef = React.useRef<string | number | undefined>(undefined);
+
     React.useEffect(() => {
         if (!userID && tenantCookie) {
-            // User is not logged in, but has a tenant cookie, delete it
             deleteCookie();
             setSelectedTenantID(undefined);
-        } else if (userID) {
-            // User changed, refresh
+        } else if (userID && prevUserIDRef.current !== userID) {
             router.refresh();
         }
+        prevUserIDRef.current = userID;
     }, [userID, tenantCookie, deleteCookie, router]);
 
     return (
@@ -147,7 +149,7 @@ export const TenantSelectionProviderClient = ({
             data-selected-tenant-id={selectedTenantID}
             data-selected-tenant-title={selectedTenantLabel}
         >
-            <Context
+            <Context.Provider
                 value={{
                     options: tenantOptions,
                     selectedTenantID,
@@ -157,7 +159,7 @@ export const TenantSelectionProviderClient = ({
                 }}
             >
                 {children}
-            </Context>
+            </Context.Provider>
         </span>
     );
 };
