@@ -26,10 +26,13 @@ export const TenantField = (args: Props) => {
     const lastSetValue = React.useRef<number | string | null>(null);
 
     React.useEffect(() => {
+        console.log("🚨 Effect triggered", { value, selectedTenantID, last: lastSetValue.current });
+
         if (!hasSetValueRef.current) {
-            // on first load
             const initialValue =
                 value && value !== selectedTenantID ? value : selectedTenantID || options[0]?.value;
+            console.log("🌱 First load - setTenant", initialValue);
+
             setTenant({ id: initialValue, refresh: unique });
             hasSetValueRef.current = true;
             lastSetValue.current = initialValue;
@@ -38,6 +41,7 @@ export const TenantField = (args: Props) => {
             selectedTenantID !== value &&
             selectedTenantID !== lastSetValue.current
         ) {
+            console.log("🔄 Updating value via setValue to match selectedTenantID");
             setValue(selectedTenantID);
             lastSetValue.current = selectedTenantID;
         }
