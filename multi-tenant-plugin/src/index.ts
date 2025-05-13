@@ -340,17 +340,17 @@ export const multiTenantPlugin =
         /**
          * Add tenant selector to admin UI
          */
-        incomingConfig.admin.components.beforeNavLinks.push({
-            clientProps: {
-                label: tenantSelectorLabel,
-            },
-            path: "@shopnex/multi-tenant-plugin/client#TenantSelector",
-        });
-        incomingConfig.admin.components.beforeNavLinks.push({
-            clientProps: {
-                label: tenantSelectorLabel,
-            },
-            path: "@shopnex/multi-tenant-plugin/client#TenantDetails",
-        });
+        // incomingConfig.admin.components.beforeNavLinks.push({
+        //     clientProps: {
+        //         label: tenantSelectorLabel,
+        //     },
+        //     path: "@shopnex/multi-tenant-plugin/client#TenantSelector",
+        // });
+        // incomingConfig.admin.components.beforeNavLinks.push({
+        //     clientProps: {
+        //         label: tenantSelectorLabel,
+        //     },
+        //     path: "@shopnex/multi-tenant-plugin/client#TenantDetails",
+        // });
         return incomingConfig;
     };
