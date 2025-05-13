@@ -314,13 +314,13 @@ export const multiTenantPlugin =
         /**
          * Add TenantSelectionProvider to admin providers
          */
-        incomingConfig.admin.components.providers.push({
-            clientProps: {
-                tenantsCollectionSlug: tenantCollection.slug,
-                useAsTitle: tenantCollection.admin?.useAsTitle || "id",
-            },
-            path: "@shopnex/multi-tenant-plugin/rsc#TenantSelectionProvider",
-        });
+        // incomingConfig.admin.components.providers.push({
+        //     clientProps: {
+        //         tenantsCollectionSlug: tenantCollection.slug,
+        //         useAsTitle: tenantCollection.admin?.useAsTitle || "id",
+        //     },
+        //     path: "@shopnex/multi-tenant-plugin/rsc#TenantSelectionProvider",
+        // });
 
         /**
          * Add global redirect action
