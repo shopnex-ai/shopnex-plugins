@@ -19,7 +19,7 @@ export const createOrderHook: CollectionAfterChangeHook<Orders> = async ({ doc, 
     }
     const payload: BasePayload = req.payload;
     const cjSettings = await payload.find({
-        collection: "cj-settings",
+        collection: "cj-settings" as any,
         where: {
             shop: {
                 equals: doc.shopId,
