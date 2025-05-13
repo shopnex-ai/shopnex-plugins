@@ -20,6 +20,9 @@ export const TenantSelectionProvider = async ({
     useAsTitle,
     user,
 }: Args) => {
+    console.log("🚀 [TenantSelectionProvider] invoked");
+    console.log("→ user ID:", user?.id);
+
     let tenantOptions: (OptionObject & { slug: string })[] = [];
 
     try {
@@ -35,33 +38,40 @@ export const TenantSelectionProvider = async ({
             slug: String(doc.handle),
             value: doc.id,
         }));
-    } catch (_) {
-        // user likely does not have access
+        console.log("✅ Tenant options fetched:", tenantOptions);
+    } catch (err) {
+        console.error("❌ Failed to fetch tenant options:", err);
     }
 
     const cookies = await getCookies();
     let tenantCookie = cookies.get("payload-tenant")?.value;
     let initialValue: string | undefined = undefined;
 
-    /**
-     * Ensure the cookie is a valid tenant
-     */
+    console.log("→ cookie value:", tenantCookie);
+
     if (tenantCookie) {
         const matchingOption = tenantOptions.find(
             (option) => String(option.value) === tenantCookie,
         );
         if (matchingOption) {
             initialValue = matchingOption.value;
+            console.log("✅ Valid tenant cookie matched:", initialValue);
+        } else {
+            console.warn("⚠️ Invalid tenant cookie, no match found.");
         }
     }
 
-    /**
-     * If the there was no cookie or the cookie was an invalid tenantID set intialValue
-     */
     if (!initialValue) {
         tenantCookie = undefined;
         initialValue = tenantOptions.length > 1 ? undefined : tenantOptions[0]?.value;
+        console.log("🛠️ Computed initialValue:", initialValue);
     }
+
+    console.log("🧠 Passing props to client provider:", {
+        initialValue,
+        tenantCookie,
+        tenantOptions,
+    });
 
     return (
         <TenantSelectionProviderClient
