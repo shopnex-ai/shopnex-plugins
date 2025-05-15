@@ -1,34 +1,31 @@
-import { AuthPluginOutput, ErrorKind } from "../types"
+import { AuthPluginOutput, ErrorKind } from '../types'
 
 type BaseOptions = {
   name: string
 }
 
 export type OauthProvider =
-  | "google"
-  | "github"
-  | "apple"
-  | "cognito"
-  | "gitlab"
-  | "msft-entra"
-  | "slack"
-  | "atlassian"
-  | "auth0"
-  | "discord"
-  | "facebook"
-  | "jumpcloud"
-  | "twitch"
+  | 'google'
+  | 'github'
+  | 'apple'
+  | 'cognito'
+  | 'gitlab'
+  | 'msft-entra'
+  | 'slack'
+  | 'atlassian'
+  | 'auth0'
+  | 'discord'
+  | 'facebook'
+  | 'jumpcloud'
+  | 'twitch'
 
-export const oauth = (
-  options: BaseOptions,
-  provider: OauthProvider,
-): Promise<AuthPluginOutput> => {
+export const oauth = (options: BaseOptions, provider: OauthProvider): Promise<AuthPluginOutput> => {
   return new Promise((resolve) => {
     const channelId = `oauth_channel_${Math.random().toString(36).substring(2, 15)}`
     const channel = new BroadcastChannel(channelId)
 
     const defaultOutput: AuthPluginOutput = {
-      message: "Failed to authenticate",
+      message: 'Failed to authenticate',
       kind: ErrorKind.BadRequest,
       data: null,
       isSuccess: false,
@@ -45,7 +42,7 @@ export const oauth = (
 
     const popup = window.open(
       authUrl,
-      "oauth",
+      'oauth',
       `width=${width},height=${height},left=${left},top=${top}`,
     )
 
