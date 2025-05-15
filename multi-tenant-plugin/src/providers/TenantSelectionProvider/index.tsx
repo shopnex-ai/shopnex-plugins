@@ -38,7 +38,6 @@ export const TenantSelectionProvider = async ({
       slug: String(doc.handle),
       value: doc.id,
     }))
-    console.log('✅ Tenant options fetched:', tenantOptions)
   } catch (err) {
     console.error('❌ Failed to fetch tenant options:', err)
   }
