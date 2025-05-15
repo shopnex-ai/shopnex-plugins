@@ -52,7 +52,6 @@ export const TenantSelectionProvider = async ({
     const matchingOption = tenantOptions.find((option) => String(option.value) === tenantCookie)
     if (matchingOption) {
       initialValue = matchingOption.value
-      console.log('✅ Valid tenant cookie matched:', initialValue)
     } else {
       console.warn('⚠️ Invalid tenant cookie, no match found.')
     }
