@@ -16,33 +16,26 @@ type Props = {
 } & RelationshipFieldClientProps
 
 export const TenantField = (args: Props) => {
-  const { debug, path, unique } = args
-  const { value, setValue } = useField<number | string>({ path })
+  const { debug, unique } = args
+  const { setValue, value } = useField<number | string>()
   const { options, selectedTenantID, setPreventRefreshOnChange, setTenant } = useTenantSelection()
 
   const hasSetValueRef = React.useRef(false)
 
-  const lastSetValue = React.useRef<number | string | null>(null)
-
   React.useEffect(() => {
-    console.log('🚨 Effect triggered', { value, selectedTenantID, last: lastSetValue.current })
-
     if (!hasSetValueRef.current) {
-      const initialValue =
-        value && value !== selectedTenantID ? value : selectedTenantID || options[0]?.value
-      console.log('🌱 First load - setTenant', initialValue)
-
-      setTenant({ id: initialValue, refresh: unique })
+      // set value on load
+      if (value && value !== selectedTenantID) {
+        setTenant({ id: value, refresh: unique })
+      } else {
+        // in the document view, the tenant field should always have a value
+        const defaultValue = selectedTenantID || options[0]?.value
+        setTenant({ id: defaultValue, refresh: unique })
+      }
       hasSetValueRef.current = true
-      lastSetValue.current = initialValue
-    } else if (
-      selectedTenantID &&
-      selectedTenantID !== value &&
-      selectedTenantID !== lastSetValue.current
-    ) {
-      console.log('🔄 Updating value via setValue to match selectedTenantID')
+    } else if (!value || value !== selectedTenantID) {
+      // Update the field on the document value when the tenant is changed
       setValue(selectedTenantID)
-      lastSetValue.current = selectedTenantID
     }
   }, [value, selectedTenantID, setTenant, setValue, options, unique])
 
