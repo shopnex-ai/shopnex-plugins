@@ -59,6 +59,7 @@
         "@lexical/headless": "0.28.0",
         "@lexical/html": "0.28.0",
         "axios": "^1.8.3",
+        "decimal.js": "^10.5.0",
         "jsdom": "^26.0.0",
         "lexical": "0.28.0"
     },
