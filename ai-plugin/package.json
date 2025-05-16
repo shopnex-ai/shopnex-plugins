@@ -1,6 +1,6 @@
 {
   "name": "@shopnex/ai-plugin",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": false,
   "bugs": "https://github.com/ashbuilds/payload-ai/issues",
   "repository": "https://github.com/ashbuilds/payload-ai",
@@ -108,9 +108,7 @@
   "publishConfig": {
     "main": "./dist/index.js",
     "types": "./dist/index.d.ts",
-    "@ai-stack:registry": "https://registry.npmjs.org",
     "access": "public",
-    "provenance": true,
     "exports": {
       ".": {
         "import": "./dist/index.js",
