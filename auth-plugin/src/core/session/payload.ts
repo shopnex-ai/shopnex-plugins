@@ -108,6 +108,7 @@ export class PayloadSession {
       data['issuerName'] = issuerName
       data['user'] = userID
       console.log('Creating account', data)
+      debugger
       await payload.create({
         collection: this.#collections.accountsCollectionSlug as any,
         data,
