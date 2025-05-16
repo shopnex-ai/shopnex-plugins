@@ -35,7 +35,7 @@ export const TenantSelector = ({ label, viewType }: { label: string; viewType?: 
         label={getTranslation(label, i18n)}
         name="setTenant"
         onChange={handleChange}
-        options={options}
+        options={options as any}
         path="setTenant"
         value={selectedTenantID as string | undefined}
       />
