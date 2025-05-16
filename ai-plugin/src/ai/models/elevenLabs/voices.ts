@@ -1,7 +1,7 @@
 import { ElevenLabsClient } from 'elevenlabs'
 import * as process from 'node:process'
 
-let voicesState = { voices: [] }
+let voicesState: any = { voices: [] }
 export const getAllVoices = async () => {
   if (!process.env.ELEVENLABS_API_KEY) {
     return voicesState

@@ -17,7 +17,7 @@ export const generateImage = async (
 ) => {
   const openaiAPI = new OpenAI()
 
-  const options = {}
+  const options: any = {}
   if (version?.startsWith('dall')) {
     options['response_format'] = 'b64_json'
     options['style'] = style

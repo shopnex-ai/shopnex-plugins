@@ -16,7 +16,7 @@ const voiceOptions = voices.map((voice: any) => {
   }
 })
 
-const fieldVoiceOptions = voiceOptions.map((option) => {
+const fieldVoiceOptions = voiceOptions.map((option: any) => {
   return {
     label: option.name,
     value: option.voice_id,
@@ -106,7 +106,7 @@ export const ElevenLabsConfig: GenerationConfig = {
       name: 'ElevenLabs Multilingual v2',
       fields: ['upload'],
       handler: async (text: string, options) => {
-        const voiceData = await generateVoice(text, options)
+        const voiceData: any = await generateVoice(text, options)
         return {
           data: {
             alt: 'voice over',
