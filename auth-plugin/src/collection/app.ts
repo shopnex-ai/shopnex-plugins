@@ -1,5 +1,5 @@
-import { CollectionConfig, Field } from "payload"
-import { MissingCollectionSlug } from "../core/errors/consoleErrors"
+import { CollectionConfig, Field } from 'payload'
+import { MissingCollectionSlug } from '../core/errors/consoleErrors'
 
 /**
  * A higher order function that takes the collection config for the argument
@@ -7,7 +7,7 @@ import { MissingCollectionSlug } from "../core/errors/consoleErrors"
  * @returns {CollectionConfig}
  */
 export const withAppUsersCollection = (
-  incomingCollection: Omit<CollectionConfig, "fields"> & {
+  incomingCollection: Omit<CollectionConfig, 'fields'> & {
     fields?: Field[] | undefined
   },
 ): CollectionConfig => {
@@ -22,34 +22,32 @@ export const withAppUsersCollection = (
 
   const baseFields: Field[] = [
     {
-      name: "name",
-      type: "text",
+      name: 'name',
+      type: 'text',
     },
     {
-      name: "email",
-      type: "email",
+      name: 'email',
+      type: 'email',
       unique: true,
       required: true,
     },
     {
-      name: "hashedPassword",
-      type: "text",
-      unique: true,
+      name: 'hashedPassword',
+      type: 'text',
+      required: false,
     },
     {
-      name: "salt",
-      type: "text",
-      unique: true,
+      name: 'salt',
+      type: 'text',
+      required: false,
     },
     {
-      name: "hashIterations",
-      type: "number",
+      name: 'hashIterations',
+      type: 'number',
+      required: false,
     },
   ]
-  collectionConfig.fields = [
-    ...baseFields,
-    ...(incomingCollection.fields ?? []),
-  ]
+  collectionConfig.fields = [...baseFields, ...(incomingCollection.fields ?? [])]
   collectionConfig.access = {
     admin: ({ req: { user } }) => Boolean(user),
     create: ({ req: { user } }) => Boolean(user),
@@ -59,8 +57,8 @@ export const withAppUsersCollection = (
     ...(incomingCollection.access ?? {}),
   }
   collectionConfig.admin = {
-    defaultColumns: ["name", "email"],
-    useAsTitle: "name",
+    defaultColumns: ['name', 'email'],
+    useAsTitle: 'name',
     ...incomingCollection.admin,
   }
   collectionConfig.timestamps = true
@@ -75,7 +73,7 @@ export const withAppUsersCollection = (
  * @returns {CollectionConfig}
  */
 export const withAppAccountCollection = (
-  incomingCollection: Omit<CollectionConfig, "fields"> & {
+  incomingCollection: Omit<CollectionConfig, 'fields'> & {
     fields?: Field[] | undefined
   },
   usersCollectionSlug: string,
@@ -91,74 +89,74 @@ export const withAppAccountCollection = (
 
   const baseFields: Field[] = [
     {
-      name: "name",
-      type: "text",
+      name: 'name',
+      type: 'text',
     },
     {
-      name: "picture",
-      type: "text",
+      name: 'picture',
+      type: 'text',
     },
     {
-      name: "user",
-      type: "relationship",
+      name: 'user',
+      type: 'relationship',
       relationTo: usersCollectionSlug as any,
       hasMany: false,
       required: true,
-      label: "User",
+      label: 'User',
     },
     {
-      name: "issuerName",
-      type: "text",
+      name: 'issuerName',
+      type: 'text',
       required: true,
-      label: "Issuer Name",
+      label: 'Issuer Name',
     },
     {
-      name: "scope",
-      type: "text",
+      name: 'scope',
+      type: 'text',
     },
     {
-      name: "sub",
-      type: "text",
+      name: 'sub',
+      type: 'text',
       required: true,
     },
     {
-      name: "passkey",
-      type: "group",
+      name: 'passkey',
+      type: 'group',
       fields: [
         {
-          name: "credentialId",
-          type: "text",
+          name: 'credentialId',
+          type: 'text',
           required: true,
         },
         {
-          name: "publicKey",
-          type: "json",
+          name: 'publicKey',
+          type: 'json',
           required: true,
         },
         {
-          name: "counter",
-          type: "number",
+          name: 'counter',
+          type: 'number',
           required: true,
         },
         {
-          name: "transports",
-          type: "json",
+          name: 'transports',
+          type: 'json',
           required: true,
         },
         {
-          name: "deviceType",
-          type: "text",
+          name: 'deviceType',
+          type: 'text',
           required: true,
         },
         {
-          name: "backedUp",
-          type: "checkbox",
+          name: 'backedUp',
+          type: 'checkbox',
           required: true,
         },
       ],
       admin: {
         condition: (_data, peerData) => {
-          if (peerData.issuerName === "Passkey") {
+          if (peerData.issuerName === 'Passkey') {
             return true
           }
           return false
@@ -167,10 +165,7 @@ export const withAppAccountCollection = (
     },
   ]
 
-  collectionConfig.fields = [
-    ...baseFields,
-    ...(incomingCollection.fields ?? []),
-  ]
+  collectionConfig.fields = [...baseFields, ...(incomingCollection.fields ?? [])]
 
   collectionConfig.access = {
     admin: ({ req: { user } }) => Boolean(user),
@@ -181,8 +176,8 @@ export const withAppAccountCollection = (
     ...(incomingCollection.access ?? {}),
   }
   collectionConfig.admin = {
-    defaultColumns: ["issuerName", "scope", "user"],
-    useAsTitle: "id",
+    defaultColumns: ['issuerName', 'scope', 'user'],
+    useAsTitle: 'id',
     ...incomingCollection.admin,
   }
   collectionConfig.timestamps = true

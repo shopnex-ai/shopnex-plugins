@@ -1,20 +1,10 @@
-import type {
-  BasePayload,
-  Config,
-  Endpoint,
-  PayloadRequest,
-  Plugin,
-} from "payload"
-import {
-  EndpointsFactory,
-  OAuthEndpointStrategy,
-  PasskeyEndpointStrategy,
-} from "../core/endpoints"
-import type { AccountInfo, ProvidersConfig } from "../types"
-import { PayloadSession } from "../core/session/payload"
-import { InvalidServerURL } from "../core/errors/consoleErrors"
-import { getOAuthProviders, getPasskeyProvider } from "../providers/utils"
-import { preflightCollectionCheck } from "../core/preflights/collections"
+import type { BasePayload, Config, Endpoint, PayloadRequest, Plugin } from 'payload'
+import { EndpointsFactory, OAuthEndpointStrategy, PasskeyEndpointStrategy } from '../core/endpoints'
+import type { AccountInfo, ProvidersConfig } from '../types'
+import { PayloadSession } from '../core/session/payload'
+import { InvalidServerURL } from '../core/errors/consoleErrors'
+import { getOAuthProviders, getPasskeyProvider } from '../providers/utils'
+import { preflightCollectionCheck } from '../core/preflights/collections'
 
 interface PluginOptions {
   /* Enable or disable plugin
@@ -52,10 +42,7 @@ export const adminAuthPlugin =
 
     const { accountsCollectionSlug, providers, allowSignUp } = pluginOptions
 
-    preflightCollectionCheck(
-      [config.admin?.user!, accountsCollectionSlug],
-      config.collections,
-    )
+    preflightCollectionCheck([config.admin?.user!, accountsCollectionSlug], config.collections)
 
     config.admin = {
       ...(config.admin ?? {}),
@@ -72,46 +59,29 @@ export const adminAuthPlugin =
     const oauthProviders = getOAuthProviders(providers)
     const passkeyProvider = getPasskeyProvider(providers)
 
-    const endpointsFactory = new EndpointsFactory("admin")
+    const endpointsFactory = new EndpointsFactory('admin')
 
     let oauthEndpoints: Endpoint[] = []
     let passkeyEndpoints: Endpoint[] = []
 
     if (Object.keys(oauthProviders).length > 0) {
-      endpointsFactory.registerStrategy(
-        "oauth",
-        new OAuthEndpointStrategy(oauthProviders),
-      )
-      oauthEndpoints = endpointsFactory.createEndpoints("oauth", {
+      endpointsFactory.registerStrategy('oauth', new OAuthEndpointStrategy(oauthProviders))
+      oauthEndpoints = endpointsFactory.createEndpoints('oauth', {
         sessionCallback: (
           oauthAccountInfo: AccountInfo,
           scope: string,
           issuerName: string,
           request: PayloadRequest,
           clientOrigin: string,
-        ) =>
-          session.createSession(
-            oauthAccountInfo,
-            scope,
-            issuerName,
-            request,
-            clientOrigin,
-          ),
+        ) => session.createSession(oauthAccountInfo, scope, issuerName, request, clientOrigin),
       })
     }
 
     if (passkeyProvider) {
-      endpointsFactory.registerStrategy(
-        "passkey",
-        new PasskeyEndpointStrategy(),
-      )
-      passkeyEndpoints = endpointsFactory.createEndpoints("passkey")
+      endpointsFactory.registerStrategy('passkey', new PasskeyEndpointStrategy())
+      passkeyEndpoints = endpointsFactory.createEndpoints('passkey')
     }
 
-    config.endpoints = [
-      ...(config.endpoints ?? []),
-      ...oauthEndpoints,
-      ...passkeyEndpoints,
-    ]
+    config.endpoints = [...(config.endpoints ?? []), ...oauthEndpoints, ...passkeyEndpoints]
     return config
   }

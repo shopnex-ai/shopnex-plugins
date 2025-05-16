@@ -1,5 +1,4 @@
 import { BasePayload, PayloadRequest } from 'payload'
-import { UserNotFound } from '../errors/consoleErrors'
 import { AccountInfo } from '../../types'
 import { hashCode } from '../utils/hash'
 import { createSessionCookies, invalidateOAuthCookies } from '../utils/cookies'
@@ -107,13 +106,10 @@ export class PayloadSession {
       data['sub'] = accountInfo.sub
       data['issuerName'] = issuerName
       data['user'] = userID
-      console.log('Creating account', data)
-      debugger
       await payload.create({
         collection: this.#collections.accountsCollectionSlug as any,
         data,
       })
-      console.log('Account created', data)
     }
     return userID
   }

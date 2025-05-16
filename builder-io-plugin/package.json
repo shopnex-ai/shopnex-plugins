@@ -67,7 +67,7 @@
     "@builder.io/sdk": "^6.0.7",
     "@paypal/checkout-server-sdk": "^1.0.3",
     "@paypal/paypal-server-sdk": "^1.0.0",
-    "@shopnex/utils": "1.0.4",
+    "@shopnex/utils": "workspace:*",
     "lodash.get": "^4.4.2",
     "uuid": "10.0.0"
   },
