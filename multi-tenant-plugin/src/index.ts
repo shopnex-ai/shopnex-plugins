@@ -99,7 +99,9 @@ export const multiTenantPlugin =
                     if (
                         !(
                             "multiTenant" in
-                            incomingConfig?.i18n?.translations?.[locale]
+                            (incomingConfig as any)?.i18n?.translations?.[
+                                locale
+                            ]
                         )
                     ) {
                         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -107,10 +109,11 @@ export const multiTenantPlugin =
                         incomingConfig.i18n.translations[locale].multiTenant =
                             {};
                     }
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore
                     incomingConfig.i18n.translations[
                         locale
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-ignore
                     ].multiTenant.selectorLabel = label;
                     tenantSelectorLabel = "multiTenant:selectorLabel";
                 }

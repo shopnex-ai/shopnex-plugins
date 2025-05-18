@@ -77,7 +77,6 @@ async function mapMockProductToSchema(
                 value: key,
             })),
             price: new decimal(variant.variantSellPrice || 0)
-                .mul(rate)
                 .toNumber()
                 .toFixed(2),
             vid: variant.vid,

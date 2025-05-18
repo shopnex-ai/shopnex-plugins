@@ -83,7 +83,7 @@ export async function getProductDetails(queryParams: {
     productSku?: string;
     variantSku?: string;
 }): Promise<APIResponse<ProductDetails>> {
-    const { pid, productSku, variantSku } = queryParams;
+    const { pid, productSku, variantSku, accessToken } = queryParams;
     if (!pid && !productSku && !variantSku) {
         return {
             error: "One of pid, productSku, or variantSku must be provided.",

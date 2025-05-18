@@ -1,4 +1,4 @@
-import * as cjSdk from "./cj-sdk";
+import { getAccessToken, refreshAccessToken } from "./auth";
 
 type Credentials = {
     emailAddress: string;
@@ -45,11 +45,11 @@ export const getTenantAccessToken = async (shopId: string) => {
     let newRefreshToken: string | undefined;
 
     if (!refreshToken) {
-        const result = await cjSdk.getAccessToken(emailAddress, password);
+        const result = await getAccessToken(emailAddress, password);
         newAccessToken = result.accessToken;
         newRefreshToken = result.refreshToken;
     } else {
-        const result = await cjSdk.refreshAccessToken(refreshToken);
+        const result = await refreshAccessToken(refreshToken);
         newAccessToken = result.accessToken;
         newRefreshToken = result.refreshToken;
     }
