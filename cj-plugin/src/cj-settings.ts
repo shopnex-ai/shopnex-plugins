@@ -97,10 +97,7 @@ const sharedHooks = {
                 );
                 return match ? match[0] : null;
             });
-            const shopId = req.user?.shops?.[0]?.shop?.id;
-            const result = await req.payload.find({
-                collection: "cj-settings",
-            });
+            const shopId = (req.user?.shops as any)?.[0]?.shop?.id;
             if (productIds.length > 0) {
                 await syncProducts(productIds, req.payload, shopId);
             }

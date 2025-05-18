@@ -12,13 +12,16 @@ import { getCurrentAccessToken } from "../access-token";
 
 export async function getProductCategory(
     accessToken: string,
-    params: any,
+    params: any
 ): Promise<APIResponse<CategoryFirstLevel[]>> {
     try {
-        const response = await cjApiClient.get<CategoryListResponse>("/product/getCategory", {
-            headers: { "CJ-Access-Token": accessToken },
-            params,
-        });
+        const response = await cjApiClient.get<CategoryListResponse>(
+            "/product/getCategory",
+            {
+                headers: { "CJ-Access-Token": accessToken },
+                params,
+            }
+        );
 
         const data = response.data.data;
         if (!data) {
@@ -27,13 +30,15 @@ export async function getProductCategory(
 
         return { data };
     } catch (error: any) {
-        console.error(`Error fetching categories [${error.code}]: ${error.message}`);
+        console.error(
+            `Error fetching categories [${error.code}]: ${error.message}`
+        );
         return { error: error.message || "Failed to fetch categories" };
     }
 }
 
 export async function getProductList(
-    params: Record<string, any> = {},
+    params: Record<string, any> = {}
 ): Promise<APIResponse<Product[]>> {
     const defaultParams = {
         pageNum: 1,
@@ -50,7 +55,7 @@ export async function getProductList(
                     "CJ-Access-Token": accessToken,
                 },
                 params: query,
-            },
+            }
         );
 
         const data = response.data;
@@ -65,12 +70,15 @@ export async function getProductList(
 
         return { data: data.data.list };
     } catch (error: any) {
-        console.error(`Error fetching product list [${error.code}]: ${error.message}`);
+        console.error(
+            `Error fetching product list [${error.code}]: ${error.message}`
+        );
         return { error: error.message || "Failed to fetch product list" };
     }
 }
 
 export async function getProductDetails(queryParams: {
+    accessToken: string;
     pid?: string;
     productSku?: string;
     variantSku?: string;
@@ -83,7 +91,6 @@ export async function getProductDetails(queryParams: {
     }
 
     try {
-        const accessToken = await getCurrentAccessToken();
         const response = await cjApiClient.get<{
             code: number;
             data: ProductDetails;
@@ -98,13 +105,16 @@ export async function getProductDetails(queryParams: {
 
         if (!response.data.result) {
             return {
-                error: response.data.message || "Failed to fetch product details",
+                error:
+                    response.data.message || "Failed to fetch product details",
             };
         }
 
         return { data: response.data.data };
     } catch (error: any) {
-        console.error(`Error fetching product details [${error.code}]: ${error.message}`);
+        console.error(
+            `Error fetching product details [${error.code}]: ${error.message}`
+        );
         throw new Error(error.message);
     }
 }
