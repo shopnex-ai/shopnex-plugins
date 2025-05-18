@@ -15,26 +15,31 @@ export const getCurrentAccessToken = async () => {
     return accessToken;
 };
 
-export const setTenantCredentials = (shopId: string, creds: Credentials) => {
-    tenantCredentialsMap.set(shopId, creds);
+export const setTenantCredentials = (
+    shopId: string,
+    credentials: Credentials
+) => {
+    tenantCredentialsMap.set(shopId, credentials);
 };
 
 export const getTenantAccessToken = async (shopId: string) => {
-    const creds = tenantCredentialsMap.get(shopId) || {
+    const credentials = tenantCredentialsMap.get(shopId) || {
         emailAddress: process.env.CJ_EMAIL_ADDRESS || "",
         password: process.env.CJ_PASSWORD || "",
         refreshToken: process.env.CJ_REFRESH_TOKEN || "",
     };
 
-    if (creds.accessToken) {
-        return creds.accessToken;
+    if (credentials.accessToken) {
+        return credentials.accessToken;
     }
 
-    if (!creds?.emailAddress || !creds?.password) {
-        throw new Error(`Credentials for tenant ${shopId} are missing or incomplete`);
+    if (!credentials?.emailAddress || !credentials?.password) {
+        throw new Error(
+            `Credentials for tenant ${shopId} are missing or incomplete`
+        );
     }
 
-    const { emailAddress, password, refreshToken } = creds;
+    const { emailAddress, password, refreshToken } = credentials;
 
     let newAccessToken: string;
     let newRefreshToken: string | undefined;
@@ -50,7 +55,7 @@ export const getTenantAccessToken = async (shopId: string) => {
     }
 
     tenantCredentialsMap.set(shopId, {
-        ...creds,
+        ...credentials,
         accessToken: newAccessToken,
         refreshToken: newRefreshToken,
     });

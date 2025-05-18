@@ -26,7 +26,6 @@ const defaultPluginConfig: PluginConfig = {
 const payloadAiPlugin =
   (pluginConfig: PluginConfig) =>
   (incomingConfig: Config): Config => {
-    console.log('pluginConfig', pluginConfig)
     pluginConfig = { ...defaultPluginConfig, ...pluginConfig }
     pluginConfig.generationModels = getGenerationModels(pluginConfig)
     const isActivated = isPluginActivated(pluginConfig)
