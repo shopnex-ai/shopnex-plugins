@@ -29,7 +29,7 @@ export const builderIoPlugin =
         const { enabled } = finalConfig;
 
         const pagesCollection = incomingConfig.collections?.find(
-            (collection) => collection.slug === finalConfig.collectionPagesSlug,
+            (collection) => collection.slug === finalConfig.collectionPagesSlug
         );
 
         if (!pagesCollection || typeof pagesCollection !== "object") {
@@ -51,12 +51,14 @@ export const builderIoPlugin =
             if (!finalConfig.privateKey || !finalConfig.publicKey) {
                 throw new Error("Private or public API key is not set");
             }
-            await importPageHook(finalConfig.privateKey, finalConfig.publicKey, doc.handle);
+            await importPageHook(
+                finalConfig.privateKey,
+                finalConfig.publicKey,
+                doc.handle
+            );
         });
 
-        if (process.env.BUILDER_IO_COLLECTION_ENABLED === "true") {
-            incomingConfig.collections?.push(BuilderIoCollection);
-        }
+        incomingConfig.collections?.push(BuilderIoCollection);
 
         if (!enabled) {
             return incomingConfig;

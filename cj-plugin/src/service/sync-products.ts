@@ -13,18 +13,9 @@ import { JSDOM } from "jsdom";
 
 import type { ProductDetails } from "../sdk/products/product-types";
 
-import path, { dirname, join } from "path";
-import fs from "fs";
-import { promisify } from "util";
-import { pipeline } from "stream";
-import { writeFile } from "fs/promises";
-import { fileURLToPath } from "url";
 import { cjSdk } from "../sdk/cj-sdk";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const streamPipeline = promisify(pipeline);
+import { CjData } from "../cj-settings";
+import { retrieveAccessToken } from "./access-token";
 
 interface Product {
     description: TypedEditorState<DefaultNodeTypes>;
@@ -32,6 +23,7 @@ interface Product {
     title: string;
     source: "manual" | "cj";
     variants?: Array<{
+        gallery?: (string | number)[];
         imageUrl?: string;
         options?: Array<{ option: string; value: string }>;
         price?: number;
@@ -41,51 +33,70 @@ interface Product {
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-async function mapMockProductToSchema(
-    product: ProductDetails,
-    editorConfig: any,
-    payload: BasePayload
-) {
-    debugger;
+async function mapMockProductToSchema({
+    product,
+    payload,
+    shopId,
+}: {
+    product: ProductDetails;
+    payload: BasePayload;
+    shopId?: string;
+}) {
+    const variants: Product["variants"] = [];
+
     for (const variant of product.variants || []) {
-        const imageData = await payload.create({
-            collection: "media",
-            data: {
-                alt: variant.variantNameEn || "Variant Image",
-                url: variant.variantImage,
-            },
-        });
-        debugger;
-    }
-    return {
-        description: convertHTMLToLexical({
-            editorConfig,
-            html: product.description || "",
-            JSDOM,
-            // uploadImage: async (src: string) => {
-            //     return uploadImageToPayload(src, payload);
-            // },
-        }),
-        source: "cj",
-        pid: product.pid,
-        title: product.productNameEn,
-        variants: product.variants?.map((variant) => ({
-            imageUrl: variant.variantImage, // Map image URL to 'id' if using media collection
-            gallery: [],
+        // let imageData;
+        // const filename = variant.variantImage?.split("/").pop();
+        // const alt = filename?.split(".")[0];
+        // try {
+        //     imageData = await payload.create({
+        //         collection: "media",
+        //         data: {
+        //             alt,
+        //             filename,
+        //             thumbnailURL: variant.variantImage,
+        //             url: variant.variantImage,
+        //             width: 1024,
+        //             shop: shopId,
+        //         },
+        //     });
+        // } catch (error) {
+        //     console.error("Error creating media:", error);
+        // }
+
+        // const imageId = imageData?.id;
+
+        variants.push({
+            imageUrl: variant.variantImage,
             options: variant.variantKey?.split("-").map((key, index) => ({
-                option: index === 0 ? "Color" : "Size", // Assuming 'Color' and 'Size', adjust keys if needed
+                option: index === 0 ? "Color" : "Size",
                 value: key,
             })),
-            price: new decimal(variant.variantSellPrice || 0)
-                .toNumber()
-                .toFixed(2),
+            price: Number(
+                new decimal(variant.variantSellPrice || 0).toNumber().toFixed(2)
+            ),
             vid: variant.vid,
-        })),
+        });
+    }
+
+    const cleanHtml = product.description?.replace(/<img[^>]*>/g, "");
+
+    return {
+        description: convertHTMLToLexical({
+            editorConfig: await editorConfigFactory.default({
+                config: payload.config, // Your Payload Config
+            }),
+            html: cleanHtml || "<p></p>",
+            JSDOM, // Pass in the JSDOM import; it's not bundled to keep package size small
+        }),
+        source: "cj" as any,
+        pid: product.pid,
+        title: product.productNameEn,
+        variants,
     };
 }
 
-const findProductById = async (productId: string) => {
-    const accessToken = "134";
+const findProductById = async (productId: string, accessToken: string) => {
     const sdk = cjSdk({ accessToken });
     const result = await sdk.products.getProductDetails({
         pid: productId,
@@ -94,11 +105,15 @@ const findProductById = async (productId: string) => {
     return result.data;
 };
 
-const createOrUpdateProduct = async (
-    product: Omit<Product, "createdAt" | "id" | "updatedAt">,
-    payload: BasePayload,
-    shopId?: string
-) => {
+const createOrUpdateProduct = async ({
+    product,
+    payload,
+    shopId,
+}: {
+    product: Omit<Product, "createdAt" | "id" | "updatedAt">;
+    payload: BasePayload;
+    shopId?: string;
+}) => {
     const { totalDocs } = await payload.count({
         collection: "products" as any,
         where: {
@@ -119,39 +134,42 @@ const createOrUpdateProduct = async (
     }
 };
 
-export const fetchExchangeRates = async () => {
-    const response = await fetch("https://open.er-api.com/v6/latest/USD");
-    const data = await response.json();
+export const syncProducts = async ({
+    productIds,
+    payload,
+    shopId,
+    data,
+}: {
+    productIds: string[];
+    payload: BasePayload;
+    shopId?: string;
+    data: Partial<CjData>;
+}) => {
+    const accessToken = await retrieveAccessToken(data);
 
-    return data;
-};
+    const fetchedProducts: ProductDetails[] = [];
 
-export const syncProducts = async (
-    productIds: string[],
-    payload: BasePayload,
-    shopId?: string
-) => {
-    const editorConfig = await editorConfigFactory.default({
-        config: payload.config,
-    });
-    const products: ProductDetails[] = [];
     for (const productId of productIds) {
-        const product = await findProductById(productId);
-        if (!product) {
-            continue;
+        const product = await findProductById(productId, accessToken);
+        if (product) {
+            fetchedProducts.push(product);
         }
-        products.push(product);
-        await delay(1010);
+        await delay(1010); // throttle CJ API requests
     }
-    const mappedProducts = products.map((product) => {
-        return mapMockProductToSchema(product, editorConfig, payload);
-    });
 
-    await Promise.all(
-        mappedProducts.map((product) =>
-            createOrUpdateProduct(product as any, payload, shopId)
+    // Wait for all async mapping to resolve
+    const mappedProducts: Product[] = await Promise.all(
+        fetchedProducts.map((product) =>
+            mapMockProductToSchema({ product, payload, shopId })
         )
     );
 
-    return products;
+    // Create or update each mapped product
+    await Promise.all(
+        mappedProducts.map((product) =>
+            createOrUpdateProduct({ product, payload, shopId })
+        )
+    );
+
+    return fetchedProducts;
 };
