@@ -44,7 +44,7 @@ const upsertImage = async ({
     imageUrl: string;
     filename: string;
     alt: string;
-    shopId?: string;
+    shopId?: number;
 }) => {
     const whereClause: Where = {
         filename: {
@@ -85,7 +85,7 @@ async function mapMockProductToSchema({
 }: {
     product: ProductDetails;
     payload: BasePayload;
-    shopId?: string;
+    shopId?: number;
 }) {
     const variants: Product["variants"] = [];
 
@@ -152,7 +152,7 @@ const createOrUpdateProduct = async ({
 }: {
     product: Omit<Product, "createdAt" | "id" | "updatedAt">;
     payload: BasePayload;
-    shopId?: string;
+    shopId?: number;
 }) => {
     const { totalDocs } = await payload.count({
         collection: "products" as any,
@@ -182,7 +182,7 @@ export const syncProducts = async ({
 }: {
     productIds: string[];
     payload: BasePayload;
-    shopId?: string;
+    shopId?: number;
     data: Partial<CjData>;
 }) => {
     const accessToken = await retrieveAccessToken(data);
