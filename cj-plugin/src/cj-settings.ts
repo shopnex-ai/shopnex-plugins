@@ -139,7 +139,7 @@ export const CjConfigCollection = ({
     },
     labels: {
         singular: "CJ Dropshipping",
-        plural: "CJ Configs",
+        plural: "CJ Dropshipping",
     },
     ...(overrides || {}),
 });
