@@ -2,7 +2,7 @@ import type {
     DefaultNodeTypes,
     TypedEditorState,
 } from "@payloadcms/richtext-lexical";
-import type { BasePayload } from "payload";
+import type { BasePayload, Where } from "payload";
 
 import {
     convertHTMLToLexical,
@@ -46,16 +46,21 @@ const upsertImage = async ({
     alt: string;
     shopId?: string;
 }) => {
+    const whereClause: Where = {
+        filename: {
+            equals: filename,
+        },
+    };
+
+    if (shopId !== undefined) {
+        whereClause.shop = {
+            equals: shopId,
+        };
+    }
+
     const imageData = await payload.find({
         collection: "media",
-        where: {
-            filename: {
-                equals: filename,
-            },
-            shop: {
-                equals: shopId,
-            },
-        },
+        where: whereClause,
         limit: 1,
     });
     if (imageData.totalDocs === 0) {
