@@ -33,6 +33,46 @@ interface Product {
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
+const upsertImage = async ({
+    payload,
+    imageUrl,
+    filename,
+    alt,
+    shopId,
+}: {
+    payload: BasePayload;
+    imageUrl: string;
+    filename: string;
+    alt: string;
+    shopId?: string;
+}) => {
+    const imageData = await payload.find({
+        collection: "media",
+        where: {
+            filename: {
+                equals: filename,
+            },
+            shop: {
+                equals: shopId,
+            },
+        },
+        limit: 1,
+    });
+    if (imageData.totalDocs === 0) {
+        return payload.create({
+            collection: "media",
+            data: {
+                alt,
+                filename,
+                thumbnailURL: imageUrl,
+                url: imageUrl,
+                shop: shopId,
+            },
+        });
+    }
+    return imageData.docs[0];
+};
+
 async function mapMockProductToSchema({
     product,
     payload,
@@ -45,29 +85,24 @@ async function mapMockProductToSchema({
     const variants: Product["variants"] = [];
 
     for (const variant of product.variants || []) {
-        // let imageData;
-        // const filename = variant.variantImage?.split("/").pop();
-        // const alt = filename?.split(".")[0];
-        // try {
-        //     imageData = await payload.create({
-        //         collection: "media",
-        //         data: {
-        //             alt,
-        //             filename,
-        //             thumbnailURL: variant.variantImage,
-        //             url: variant.variantImage,
-        //             width: 1024,
-        //             shop: shopId,
-        //         },
-        //     });
-        // } catch (error) {
-        //     console.error("Error creating media:", error);
-        // }
+        const filename = variant?.variantImage?.split("/").pop();
+        if (!filename || !variant.variantImage) {
+            continue;
+        }
+        const alt = filename.split(".")[0];
+        const imageUrl = variant.variantImage;
+        const imageData = await upsertImage({
+            payload,
+            imageUrl,
+            filename,
+            alt,
+            shopId,
+        });
 
-        // const imageId = imageData?.id;
+        const imageId = imageData.id;
 
         variants.push({
-            imageUrl: variant.variantImage,
+            gallery: [imageId],
             options: variant.variantKey?.split("-").map((key, index) => ({
                 option: index === 0 ? "Color" : "Size",
                 value: key,
