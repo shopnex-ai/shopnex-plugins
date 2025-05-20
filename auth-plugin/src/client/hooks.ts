@@ -1,29 +1,29 @@
-import { AuthPluginOutput } from "../types"
-import * as qs from "qs-esm/lib/index.js"
+import { AuthPluginOutput } from "../types";
+import * as qs from "qs-esm/lib/index.js";
 
 interface BaseOptions {
-  name: string
+    name: string;
 }
 interface QueryOptions {
-  fields?: string[] | undefined
+    fields?: string[] | undefined;
 }
 export const getCurrentUser = async (
-  options: BaseOptions,
-  queryOpts?: QueryOptions | undefined,
+    options: BaseOptions,
+    queryOpts?: QueryOptions | undefined
 ) => {
-  const base = process.env.NEXT_PUBLIC_SERVER_URL
-  let query = ""
-  if (queryOpts) {
-    query = "?"
-    if (queryOpts.fields) {
-      query += qs.stringify({ fields: queryOpts.fields })
+    const base = process.env.NEXT_PUBLIC_SERVER_URL;
+    let query = "";
+    if (queryOpts) {
+        query = "?";
+        if (queryOpts.fields) {
+            query += qs.stringify({ fields: queryOpts.fields });
+        }
     }
-  }
-  const response = await fetch(`${base}/api/${options.name}/session${query}`)
-  const { message, kind, data } = (await response.json()) as AuthPluginOutput
-  return {
-    message,
-    kind,
-    data,
-  }
-}
+    const response = await fetch(`${base}/api/${options.name}/session${query}`);
+    const { message, kind, data } = (await response.json()) as AuthPluginOutput;
+    return {
+        message,
+        kind,
+        data,
+    };
+};

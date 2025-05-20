@@ -1,87 +1,118 @@
-import type { BasePayload, Config, Endpoint, PayloadRequest, Plugin } from 'payload'
-import { EndpointsFactory, OAuthEndpointStrategy, PasskeyEndpointStrategy } from '../core/endpoints'
-import type { AccountInfo, ProvidersConfig } from '../types'
-import { PayloadSession } from '../core/session/payload'
-import { InvalidServerURL } from '../core/errors/consoleErrors'
-import { getOAuthProviders, getPasskeyProvider } from '../providers/utils'
-import { preflightCollectionCheck } from '../core/preflights/collections'
+import type {
+    BasePayload,
+    Config,
+    Endpoint,
+    PayloadRequest,
+    Plugin,
+} from "payload";
+import {
+    EndpointsFactory,
+    OAuthEndpointStrategy,
+    PasskeyEndpointStrategy,
+} from "../core/endpoints";
+import type { AccountInfo, ProvidersConfig } from "../types";
+import { PayloadSession } from "../core/session/payload";
+import { InvalidServerURL } from "../core/errors/consoleErrors";
+import { getOAuthProviders, getPasskeyProvider } from "../providers/utils";
+import { preflightCollectionCheck } from "../core/preflights/collections";
 
 interface PluginOptions {
-  /* Enable or disable plugin
-   * @default true
-   */
-  enabled?: boolean
-  /*
-   * OAuth Providers
-   */
-  providers: ProvidersConfig[]
+    /* Enable or disable plugin
+     * @default true
+     */
+    enabled?: boolean;
+    /*
+     * OAuth Providers
+     */
+    providers: ProvidersConfig[];
 
-  /*
-   * Accounts collections config
-   */
-  accountsCollectionSlug: string
+    /*
+     * Accounts collections config
+     */
+    accountsCollectionSlug: string;
 
-  /* Enable or disable user creation. WARNING: If applied to your admin users collection it will allow ANYONE to sign up as an admin.
-   * @default false
-   */
-  allowSignUp?: boolean
+    /* Enable or disable user creation. WARNING: If applied to your admin users collection it will allow ANYONE to sign up as an admin.
+     * @default false
+     */
+    allowSignUp?: boolean;
 }
 
 export const adminAuthPlugin =
-  (pluginOptions: PluginOptions): Plugin =>
-  (incomingConfig: Config): Config => {
-    const config = { ...incomingConfig }
+    (pluginOptions: PluginOptions): Plugin =>
+    (incomingConfig: Config): Config => {
+        const config = { ...incomingConfig };
 
-    if (pluginOptions.enabled === false) {
-      return config
-    }
+        if (pluginOptions.enabled === false) {
+            return config;
+        }
 
-    if (!config.serverURL) {
-      throw new InvalidServerURL()
-    }
+        if (!config.serverURL) {
+            throw new InvalidServerURL();
+        }
 
-    const { accountsCollectionSlug, providers, allowSignUp } = pluginOptions
+        const { accountsCollectionSlug, providers, allowSignUp } =
+            pluginOptions;
 
-    preflightCollectionCheck([config.admin?.user!, accountsCollectionSlug], config.collections)
+        preflightCollectionCheck(
+            [config.admin?.user!, accountsCollectionSlug],
+            config.collections
+        );
 
-    config.admin = {
-      ...(config.admin ?? {}),
-    }
+        config.admin = {
+            ...(config.admin ?? {}),
+        };
 
-    const session = new PayloadSession(
-      {
-        accountsCollectionSlug: accountsCollectionSlug,
-        usersCollectionSlug: config.admin.user!,
-      },
-      allowSignUp,
-    )
+        const session = new PayloadSession(
+            {
+                accountsCollectionSlug: accountsCollectionSlug,
+                usersCollectionSlug: config.admin.user!,
+            },
+            allowSignUp
+        );
 
-    const oauthProviders = getOAuthProviders(providers)
-    const passkeyProvider = getPasskeyProvider(providers)
+        const oauthProviders = getOAuthProviders(providers);
+        const passkeyProvider = getPasskeyProvider(providers);
 
-    const endpointsFactory = new EndpointsFactory('admin')
+        const endpointsFactory = new EndpointsFactory("admin");
 
-    let oauthEndpoints: Endpoint[] = []
-    let passkeyEndpoints: Endpoint[] = []
+        let oauthEndpoints: Endpoint[] = [];
+        let passkeyEndpoints: Endpoint[] = [];
 
-    if (Object.keys(oauthProviders).length > 0) {
-      endpointsFactory.registerStrategy('oauth', new OAuthEndpointStrategy(oauthProviders))
-      oauthEndpoints = endpointsFactory.createEndpoints('oauth', {
-        sessionCallback: (
-          oauthAccountInfo: AccountInfo,
-          scope: string,
-          issuerName: string,
-          request: PayloadRequest,
-          clientOrigin: string,
-        ) => session.createSession(oauthAccountInfo, scope, issuerName, request, clientOrigin),
-      })
-    }
+        if (Object.keys(oauthProviders).length > 0) {
+            endpointsFactory.registerStrategy(
+                "oauth",
+                new OAuthEndpointStrategy(oauthProviders)
+            );
+            oauthEndpoints = endpointsFactory.createEndpoints("oauth", {
+                sessionCallback: (
+                    oauthAccountInfo: AccountInfo,
+                    scope: string,
+                    issuerName: string,
+                    request: PayloadRequest,
+                    clientOrigin: string
+                ) =>
+                    session.createSession(
+                        oauthAccountInfo,
+                        scope,
+                        issuerName,
+                        request,
+                        clientOrigin
+                    ),
+            });
+        }
 
-    if (passkeyProvider) {
-      endpointsFactory.registerStrategy('passkey', new PasskeyEndpointStrategy())
-      passkeyEndpoints = endpointsFactory.createEndpoints('passkey')
-    }
+        if (passkeyProvider) {
+            endpointsFactory.registerStrategy(
+                "passkey",
+                new PasskeyEndpointStrategy()
+            );
+            passkeyEndpoints = endpointsFactory.createEndpoints("passkey");
+        }
 
-    config.endpoints = [...(config.endpoints ?? []), ...oauthEndpoints, ...passkeyEndpoints]
-    return config
-  }
+        config.endpoints = [
+            ...(config.endpoints ?? []),
+            ...oauthEndpoints,
+            ...passkeyEndpoints,
+        ];
+        return config;
+    };

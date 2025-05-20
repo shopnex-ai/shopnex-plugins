@@ -62,7 +62,9 @@ const displayBanner = async () => {
         const data = await figletPromise(msg);
         if (data) {
             console.log(gradient.pastel.multiline(data));
-            console.log(`\n Welcome to ${ORG_NAME} E-commerce Platform Setup!\n`);
+            console.log(
+                `\n Welcome to ${ORG_NAME} E-commerce Platform Setup!\n`
+            );
         } else {
             throw new Error("Figlet returned no data");
         }
@@ -75,9 +77,15 @@ const displayBanner = async () => {
 
 const setupDatabaseConfig = async (projectPath: string, dbType: string) => {
     // ... (function remains the same as the previous version)
-    const spinner = ora(`Configuring project settings for ${chalk.cyan(dbType)}...`).start();
+    const spinner = ora(
+        `Configuring project settings for ${chalk.cyan(dbType)}...`
+    ).start();
     const payloadConfigFilename = "payload.config.ts"; // Assuming TS template
-    const payloadConfigPath = path.join(projectPath, "src", payloadConfigFilename);
+    const payloadConfigPath = path.join(
+        projectPath,
+        "src",
+        payloadConfigFilename
+    );
 
     try {
         // --- Step 1: Copy .env file ---
@@ -101,8 +109,8 @@ const setupDatabaseConfig = async (projectPath: string, dbType: string) => {
         if (dbType === "sqlite") {
             spinner.succeed(
                 chalk.green(
-                    `Keeping default SQLite configuration in ${chalk.cyan(payloadConfigFilename)}.`,
-                ),
+                    `Keeping default SQLite configuration in ${chalk.cyan(payloadConfigFilename)}.`
+                )
             );
             // Reminder about .env for SQLite will be handled in askAndUpdateEnvUri or displayNextSteps
             return;
@@ -115,8 +123,8 @@ const setupDatabaseConfig = async (projectPath: string, dbType: string) => {
         if (!fs.existsSync(payloadConfigPath)) {
             spinner.warn(
                 chalk.yellow(
-                    `Could not find ${chalk.cyan(payloadConfigPath)}. Skipping DB adapter configuration.`,
-                ),
+                    `Could not find ${chalk.cyan(payloadConfigPath)}. Skipping DB adapter configuration.`
+                )
             );
             await sleep();
             return;
@@ -127,8 +135,10 @@ const setupDatabaseConfig = async (projectPath: string, dbType: string) => {
         // Define Adapters & Imports (non-SQLite)
         const postgresAdapterConfig = `postgresAdapter({ pool: { connectionString: process.env.DATABASE_URI || '' } })`;
         const mongooseAdapterConfig = `mongooseAdapter({ url: process.env.DATABASE_URI || '' })`;
-        const postgresImport = "import { postgresAdapter } from '@payloadcms/db-postgres'";
-        const mongoImport = "import { mongooseAdapter } from '@payloadcms/db-mongodb'";
+        const postgresImport =
+            "import { postgresAdapter } from '@payloadcms/db-postgres'";
+        const mongoImport =
+            "import { mongooseAdapter } from '@payloadcms/db-mongodb'";
 
         let newAdapterConfig = "";
         let requiredImport = "";
@@ -140,7 +150,9 @@ const setupDatabaseConfig = async (projectPath: string, dbType: string) => {
             newAdapterConfig = mongooseAdapterConfig;
             requiredImport = mongoImport;
         } else {
-            spinner.fail(chalk.red(`Invalid database type '${dbType}' encountered.`));
+            spinner.fail(
+                chalk.red(`Invalid database type '${dbType}' encountered.`)
+            );
             return;
         }
 
@@ -150,12 +162,15 @@ const setupDatabaseConfig = async (projectPath: string, dbType: string) => {
         if (!dbBlockRegex.test(configContent)) {
             spinner.warn(
                 chalk.yellow(
-                    `Could not find DB block in ${chalk.cyan(payloadConfigFilename)}. Manual config needed.`,
-                ),
+                    `Could not find DB block in ${chalk.cyan(payloadConfigFilename)}. Manual config needed.`
+                )
             );
             return; // Stop if block missing
         }
-        configContent = configContent.replace(dbBlockRegex, `db: ${newAdapterConfig},`);
+        configContent = configContent.replace(
+            dbBlockRegex,
+            `db: ${newAdapterConfig},`
+        );
         spinner.text = `Replaced DB adapter block in ${chalk.cyan(payloadConfigFilename)}.`;
         await sleep();
 
@@ -164,7 +179,9 @@ const setupDatabaseConfig = async (projectPath: string, dbType: string) => {
         await sleep();
         const anyDbAdapterImportRegex =
             /^\s*(\/\/)?\s*import\s*{?\s*(?:sqliteAdapter|postgresAdapter|mongooseAdapter)\s*}?\s*from\s*['"]@payloadcms\/db-(?:sqlite|postgres|mongodb)['"];?\s*$/gm;
-        configContent = configContent.replace(anyDbAdapterImportRegex, "").trim();
+        configContent = configContent
+            .replace(anyDbAdapterImportRegex, "")
+            .trim();
         const separator = configContent.length > 0 ? "\n\n" : "";
         configContent = `${requiredImport}${separator}${configContent}`;
 
@@ -172,11 +189,15 @@ const setupDatabaseConfig = async (projectPath: string, dbType: string) => {
         fs.writeFileSync(payloadConfigPath, configContent);
         spinner.succeed(
             chalk.green(
-                `Successfully updated ${chalk.cyan(payloadConfigFilename)} for ${chalk.cyan(dbType)}.`,
-            ),
+                `Successfully updated ${chalk.cyan(payloadConfigFilename)} for ${chalk.cyan(dbType)}.`
+            )
         );
     } catch (error: any) {
-        spinner.fail(chalk.red(`Failed during config for ${chalk.cyan(payloadConfigFilename)}.`));
+        spinner.fail(
+            chalk.red(
+                `Failed during config for ${chalk.cyan(payloadConfigFilename)}.`
+            )
+        );
         console.error(chalk.red(error?.message || error));
         console.log(chalk.yellow("Manual configuration may be needed."));
     }
@@ -193,19 +214,19 @@ const displayNextSteps = (projectName: string, dbType: string) => {
     console.log(`Next steps:`);
     // Step 1 about .env is now less critical as we prompted for URI, but good to keep as a check
     console.log(
-        `  1. ${chalk.yellow("Verify")} the ${chalk.cyan(".env")} file (especially if you need other variables).`,
+        `  1. ${chalk.yellow("Verify")} the ${chalk.cyan(".env")} file (especially if you need other variables).`
     );
     if (dbType !== "sqlite") {
         console.log(
-            `     (Ensure your ${chalk.cyan(dbType)} server is running and accessible with the provided URI)`,
+            `     (Ensure your ${chalk.cyan(dbType)} server is running and accessible with the provided URI)`
         );
     }
     console.log(`  2. Start the development server:`);
     console.log(chalk.cyan(`     pnpm dev`));
     console.log(
         chalk.dim(
-            `     (Consult Payload documentation for manual migration commands if needed.)\n`,
-        ),
+            `     (Consult Payload documentation for manual migration commands if needed.)\n`
+        )
     );
 
     console.log(`Happy coding with ${ORG_NAME}! 🎉`);
@@ -244,7 +265,9 @@ const run = async () => {
         process.chdir(projectPath);
         console.log(chalk.blue(`Changed directory to: ${process.cwd()}`));
     } catch (err: any) {
-        console.error(chalk.red(`Failed to change directory to ${projectName}. Exiting.`));
+        console.error(
+            chalk.red(`Failed to change directory to ${projectName}. Exiting.`)
+        );
         console.error(chalk.red(err.message));
         process.exit(1);
     }
@@ -254,7 +277,7 @@ const run = async () => {
     }
     await runProjectCommand(
         "git remote rename origin shopnex",
-        "Updating git remote name to shopnex",
+        "Updating git remote name to shopnex"
     );
     await installDependencies(projectPath);
     await installDbDependencies(dbType);
@@ -263,11 +286,16 @@ const run = async () => {
     if (!flags.skipEnv) {
         await askAndUpdateEnvUri(projectPath, dbType);
     } else {
-        console.log(chalk.yellow("⚠️ Skipping environment configuration (--no-env)"));
+        console.log(
+            chalk.yellow("⚠️ Skipping environment configuration (--no-env)")
+        );
     }
 
     if (!flags.fresh) {
-        await runProjectCommand("npm run db:seed", "Attempting to seed database");
+        await runProjectCommand(
+            "npm run db:seed",
+            "Attempting to seed database"
+        );
     } else {
         console.log(chalk.yellow("⚠️ Skipping database seeding (--fresh)"));
     }
@@ -289,7 +317,9 @@ run().catch((error: any) => {
     if (error?.message?.includes("User force closed the prompt")) {
         cleanupAndExit("User Abort"); // Use the imported/setup handler
     } else {
-        console.error(chalk.red("\n❌ An unexpected error occurred during execution:"));
+        console.error(
+            chalk.red("\n❌ An unexpected error occurred during execution:")
+        );
         console.error(error);
         if (error instanceof Error) {
             console.error(chalk.red(`Error Message: ${error.message}`));

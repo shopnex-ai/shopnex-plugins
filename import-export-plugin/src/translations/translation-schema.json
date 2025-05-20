@@ -1,24 +1,24 @@
 {
-  "type": "object",
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "additionalProperties": false,
-  "properties": {
-    "$schema": {
-      "type": "string"
-    },
-    "plugin-import-export": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "export": {
-          "type": "string"
+    "type": "object",
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "additionalProperties": false,
+    "properties": {
+        "$schema": {
+            "type": "string"
         },
-        "import": {
-          "type": "string"
+        "plugin-import-export": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "export": {
+                    "type": "string"
+                },
+                "import": {
+                    "type": "string"
+                }
+            },
+            "required": ["export", "import"]
         }
-      },
-      "required": ["export", "import"]
-    }
-  },
-  "required": ["plugin-import-export"]
+    },
+    "required": ["plugin-import-export"]
 }

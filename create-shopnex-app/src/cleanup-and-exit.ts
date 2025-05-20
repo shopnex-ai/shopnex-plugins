@@ -6,7 +6,9 @@ export const cleanupAndExit = (signal = "UNKNOWN") => {
     // ... (keep the implementation from the previous answer) ...
     if (isExiting) return;
     isExiting = true;
-    console.log(chalk.yellow(`\n👋 "${signal}" received, exiting gracefully...`));
+    console.log(
+        chalk.yellow(`\n👋 "${signal}" received, exiting gracefully...`)
+    );
     try {
         process.stdout.write("\x1B[?25h"); // Ensure cursor is visible
     } catch (e) {

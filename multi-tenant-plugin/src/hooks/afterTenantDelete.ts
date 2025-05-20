@@ -49,7 +49,7 @@ export const addTenantCleanup = ({
             usersSlug,
             usersTenantsArrayFieldName,
             usersTenantsArrayTenantFieldName,
-        }),
+        })
     );
 };
 
@@ -93,7 +93,7 @@ export const afterTenantDelete =
                             equals: id,
                         },
                     },
-                }),
+                })
             );
         });
 
@@ -103,9 +103,10 @@ export const afterTenantDelete =
                 depth: 0,
                 limit: 0,
                 where: {
-                    [`${usersTenantsArrayFieldName}.${usersTenantsArrayTenantFieldName}`]: {
-                        equals: id,
-                    },
+                    [`${usersTenantsArrayFieldName}.${usersTenantsArrayTenantFieldName}`]:
+                        {
+                            equals: id,
+                        },
                 },
             })) as PaginatedDocs<UserWithTenantsField>;
 
@@ -119,11 +120,15 @@ export const afterTenantDelete =
                                 user[usersTenantsArrayFieldName] || []
                             ).filter((row: Record<string, string>) => {
                                 if (row[usersTenantsArrayTenantFieldName]) {
-                                    return row[usersTenantsArrayTenantFieldName] !== id;
+                                    return (
+                                        row[
+                                            usersTenantsArrayTenantFieldName
+                                        ] !== id
+                                    );
                                 }
                             }),
                         },
-                    }),
+                    })
                 );
             });
         } catch (e) {

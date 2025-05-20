@@ -50,7 +50,7 @@ export const revokeSession = (cookies: string[]) => {
         }),
         {
             status: 200,
-        },
+        }
     );
 
     cookies.forEach((cookie) => {

@@ -59,7 +59,7 @@ export const importHandler: PayloadHandler = async (req) => {
     }
 
     req.payload.logger.info(
-        `Import request received for collection: ${body.collectionSlug} from tenant ${shopId}`,
+        `Import request received for collection: ${body.collectionSlug} from tenant ${shopId}`
     );
 
     const user = req.user;
@@ -87,8 +87,8 @@ export const importHandler: PayloadHandler = async (req) => {
                 collection: body.collectionSlug,
                 data: doc,
                 user,
-            }),
-        ),
+            })
+        )
     );
 
     return Response.json({

@@ -35,7 +35,7 @@ export function addFilterOptionsToFields({
             if (typeof field.relationTo === "string") {
                 if (tenantEnabledGlobalSlugs.includes(field.relationTo)) {
                     throw new Error(
-                        `The collection ${field.relationTo} is a global collection and cannot be related to a tenant enabled collection.`,
+                        `The collection ${field.relationTo} is a global collection and cannot be related to a tenant enabled collection.`
                     );
                 }
                 if (tenantEnabledCollectionSlugs.includes(field.relationTo)) {
@@ -50,7 +50,7 @@ export function addFilterOptionsToFields({
                 field.relationTo.map((relationTo) => {
                     if (tenantEnabledGlobalSlugs.includes(relationTo)) {
                         throw new Error(
-                            `The collection ${relationTo} is a global collection and cannot be related to a tenant enabled collection.`,
+                            `The collection ${relationTo} is a global collection and cannot be related to a tenant enabled collection.`
                         );
                     }
                     if (tenantEnabledCollectionSlugs.includes(relationTo)) {
@@ -138,7 +138,10 @@ function addFilter({
                 : (originalFilter ?? true);
 
         // If the relationTo is not a tenant enabled collection, return early
-        if (args.relationTo && !tenantEnabledCollectionSlugs.includes(args.relationTo)) {
+        if (
+            args.relationTo &&
+            !tenantEnabledCollectionSlugs.includes(args.relationTo)
+        ) {
             return originalFilterResult;
         }
 

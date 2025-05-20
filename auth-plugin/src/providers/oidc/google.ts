@@ -1,10 +1,10 @@
 import type {
-  AccountInfo,
-  OIDCProviderConfig,
-  OAuthBaseProviderConfig,
-} from "../../types"
+    AccountInfo,
+    OIDCProviderConfig,
+    OAuthBaseProviderConfig,
+} from "../../types";
 
-type GoogleAuthConfig = OAuthBaseProviderConfig
+type GoogleAuthConfig = OAuthBaseProviderConfig;
 
 /**
  * Add Google OIDC Provider
@@ -60,23 +60,23 @@ type GoogleAuthConfig = OAuthBaseProviderConfig
  */
 
 function GoogleAuthProvider(config: GoogleAuthConfig): OIDCProviderConfig {
-  return {
-    ...config,
-    id: "google",
-    scope: "openid email profile",
-    issuer: "https://accounts.google.com",
-    name: "Google",
-    algorithm: "oidc",
-    kind: "oauth",
-    profile: (profile): AccountInfo => {
-      return {
-        sub: profile.sub as string,
-        name: profile.name as string,
-        email: profile.email as string,
-        picture: profile.picture as string,
-      }
-    },
-  }
+    return {
+        ...config,
+        id: "google",
+        scope: "openid email profile",
+        issuer: "https://accounts.google.com",
+        name: "Google",
+        algorithm: "oidc",
+        kind: "oauth",
+        profile: (profile): AccountInfo => {
+            return {
+                sub: profile.sub as string,
+                name: profile.name as string,
+                email: profile.email as string,
+                picture: profile.picture as string,
+            };
+        },
+    };
 }
 
-export default GoogleAuthProvider
+export default GoogleAuthProvider;

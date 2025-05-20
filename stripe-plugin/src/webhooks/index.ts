@@ -8,7 +8,7 @@ export const handleWebhooks: StripeWebhookHandler = (args) => {
 
     if (pluginConfig?.logs) {
         payload.logger.info(
-            `🪝 Received Stripe '${event.type}' webhook event with ID: '${event.id}'.`,
+            `🪝 Received Stripe '${event.type}' webhook event with ID: '${event.id}'.`
         );
     }
 
@@ -18,7 +18,7 @@ export const handleWebhooks: StripeWebhookHandler = (args) => {
     const method = event.type.split(".").pop();
 
     const syncConfig = pluginConfig?.sync?.find(
-        (sync) => sync.stripeResourceTypeSingular === resourceType,
+        (sync) => sync.stripeResourceTypeSingular === resourceType
     );
 
     if (syncConfig) {

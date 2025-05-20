@@ -13,7 +13,9 @@ export async function InitPasskey(request: PayloadRequest): Promise<Response> {
         collection: "accounts" as any,
         where: {
             sub: {
-                equals: hashCode(data.email + request.payload.secret).toString(),
+                equals: hashCode(
+                    data.email + request.payload.secret
+                ).toString(),
             },
         },
     });

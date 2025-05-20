@@ -34,10 +34,7 @@ function getCJErrorMessage(code: number): string {
 /**
  * Throws a formatted error based on the API response.
  */
-function handleCJError(response: {
-    code: number;
-    message?: string;
-}): never {
+function handleCJError(response: { code: number; message?: string }): never {
     const errorMessage = response.message || getCJErrorMessage(response.code);
     const error = new Error(`CJ API Error (${response.code}): ${errorMessage}`);
     (error as any).code = response.code;

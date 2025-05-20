@@ -8,7 +8,10 @@ type AllAccessKeys<T extends readonly string[]> = T[number] extends keyof Omit<
     Required<CollectionConfig>["access"],
     "admin"
 >
-    ? keyof Omit<Required<CollectionConfig>["access"], "admin"> extends T[number]
+    ? keyof Omit<
+          Required<CollectionConfig>["access"],
+          "admin"
+      > extends T[number]
         ? T
         : never
     : never;
@@ -48,7 +51,8 @@ export const addCollectionAccess = <ConfigType>({
             accessFunction: collection.access?.[key],
             adminUsersSlug,
             collection,
-            fieldName: key === "readVersions" ? `version.${fieldName}` : fieldName,
+            fieldName:
+                key === "readVersions" ? `version.${fieldName}` : fieldName,
             operation: key,
             tenantsArrayFieldName,
             tenantsArrayTenantFieldName,

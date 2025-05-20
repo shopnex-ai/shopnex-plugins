@@ -18,16 +18,27 @@ export const askProjectName = async (projectName?: string): Promise<string> => {
     return name;
 };
 
-export const askDatabaseType = async (): Promise<"sqlite" | "postgres" | "mongo"> => {
+export const askDatabaseType = async (): Promise<
+    "sqlite" | "postgres" | "mongo"
+> => {
     const { dbType } = await inquirer.prompt([
         {
             name: "dbType",
             type: "list",
             message: "Select your database type:",
             choices: [
-                { name: "PostgreSQL (Production-ready relational database)", value: "postgres" },
-                { name: "SQLite (For local development/testing)", value: "sqlite" },
-                { name: "MongoDB (Production-ready NoSQL database)", value: "mongo" },
+                {
+                    name: "PostgreSQL (Production-ready relational database)",
+                    value: "postgres",
+                },
+                {
+                    name: "SQLite (For local development/testing)",
+                    value: "sqlite",
+                },
+                {
+                    name: "MongoDB (Production-ready NoSQL database)",
+                    value: "mongo",
+                },
             ],
         },
     ]);
@@ -36,7 +47,7 @@ export const askDatabaseType = async (): Promise<"sqlite" | "postgres" | "mongo"
 };
 
 export const askProjectDetails = async (
-    projectName?: string,
+    projectName?: string
 ): Promise<{
     projectName: string;
     dbType: "sqlite" | "postgres" | "mongo";

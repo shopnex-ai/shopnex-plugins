@@ -13,7 +13,7 @@ import { hashCode } from "../../utils/hash";
 
 export async function GeneratePasskeyAuthentication(
     request: PayloadRequest,
-    rpID: string,
+    rpID: string
 ): Promise<Response> {
     const { data } = (await request?.json?.()) as {
         data: {
@@ -43,7 +43,7 @@ export async function GeneratePasskeyAuthentication(
     const cookieMaxage = new Date(Date.now() + 300 * 1000);
     const cookies: string[] = [];
     cookies.push(
-        `__session-webpk-challenge=${options.challenge};Path=/;HttpOnly;SameSite=lax;Expires=${cookieMaxage.toUTCString()}`,
+        `__session-webpk-challenge=${options.challenge};Path=/;HttpOnly;SameSite=lax;Expires=${cookieMaxage.toUTCString()}`
     );
     const res = new Response(JSON.stringify({ options }), { status: 201 });
     cookies.forEach((cookie) => {
@@ -55,7 +55,7 @@ export async function GeneratePasskeyAuthentication(
 export async function VerifyPasskeyAuthentication(
     request: PayloadRequest,
     rpID: string,
-    session_callback: (accountInfo: AccountInfo) => Promise<Response>,
+    session_callback: (accountInfo: AccountInfo) => Promise<Response>
 ): Promise<Response> {
     try {
         const parsedCookies = parseCookies(request.headers);
@@ -86,7 +86,9 @@ export async function VerifyPasskeyAuthentication(
             expectedRPID: rpID,
             credential: {
                 id: data.passkey.credentialId,
-                publicKey: new Uint8Array(Object.values(data.passkey.publicKey)),
+                publicKey: new Uint8Array(
+                    Object.values(data.passkey.publicKey)
+                ),
                 counter: data.passkey.counter,
                 transports: data.passkey.transports,
             },
@@ -94,8 +96,12 @@ export async function VerifyPasskeyAuthentication(
         if (!verification.verified) {
             throw new PasskeyVerificationAPIError();
         }
-        const { credentialID, credentialDeviceType, credentialBackedUp, newCounter } =
-            verification.authenticationInfo!;
+        const {
+            credentialID,
+            credentialDeviceType,
+            credentialBackedUp,
+            newCounter,
+        } = verification.authenticationInfo!;
         return await session_callback({
             sub: hashCode(data.email + request.payload.secret).toString(),
             name: "",

@@ -16,113 +16,113 @@ pnpm add @payloadcms/plugin-multi-tenant
 
 ```ts
 type MultiTenantPluginConfig<ConfigTypes = unknown> = {
-  /**
-   * After a tenant is deleted, the plugin will attempt to clean up related documents
-   * - removing documents with the tenant ID
-   * - removing the tenant from users
-   *
-   * @default true
-   */
-  cleanupAfterTenantDelete?: boolean
-  /**
-   * Automatically
-   */
-  collections: {
-    [key in CollectionSlug]?: {
-      /**
-       * Set to `true` if you want the collection to behave as a global
-       *
-       * @default false
-       */
-      isGlobal?: boolean
-      /**
-       * Set to `false` if you want to manually apply the baseListFilter
-       *
-       * @default true
-       */
-      useBaseListFilter?: boolean
-      /**
-       * Set to `false` if you want to handle collection access manually without the multi-tenant constraints applied
-       *
-       * @default true
-       */
-      useTenantAccess?: boolean
-    }
-  }
-  /**
-   * Enables debug mode
-   * - Makes the tenant field visible in the admin UI within applicable collections
-   *
-   * @default false
-   */
-  debug?: boolean
-  /**
-   * Enables the multi-tenant plugin
-   *
-   * @default true
-   */
-  enabled?: boolean
-  /**
-   * Field configuration for the field added to all tenant enabled collections
-   */
-  tenantField?: {
-    access?: RelationshipField['access']
     /**
-     * The name of the field added to all tenant enabled collections
+     * After a tenant is deleted, the plugin will attempt to clean up related documents
+     * - removing documents with the tenant ID
+     * - removing the tenant from users
      *
-     * @default 'tenant'
+     * @default true
      */
-    name?: string
-  }
-  /**
-   * Field configuration for the field added to the users collection
-   *
-   * If `includeDefaultField` is `false`, you must include the field on your users collection manually
-   * This is useful if you want to customize the field or place the field in a specific location
-   */
-  tenantsArrayField?:
-    | {
+    cleanupAfterTenantDelete?: boolean;
+    /**
+     * Automatically
+     */
+    collections: {
+        [key in CollectionSlug]?: {
+            /**
+             * Set to `true` if you want the collection to behave as a global
+             *
+             * @default false
+             */
+            isGlobal?: boolean;
+            /**
+             * Set to `false` if you want to manually apply the baseListFilter
+             *
+             * @default true
+             */
+            useBaseListFilter?: boolean;
+            /**
+             * Set to `false` if you want to handle collection access manually without the multi-tenant constraints applied
+             *
+             * @default true
+             */
+            useTenantAccess?: boolean;
+        };
+    };
+    /**
+     * Enables debug mode
+     * - Makes the tenant field visible in the admin UI within applicable collections
+     *
+     * @default false
+     */
+    debug?: boolean;
+    /**
+     * Enables the multi-tenant plugin
+     *
+     * @default true
+     */
+    enabled?: boolean;
+    /**
+     * Field configuration for the field added to all tenant enabled collections
+     */
+    tenantField?: {
+        access?: RelationshipField["access"];
         /**
-         * Access configuration for the array field
+         * The name of the field added to all tenant enabled collections
+         *
+         * @default 'tenant'
          */
-        arrayFieldAccess?: ArrayField['access']
-        /**
-         * When `includeDefaultField` is `true`, the field will be added to the users collection automatically
-         */
-        includeDefaultField?: true
-        /**
-         * Additional fields to include on the tenants array field
-         */
-        rowFields?: Field[]
-        /**
-         * Access configuration for the tenant field
-         */
-        tenantFieldAccess?: RelationshipField['access']
-      }
-    | {
-        arrayFieldAccess?: never
-        /**
-         * When `includeDefaultField` is `false`, you must include the field on your users collection manually
-         */
-        includeDefaultField?: false
-        rowFields?: never
-        tenantFieldAccess?: never
-      }
-  /**
-   * The slug for the tenant collection
-   *
-   * @default 'tenants'
-   */
-  tenantsSlug?: string
-  /**
-   * Function that determines if a user has access to _all_ tenants
-   *
-   * Useful for super-admin type users
-   */
-  userHasAccessToAllTenants?: (
-    user: ConfigTypes extends { user } ? ConfigTypes['user'] : User,
-  ) => boolean
-}
+        name?: string;
+    };
+    /**
+     * Field configuration for the field added to the users collection
+     *
+     * If `includeDefaultField` is `false`, you must include the field on your users collection manually
+     * This is useful if you want to customize the field or place the field in a specific location
+     */
+    tenantsArrayField?:
+        | {
+              /**
+               * Access configuration for the array field
+               */
+              arrayFieldAccess?: ArrayField["access"];
+              /**
+               * When `includeDefaultField` is `true`, the field will be added to the users collection automatically
+               */
+              includeDefaultField?: true;
+              /**
+               * Additional fields to include on the tenants array field
+               */
+              rowFields?: Field[];
+              /**
+               * Access configuration for the tenant field
+               */
+              tenantFieldAccess?: RelationshipField["access"];
+          }
+        | {
+              arrayFieldAccess?: never;
+              /**
+               * When `includeDefaultField` is `false`, you must include the field on your users collection manually
+               */
+              includeDefaultField?: false;
+              rowFields?: never;
+              tenantFieldAccess?: never;
+          };
+    /**
+     * The slug for the tenant collection
+     *
+     * @default 'tenants'
+     */
+    tenantsSlug?: string;
+    /**
+     * Function that determines if a user has access to _all_ tenants
+     *
+     * Useful for super-admin type users
+     */
+    userHasAccessToAllTenants?: (
+        user: ConfigTypes extends { user } ? ConfigTypes["user"] : User
+    ) => boolean;
+};
 ```
 
 ### How to configure Collections as Globals for multi-tenant
@@ -132,12 +132,12 @@ To do that, you can mark a collection with `isGlobal` and it will behave like a 
 
 ```ts
 multiTenantPlugin({
-  collections: {
-    navigation: {
-      isGlobal: true,
+    collections: {
+        navigation: {
+            isGlobal: true,
+        },
     },
-  },
-})
+});
 ```
 
 ### Customizing access control
@@ -151,60 +151,62 @@ In the multi-tenant plugin config you can set `useTenantAccess` to false:
 ```ts
 // File: payload.config.ts
 
-import { buildConfig } from 'payload'
-import { multiTenantPlugin } from '@payloadcms/plugin-multi-tenant'
-import { getTenantAccess } from '@payloadcms/plugin-multi-tenant/utilities'
-import { Config as ConfigTypes } from './payload-types'
+import { buildConfig } from "payload";
+import { multiTenantPlugin } from "@payloadcms/plugin-multi-tenant";
+import { getTenantAccess } from "@payloadcms/plugin-multi-tenant/utilities";
+import { Config as ConfigTypes } from "./payload-types";
 
 // Add the plugin to your payload config
 export default buildConfig({
-  plugins: [
-    multiTenantPlugin({
-      collections: {
-        media: {
-          useTenantAccess: false,
-        },
-      },
-    }),
-  ],
-  collections: [
-    {
-      slug: 'media',
-      fields: [
-        {
-          name: 'isShared',
-          type: 'checkbox',
-          defaultValue: false,
-          // you likely want to set access control on fields like this
-          // to prevent just any user from modifying it
-        },
-      ],
-      access: {
-        read: ({ req, doc }) => {
-          if (!req.user) return false
-
-          const whereConstraint = {
-            or: [
-              {
-                isShared: {
-                  equals: true,
+    plugins: [
+        multiTenantPlugin({
+            collections: {
+                media: {
+                    useTenantAccess: false,
                 },
-              },
+            },
+        }),
+    ],
+    collections: [
+        {
+            slug: "media",
+            fields: [
+                {
+                    name: "isShared",
+                    type: "checkbox",
+                    defaultValue: false,
+                    // you likely want to set access control on fields like this
+                    // to prevent just any user from modifying it
+                },
             ],
-          }
+            access: {
+                read: ({ req, doc }) => {
+                    if (!req.user) return false;
 
-          const tenantAccessResult = getTenantAccess({ user: req.user })
+                    const whereConstraint = {
+                        or: [
+                            {
+                                isShared: {
+                                    equals: true,
+                                },
+                            },
+                        ],
+                    };
 
-          if (tenantAccessResult) {
-            whereConstraint.or.push(tenantAccessResult)
-          }
+                    const tenantAccessResult = getTenantAccess({
+                        user: req.user,
+                    });
 
-          return whereConstraint
+                    if (tenantAccessResult) {
+                        whereConstraint.or.push(tenantAccessResult);
+                    }
+
+                    return whereConstraint;
+                },
+            },
         },
-      },
-    },
-  ],
-})
+    ],
+});
 ```
 
 ### Placing the tenants array field
@@ -218,22 +220,22 @@ This field cannot be nested inside a named field, ie a group, named-tab or array
 To make it easier, this plugin exports the field for you to import and merge in your own properties.
 
 ```ts
-import type { CollectionConfig } from 'payload'
-import { tenantsArrayField } from '@payloadcms/plugin-multi-tenant/fields'
+import type { CollectionConfig } from "payload";
+import { tenantsArrayField } from "@payloadcms/plugin-multi-tenant/fields";
 
 const customTenantsArrayField = tenantsArrayField({
-  arrayFieldAccess: {}, // access control for the array field
-  tenantFieldAccess: {}, // access control for the tenants field on the array row
-  rowFields: [], // additional row fields
-})
+    arrayFieldAccess: {}, // access control for the array field
+    tenantFieldAccess: {}, // access control for the tenants field on the array row
+    rowFields: [], // additional row fields
+});
 
 export const UsersCollection: CollectionConfig = {
-  slug: 'users',
-  fields: [
-    {
-      ...customTenantsArrayField,
-      label: 'Associated Tenants',
-    },
-  ],
-}
+    slug: "users",
+    fields: [
+        {
+            ...customTenantsArrayField,
+            label: "Associated Tenants",
+        },
+    ],
+};
 ```

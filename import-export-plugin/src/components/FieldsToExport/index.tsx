@@ -22,7 +22,9 @@ export const FieldsToExport: SelectFieldClientComponent = (props) => {
     const { id } = useDocumentInfo();
     const { path } = props;
     const { setValue, value } = useField<string[]>({ path });
-    const { value: collectionSlug } = useField<string>({ path: "collectionSlug" });
+    const { value: collectionSlug } = useField<string>({
+        path: "collectionSlug",
+    });
     const { getEntityConfig } = useConfig();
     const { collection } = useImportExport();
     const { getPreference } = usePreferences();
@@ -30,7 +32,9 @@ export const FieldsToExport: SelectFieldClientComponent = (props) => {
         { id: string; label: ReactNode; value: string }[]
     >([]);
 
-    const collectionConfig = getEntityConfig({ collectionSlug: collectionSlug ?? collection });
+    const collectionConfig = getEntityConfig({
+        collectionSlug: collectionSlug ?? collection,
+    });
     const fieldOptions = reduceFields({ fields: collectionConfig?.fields });
 
     useEffect(() => {
@@ -41,7 +45,9 @@ export const FieldsToExport: SelectFieldClientComponent = (props) => {
                 } // Prevent unnecessary updates
 
                 return value.map((field) => {
-                    const match = fieldOptions.find((option) => option.value === field);
+                    const match = fieldOptions.find(
+                        (option) => option.value === field
+                    );
                     return match
                         ? { ...match, id: field }
                         : { id: field, label: field, value: field };
@@ -74,13 +80,15 @@ export const FieldsToExport: SelectFieldClientComponent = (props) => {
         id,
         collectionConfig?.admin?.defaultColumns,
     ]);
-    const onChange = (options: { id: string; label: ReactNode; value: string }[]) => {
+    const onChange = (
+        options: { id: string; label: ReactNode; value: string }[]
+    ) => {
         if (!options) {
             setValue([]);
             return;
         }
         const updatedValue = options?.map((option) =>
-            typeof option === "object" ? option.value : option,
+            typeof option === "object" ? option.value : option
         );
         setValue(updatedValue);
         setDisplayedValue(options);

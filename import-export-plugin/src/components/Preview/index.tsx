@@ -28,7 +28,7 @@ export const Preview = () => {
 
     const collectionSlug = typeof collection === "string" && collection;
     const collectionConfig = config.collections.find(
-        (collection) => collection.slug === collectionSlug,
+        (collection) => collection.slug === collectionSlug
     );
 
     React.useEffect(() => {
@@ -48,46 +48,58 @@ export const Preview = () => {
                     },
                     {
                         addQueryPrefix: true,
-                    },
+                    }
                 );
-                const response = await fetch(`/api/${collectionSlug}${whereQuery}`, {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    method: "GET",
-                });
+                const response = await fetch(
+                    `/api/${collectionSlug}${whereQuery}`,
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        method: "GET",
+                    }
+                );
 
                 if (response.ok) {
                     const data = await response.json();
-                    setResultCount(limit && limit < data.totalDocs ? limit : data.totalDocs);
+                    setResultCount(
+                        limit && limit < data.totalDocs ? limit : data.totalDocs
+                    );
                     // TODO: check if this data is in the correct format for the table
 
-                    const filteredFields = (collectionConfig?.fields?.filter((field) => {
-                        if (!fieldAffectsData(field)) {
-                            return false;
+                    const filteredFields = (collectionConfig?.fields?.filter(
+                        (field) => {
+                            if (!fieldAffectsData(field)) {
+                                return false;
+                            }
+                            if (fields?.length > 0) {
+                                return fields.includes(field.name);
+                            }
+                            return true;
                         }
-                        if (fields?.length > 0) {
-                            return fields.includes(field.name);
-                        }
-                        return true;
-                    }) ?? []) as FieldAffectingDataClient[];
+                    ) ?? []) as FieldAffectingDataClient[];
 
                     setColumns(
                         filteredFields.map((field) => ({
                             accessor: field.name || "",
                             active: true,
                             field: field as ClientField,
-                            Heading: getTranslation(field?.label || (field.name as string), i18n),
-                            renderedCells: data.docs.map((doc: Record<string, unknown>) => {
-                                if (!field.name || !doc[field.name]) {
-                                    return null;
+                            Heading: getTranslation(
+                                field?.label || (field.name as string),
+                                i18n
+                            ),
+                            renderedCells: data.docs.map(
+                                (doc: Record<string, unknown>) => {
+                                    if (!field.name || !doc[field.name]) {
+                                        return null;
+                                    }
+                                    if (typeof doc[field.name] === "object") {
+                                        return JSON.stringify(doc[field.name]);
+                                    }
+                                    return String(doc[field.name]);
                                 }
-                                if (typeof doc[field.name] === "object") {
-                                    return JSON.stringify(doc[field.name]);
-                                }
-                                return String(doc[field.name]);
-                            }),
-                        })) as Column[],
+                            ),
+                        })) as Column[]
                     );
                     setDataToRender(data.docs);
                 }
@@ -97,7 +109,15 @@ export const Preview = () => {
         };
 
         void fetchData();
-    }, [collectionConfig?.fields, collectionSlug, draft, fields, limit, sort, where]);
+    }, [
+        collectionConfig?.fields,
+        collectionSlug,
+        draft,
+        fields,
+        limit,
+        sort,
+        where,
+    ]);
 
     return (
         <div className={baseClass}>

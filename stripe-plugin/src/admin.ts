@@ -25,7 +25,7 @@ export const stripePlugin =
             ...config,
             collections: collections?.map((collection) => {
                 const syncConfig = pluginConfig.sync?.find(
-                    (sync) => sync.collection === collection.slug,
+                    (sync) => sync.collection === collection.slug
                 );
 
                 if (syncConfig) {

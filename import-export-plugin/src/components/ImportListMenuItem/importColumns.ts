@@ -37,7 +37,8 @@ export const importColumns = {
             name: "Variant Original Price",
             key: "variants[0].originalPrice",
             data_type: "number",
-            description: "The original price (before discount) of the first variant",
+            description:
+                "The original price (before discount) of the first variant",
             suggested_mappings: ["Original Price", "Compare at Price"],
         },
         {
@@ -50,7 +51,8 @@ export const importColumns = {
         {
             name: "Custom Field - Package Name",
             key: "customFields[0].value",
-            description: "Value of the first custom field (e.g., plugin package)",
+            description:
+                "Value of the first custom field (e.g., plugin package)",
             suggested_mappings: ["Package Name", "Plugin"],
         },
         {
@@ -134,7 +136,8 @@ export const importColumns = {
         {
             name: "Receipt URL",
             key: "receiptUrl",
-            description: "URL to the payment receipt from the payment processor",
+            description:
+                "URL to the payment receipt from the payment processor",
             suggested_mappings: ["Receipt", "Payment URL"],
         },
         {

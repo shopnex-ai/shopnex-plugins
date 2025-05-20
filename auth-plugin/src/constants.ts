@@ -1,2 +1,2 @@
-export const APP_COOKIE_SUFFIX = "session-token"
-export const EPHEMERAL_CODE_COOKIE_NAME = "__session-ep-claim"
+export const APP_COOKIE_SUFFIX = "session-token";
+export const EPHEMERAL_CODE_COOKIE_NAME = "__session-ep-claim";

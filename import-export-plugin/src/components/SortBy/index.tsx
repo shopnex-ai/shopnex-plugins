@@ -22,7 +22,9 @@ export const SortBy: SelectFieldClientComponent = (props) => {
     const { id } = useDocumentInfo();
     const { path } = props;
     const { setValue, value } = useField<string>({ path });
-    const { value: collectionSlug } = useField<string>({ path: "collectionSlug" });
+    const { value: collectionSlug } = useField<string>({
+        path: "collectionSlug",
+    });
     const { query } = useListQuery();
     const { getEntityConfig } = useConfig();
     const { collection } = useImportExport();
@@ -32,7 +34,9 @@ export const SortBy: SelectFieldClientComponent = (props) => {
         value: string;
     } | null>(null);
 
-    const collectionConfig = getEntityConfig({ collectionSlug: collectionSlug ?? collection });
+    const collectionConfig = getEntityConfig({
+        collectionSlug: collectionSlug ?? collection,
+    });
     const fieldOptions = reduceFields({ fields: collectionConfig?.fields });
 
     // Sync displayedValue with value from useField
@@ -60,7 +64,9 @@ export const SortBy: SelectFieldClientComponent = (props) => {
         }
     }, [fieldOptions, id, query?.sort, value, setValue]);
 
-    const onChange = (option: { id: string; label: ReactNode; value: string } | null) => {
+    const onChange = (
+        option: { id: string; label: ReactNode; value: string } | null
+    ) => {
         if (!option) {
             setValue("");
             setDisplayedValue(null);
@@ -71,7 +77,10 @@ export const SortBy: SelectFieldClientComponent = (props) => {
     };
 
     return (
-        <div className={baseClass} style={{ "--field-width": "33%" } as React.CSSProperties}>
+        <div
+            className={baseClass}
+            style={{ "--field-width": "33%" } as React.CSSProperties}
+        >
             <FieldLabel label="Sort By" />
             <ReactSelect
                 className={baseClass}

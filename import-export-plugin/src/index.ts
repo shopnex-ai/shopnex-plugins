@@ -22,9 +22,10 @@ export const importExportPlugin =
         // inject custom import export provider
         config.admin = config.admin || {};
         config.admin.components = config.admin.components || {};
-        config.admin.components.providers = config.admin.components.providers || [];
+        config.admin.components.providers =
+            config.admin.components.providers || [];
         config.admin.components.providers.push(
-            "@shopnex/import-export-plugin/rsc#ImportExportProvider",
+            "@shopnex/import-export-plugin/rsc#ImportExportProvider"
         );
 
         // inject the createExport job into the config
@@ -35,20 +36,24 @@ export const importExportPlugin =
             } as unknown as JobsConfig); // cannot type jobs config inside of plugins
 
         let collectionsToUpdate = config.collections;
-        pluginConfig.importCollections?.forEach(({ collectionSlug, columns }) => {
-            const collection = config.collections?.find(({ slug }) => slug === collectionSlug);
-            if (!collection) {
-                throw new Error(`Collection ${collectionSlug} not found`);
+        pluginConfig.importCollections?.forEach(
+            ({ collectionSlug, columns }) => {
+                const collection = config.collections?.find(
+                    ({ slug }) => slug === collectionSlug
+                );
+                if (!collection) {
+                    throw new Error(`Collection ${collectionSlug} not found`);
+                }
+                if (!collection.endpoints) {
+                    collection.endpoints = [];
+                }
+                collection.endpoints?.push({
+                    handler: importHandler,
+                    method: "post",
+                    path: "/import",
+                });
             }
-            if (!collection.endpoints) {
-                collection.endpoints = [];
-            }
-            collection.endpoints?.push({
-                handler: importHandler,
-                method: "post",
-                path: "/import",
-            });
-        });
+        );
 
         const usePluginCollections =
             pluginConfig.collections && pluginConfig.collections?.length > 0;
@@ -81,7 +86,7 @@ export const importExportPlugin =
                 path: "@shopnex/import-export-plugin/rsc#ExportListMenuItem",
             });
             const customColumns = pluginConfig.importCollections?.find(
-                ({ collectionSlug }) => collectionSlug === collection.slug,
+                ({ collectionSlug }) => collectionSlug === collection.slug
             )?.columns;
             components.listMenuItems.push({
                 clientProps: {
@@ -96,7 +101,10 @@ export const importExportPlugin =
             config.i18n = {};
         }
 
-        config.i18n.translations = deepMergeSimple(translations, config.i18n?.translations ?? {});
+        config.i18n.translations = deepMergeSimple(
+            translations,
+            config.i18n?.translations ?? {}
+        );
 
         return config;
     };

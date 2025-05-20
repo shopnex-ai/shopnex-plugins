@@ -10,7 +10,11 @@ interface ApiTokenProps {
     label?: string;
 }
 
-export function ApiToken({ path, readOnly, label = "API Token" }: ApiTokenProps) {
+export function ApiToken({
+    path,
+    readOnly,
+    label = "API Token",
+}: ApiTokenProps) {
     return (
         <PasswordField
             autoComplete="new-password"

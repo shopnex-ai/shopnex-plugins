@@ -3,7 +3,11 @@ import Stripe from "stripe";
 
 import type { StripeProxy } from "../types";
 
-export const stripeProxy: StripeProxy = async ({ stripeArgs, stripeMethod, stripeSecretKey }) => {
+export const stripeProxy: StripeProxy = async ({
+    stripeArgs,
+    stripeMethod,
+    stripeSecretKey,
+}) => {
     const stripe = new Stripe(stripeSecretKey, {
         apiVersion: "2022-08-01",
         appInfo: {
@@ -38,7 +42,7 @@ export const stripeProxy: StripeProxy = async ({ stripeArgs, stripeMethod, strip
             }
         } else {
             throw Error(
-                `The provided Stripe method of '${stripeMethod}' is not a part of the Stripe API.`,
+                `The provided Stripe method of '${stripeMethod}' is not a part of the Stripe API.`
             );
         }
     } else {

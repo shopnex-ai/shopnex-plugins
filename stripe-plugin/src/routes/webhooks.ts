@@ -14,7 +14,8 @@ export const stripeWebhooks = async (args: {
     const { config, pluginConfig, req } = args;
     let returnStatus = 200;
 
-    const { stripeSecretKey, stripeWebhooksEndpointSecret, webhooks } = pluginConfig;
+    const { stripeSecretKey, stripeWebhooksEndpointSecret, webhooks } =
+        pluginConfig;
 
     if (stripeWebhooksEndpointSecret) {
         const stripe = new Stripe(stripeSecretKey, {
@@ -36,11 +37,14 @@ export const stripeWebhooks = async (args: {
                 event = stripe.webhooks.constructEvent(
                     body!,
                     stripeSignature,
-                    stripeWebhooksEndpointSecret,
+                    stripeWebhooksEndpointSecret
                 );
             } catch (err: unknown) {
-                const msg: string = err instanceof Error ? err.message : JSON.stringify(err);
-                req.payload.logger.error(`Error constructing Stripe event: ${msg}`);
+                const msg: string =
+                    err instanceof Error ? err.message : JSON.stringify(err);
+                req.payload.logger.error(
+                    `Error constructing Stripe event: ${msg}`
+                );
                 returnStatus = 400;
             }
 
@@ -87,6 +91,6 @@ export const stripeWebhooks = async (args: {
         { received: true },
         {
             status: returnStatus,
-        },
+        }
     );
 };

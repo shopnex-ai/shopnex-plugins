@@ -87,12 +87,17 @@ export const getFields = (config: Config): Field[] => {
                             type: "select",
                             admin: {
                                 condition: (data) => {
-                                    const collectionConfig = (config.collections ?? []).find(
-                                        (collection) => collection.slug === data.collectionSlug,
+                                    const collectionConfig = (
+                                        config.collections ?? []
+                                    ).find(
+                                        (collection) =>
+                                            collection.slug ===
+                                            data.collectionSlug
                                     );
                                     return Boolean(
-                                        typeof collectionConfig?.versions === "object" &&
-                                            collectionConfig?.versions?.drafts,
+                                        typeof collectionConfig?.versions ===
+                                            "object" &&
+                                            collectionConfig?.versions?.drafts
                                     );
                                 },
                                 width: "33%",

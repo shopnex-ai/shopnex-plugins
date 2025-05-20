@@ -55,7 +55,9 @@ export const createExport = async (args: CreateExportArgs) => {
         req,
     } = args;
     const locale = localeInput ?? localeArg;
-    const collectionConfig = payload.config.collections.find(({ slug }) => slug === collectionSlug);
+    const collectionConfig = payload.config.collections.find(
+        ({ slug }) => slug === collectionSlug
+    );
     if (!collectionConfig) {
         throw new APIError(`Collection with slug ${collectionSlug} not found`);
     }
@@ -71,7 +73,10 @@ export const createExport = async (args: CreateExportArgs) => {
         locale,
         overrideAccess: false,
         page: 0,
-        select: Array.isArray(fields) && fields.length > 0 ? getSelect(fields) : undefined,
+        select:
+            Array.isArray(fields) && fields.length > 0
+                ? getSelect(fields)
+                : undefined,
         sort,
         user,
         where,
@@ -87,8 +92,12 @@ export const createExport = async (args: CreateExportArgs) => {
                 let isFirstBatch = true;
 
                 while (result.docs.length > 0) {
-                    const csvInput = result.docs.map((doc) => flattenObject(doc));
-                    const csvString = stringify(csvInput, { header: isFirstBatch });
+                    const csvInput = result.docs.map((doc) =>
+                        flattenObject(doc)
+                    );
+                    const csvString = stringify(csvInput, {
+                        header: isFirstBatch,
+                    });
                     this.push(encoder.encode(csvString));
                     isFirstBatch = false;
 
@@ -129,7 +138,7 @@ export const createExport = async (args: CreateExportArgs) => {
     }
 
     const buffer = Buffer.from(
-        format === "json" ? `[${outputData.join(",")}]` : outputData.join(""),
+        format === "json" ? `[${outputData.join(",")}]` : outputData.join("")
     );
 
     if (!id) {

@@ -13,7 +13,7 @@ export const getUserTenantIDs = <IDType extends number | string>(
     options?: {
         tenantsArrayFieldName?: string;
         tenantsArrayTenantFieldName?: string;
-    },
+    }
 ): IDType[] => {
     if (!user) {
         return [];
@@ -25,11 +25,16 @@ export const getUserTenantIDs = <IDType extends number | string>(
     } = options || {};
 
     return (
-        (Array.isArray(user[tenantsArrayFieldName]) ? user[tenantsArrayFieldName] : [])?.reduce<
-            IDType[]
-        >((acc, row) => {
+        (Array.isArray(user[tenantsArrayFieldName])
+            ? user[tenantsArrayFieldName]
+            : []
+        )?.reduce<IDType[]>((acc, row) => {
             if (row[tenantsArrayTenantFieldName]) {
-                acc.push(extractID<IDType>(row[tenantsArrayTenantFieldName] as Tenant<IDType>));
+                acc.push(
+                    extractID<IDType>(
+                        row[tenantsArrayTenantFieldName] as Tenant<IDType>
+                    )
+                );
             }
 
             return acc;

@@ -2,7 +2,9 @@ import { spawn } from "node:child_process";
 import chalk from "chalk";
 
 export const startDevServer = (command = "npm run dev") => {
-    console.log(chalk.blue(`\nStarting development server with "${command}"...`));
+    console.log(
+        chalk.blue(`\nStarting development server with "${command}"...`)
+    );
 
     const [cmd, ...args] = command.split(" ");
     const child = spawn(cmd, args, {
@@ -15,6 +17,8 @@ export const startDevServer = (command = "npm run dev") => {
     });
 
     child.on("error", (err) => {
-        console.error(chalk.red(`\nFailed to start dev server: ${err.message}`));
+        console.error(
+            chalk.red(`\nFailed to start dev server: ${err.message}`)
+        );
     });
 };

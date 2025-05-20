@@ -14,7 +14,9 @@ export const download: PayloadHandler = async (req) => {
         throw new APIError("Request data is required.");
     }
 
-    req.payload.logger.info(`Download request received ${body.data.collectionSlug}`);
+    req.payload.logger.info(
+        `Download request received ${body.data.collectionSlug}`
+    );
 
     body.data.user = req.user;
 

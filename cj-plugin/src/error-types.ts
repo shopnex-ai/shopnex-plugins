@@ -9,10 +9,9 @@ export type APIResponse<T> =
  * API Error Response Structure
  */
 export interface ApiResponseError {
-  code: number;
-  result: boolean;
-  message: string;
-  data: null;
-  requestId: string;
+    code: number;
+    result: boolean;
+    message: string;
+    data: null;
+    requestId: string;
 }
-

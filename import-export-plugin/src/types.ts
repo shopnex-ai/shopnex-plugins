@@ -1,4 +1,8 @@
-import type { CollectionAdminOptions, CollectionConfig, UploadConfig } from "payload";
+import type {
+    CollectionAdminOptions,
+    CollectionConfig,
+    UploadConfig,
+} from "payload";
 
 export type CollectionOverride = {
     admin: CollectionAdminOptions;
@@ -40,5 +44,7 @@ export type ImportExportPluginConfig = {
      * @param collection
      * @returns collection
      */
-    overrideExportCollection?: (collection: CollectionOverride) => CollectionOverride;
+    overrideExportCollection?: (
+        collection: CollectionOverride
+    ) => CollectionOverride;
 };

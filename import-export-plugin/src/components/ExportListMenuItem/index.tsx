@@ -1,7 +1,12 @@
 "use client";
 
 import { getTranslation } from "@payloadcms/translations";
-import { PopupList, useConfig, useDocumentDrawer, useTranslation } from "@payloadcms/ui";
+import {
+    PopupList,
+    useConfig,
+    useDocumentDrawer,
+    useTranslation,
+} from "@payloadcms/ui";
 import React, { useEffect } from "react";
 
 import { useImportExport } from "../ImportExportProvider/index";
@@ -30,7 +35,8 @@ export const ExportListMenuItem: React.FC<{
     return (
         <PopupList.Button className={baseClass}>
             <DocumentDrawerToggler>
-                Export {getTranslation(currentCollectionConfig.labels.plural, i18n)}
+                Export{" "}
+                {getTranslation(currentCollectionConfig.labels.plural, i18n)}
             </DocumentDrawerToggler>
             <DocumentDrawer />
         </PopupList.Button>

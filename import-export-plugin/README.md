@@ -29,16 +29,16 @@ Add the plugin to your Payload config:
 import { importExportPlugin } from "@shopnex/import-export-plugin";
 
 export default buildConfig({
-  plugins: [
-    importExportPlugin({
-      collections: ["products", "orders"],
-      importCollections: [
-        { collectionSlug: "products" },
-        { collectionSlug: "orders" },
-      ],
-      disableJobsQueue: true,
-    }),
-  ],
+    plugins: [
+        importExportPlugin({
+            collections: ["products", "orders"],
+            importCollections: [
+                { collectionSlug: "products" },
+                { collectionSlug: "orders" },
+            ],
+            disableJobsQueue: true,
+        }),
+    ],
 });
 ```
 
@@ -48,13 +48,15 @@ export default buildConfig({
 
 ```ts
 type ImportExportPluginConfig = {
-  collections?: string[];
-  importCollections?: {
-    collectionSlug: string;
-    columns?: ImportColumn[];
-  }[];
-  disableJobsQueue?: boolean;
-  overrideExportCollection?: (collection: CollectionOverride) => CollectionOverride;
+    collections?: string[];
+    importCollections?: {
+        collectionSlug: string;
+        columns?: ImportColumn[];
+    }[];
+    disableJobsQueue?: boolean;
+    overrideExportCollection?: (
+        collection: CollectionOverride
+    ) => CollectionOverride;
 };
 ```
 
@@ -82,12 +84,12 @@ Use `ImportColumn` to describe each column for import in a collection:
 
 ```ts
 type ImportColumn = {
-  name: string; // Label shown to the user
-  key: string; // Field path in the collection
-  data_type?: "string" | "number" | "datetime" | "boolean";
-  required?: boolean;
-  description: string;
-  suggested_mappings: string[]; // Helpful auto-mapping hints
+    name: string; // Label shown to the user
+    key: string; // Field path in the collection
+    data_type?: "string" | "number" | "datetime" | "boolean";
+    required?: boolean;
+    description: string;
+    suggested_mappings: string[]; // Helpful auto-mapping hints
 };
 ```
 
@@ -95,35 +97,35 @@ type ImportColumn = {
 
 ```ts
 importExportPlugin({
-  importCollections: [
-    {
-      collectionSlug: "products",
-      columns: [
+    importCollections: [
         {
-          name: "Product Title",
-          key: "title",
-          data_type: "string",
-          required: true,
-          description: "The name of the product",
-          suggested_mappings: ["title", "name", "product_title"],
+            collectionSlug: "products",
+            columns: [
+                {
+                    name: "Product Title",
+                    key: "title",
+                    data_type: "string",
+                    required: true,
+                    description: "The name of the product",
+                    suggested_mappings: ["title", "name", "product_title"],
+                },
+                {
+                    name: "Price",
+                    key: "price",
+                    data_type: "number",
+                    description: "Product price in USD",
+                    suggested_mappings: ["price", "cost"],
+                },
+                {
+                    name: "Gallery Image URL",
+                    key: "variants[0].gallery[0].url",
+                    data_type: "string",
+                    description: "URL of the main product image",
+                    suggested_mappings: ["image", "image_url", "photo"],
+                },
+            ],
         },
-        {
-          name: "Price",
-          key: "price",
-          data_type: "number",
-          description: "Product price in USD",
-          suggested_mappings: ["price", "cost"],
-        },
-        {
-          name: "Gallery Image URL",
-          key: "variants[0].gallery[0].url",
-          data_type: "string",
-          description: "URL of the main product image",
-          suggested_mappings: ["image", "image_url", "photo"],
-        },
-      ],
-    },
-  ],
+    ],
 });
 ```
 

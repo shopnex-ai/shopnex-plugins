@@ -1,4 +1,7 @@
-import type { GenericTranslationsObject, NestedKeysStripped } from "@payloadcms/translations";
+import type {
+    GenericTranslationsObject,
+    NestedKeysStripped,
+} from "@payloadcms/translations";
 
 import { en } from "./en";
 
@@ -8,4 +11,5 @@ export const translations = {
 
 export type PluginImportExportTranslations = GenericTranslationsObject;
 
-export type PluginImportExportTranslationKeys = NestedKeysStripped<PluginImportExportTranslations>;
+export type PluginImportExportTranslationKeys =
+    NestedKeysStripped<PluginImportExportTranslations>;

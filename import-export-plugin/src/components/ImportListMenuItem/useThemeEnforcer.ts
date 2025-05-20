@@ -12,7 +12,10 @@ const useThemeEnforcer = (preferredTheme: string) => {
 
         const observer = new MutationObserver((mutations) => {
             for (const mutation of mutations) {
-                if (mutation.type === "attributes" && mutation.attributeName === "data-theme") {
+                if (
+                    mutation.type === "attributes" &&
+                    mutation.attributeName === "data-theme"
+                ) {
                     enforceTheme();
                 }
             }

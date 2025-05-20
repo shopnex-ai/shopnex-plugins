@@ -23,8 +23,15 @@ import {
     OAuthProviderConfig,
     PasskeyProviderConfig,
 } from "../types";
-import { InvalidServerURL, MissingEmailAdapter } from "../core/errors/consoleErrors";
-import { getPasswordProvider, getOAuthProviders, getPasskeyProvider } from "../providers/utils";
+import {
+    InvalidServerURL,
+    MissingEmailAdapter,
+} from "../core/errors/consoleErrors";
+import {
+    getPasswordProvider,
+    getOAuthProviders,
+    getPasskeyProvider,
+} from "../providers/utils";
 import {
     PasswordAuthEndpointStrategy,
     EndpointsFactory,
@@ -62,7 +69,11 @@ interface PluginOptions {
      * Auth providers supported by the plugin
      *
      */
-    providers: (OAuthProviderConfig | PasskeyProviderConfig | PasswordProviderConfig)[];
+    providers: (
+        | OAuthProviderConfig
+        | PasskeyProviderConfig
+        | PasswordProviderConfig
+    )[];
 
     /**
      * @description
@@ -131,7 +142,10 @@ export const appAuthPlugin =
             secret,
         } = pluginOptions;
 
-        preflightCollectionCheck([usersCollectionSlug, accountsCollectionSlug], config.collections);
+        preflightCollectionCheck(
+            [usersCollectionSlug, accountsCollectionSlug],
+            config.collections
+        );
 
         const name = formatSlug(pluginOptions.name);
 
@@ -147,7 +161,7 @@ export const appAuthPlugin =
             },
             allowAutoSignUp ?? false,
             authenticationStrategy ?? "Cookie",
-            secret,
+            secret
         );
 
         const endpointsFactory = new EndpointsFactory(name);
@@ -157,27 +171,33 @@ export const appAuthPlugin =
         let passwordEndpoints: Endpoint[] = [];
 
         if (Object.keys(oauthProviders).length > 0) {
-            endpointsFactory.registerStrategy("oauth", new OAuthEndpointStrategy(oauthProviders));
+            endpointsFactory.registerStrategy(
+                "oauth",
+                new OAuthEndpointStrategy(oauthProviders)
+            );
             oauthEndpoints = endpointsFactory.createEndpoints("oauth", {
                 sessionCallback: (
                     oauthAccountInfo: AccountInfo,
                     scope: string,
                     issuerName: string,
                     request: PayloadRequest,
-                    clientOrigin: string,
+                    clientOrigin: string
                 ) =>
                     session.oauthSessionCallback(
                         oauthAccountInfo,
                         scope,
                         issuerName,
                         request,
-                        clientOrigin,
+                        clientOrigin
                     ),
             });
         }
 
         if (passkeyProvider) {
-            endpointsFactory.registerStrategy("passkey", new PasskeyEndpointStrategy());
+            endpointsFactory.registerStrategy(
+                "passkey",
+                new PasskeyEndpointStrategy()
+            );
             passkeyEndpoints = endpointsFactory.createEndpoints("passkey");
         }
 
@@ -187,7 +207,10 @@ export const appAuthPlugin =
             }
             endpointsFactory.registerStrategy(
                 "password",
-                new PasswordAuthEndpointStrategy({ usersCollectionSlug }, secret),
+                new PasswordAuthEndpointStrategy(
+                    { usersCollectionSlug },
+                    secret
+                )
             );
             passwordEndpoints = endpointsFactory.createEndpoints("password", {
                 sessionCallback: (user: { id: string; email: string }) =>
@@ -197,7 +220,7 @@ export const appAuthPlugin =
 
         endpointsFactory.registerStrategy(
             "session",
-            new SessionEndpointStrategy(secret, { usersCollectionSlug }),
+            new SessionEndpointStrategy(secret, { usersCollectionSlug })
         );
         const sessionEndpoints = endpointsFactory.createEndpoints("session");
 

@@ -1,4 +1,9 @@
-import { CollectionSlug, getCookieExpiration, parseCookies, PayloadRequest } from "payload";
+import {
+    CollectionSlug,
+    getCookieExpiration,
+    parseCookies,
+    PayloadRequest,
+} from "payload";
 import {
     AuthenticationFailed,
     EmailAlreadyExistError,
@@ -23,9 +28,11 @@ export const PasswordSignin = async (
     internal: {
         usersCollectionSlug: string;
     },
-    sessionCallBack: (user: { id: string; email: string }) => Promise<Response>,
+    sessionCallBack: (user: { id: string; email: string }) => Promise<Response>
 ) => {
-    const body = request.json && ((await request.json?.()) as { email: string; password: string });
+    const body =
+        request.json &&
+        ((await request.json?.()) as { email: string; password: string });
 
     if (!body?.email || !body.password) {
         return new InvalidRequestBodyError();
@@ -49,7 +56,7 @@ export const PasswordSignin = async (
         body.password,
         user["hashedPassword"],
         user["salt"],
-        user["hashIterations"],
+        user["hashIterations"]
     );
     if (!isVerifed) {
         return new InvalidCredentials();
@@ -65,7 +72,7 @@ export const PasswordSignup = async (
     internal: {
         usersCollectionSlug: string;
     },
-    sessionCallBack: (user: { id: string; email: string }) => Promise<Response>,
+    sessionCallBack: (user: { id: string; email: string }) => Promise<Response>
 ) => {
     const body =
         request.json &&
@@ -93,7 +100,11 @@ export const PasswordSignup = async (
         return new EmailAlreadyExistError();
     }
 
-    const { hash: hashedPassword, salt, iterations } = await hashPassword(body.password);
+    const {
+        hash: hashedPassword,
+        salt,
+        iterations,
+    } = await hashPassword(body.password);
 
     const user = await payload.create({
         collection: internal.usersCollectionSlug as any,
@@ -120,7 +131,7 @@ export const PasswordSignup = async (
             isSuccess: true,
             isError: false,
         },
-        { status: 201 },
+        { status: 201 }
     );
 };
 
@@ -128,7 +139,7 @@ export const ForgotPasswordInit = async (
     request: PayloadRequest,
     internal: {
         usersCollectionSlug: string;
-    },
+    }
 ) => {
     const { payload } = request;
 
@@ -168,14 +179,14 @@ export const ForgotPasswordInit = async (
             isSuccess: true,
             isError: false,
         }),
-        { status: 201 },
+        { status: 201 }
     );
     const tokenExpiration = getCookieExpiration({
         seconds: 300,
     });
     res.headers.append(
         "Set-Cookie",
-        `${EPHEMERAL_CODE_COOKIE_NAME}=${hash};Path=/;HttpOnly;Secure=true;SameSite=lax;Expires=${tokenExpiration.toUTCString()}`,
+        `${EPHEMERAL_CODE_COOKIE_NAME}=${hash};Path=/;HttpOnly;Secure=true;SameSite=lax;Expires=${tokenExpiration.toUTCString()}`
     );
     return res;
 };
@@ -184,7 +195,7 @@ export const ForgotPasswordVerify = async (
     request: PayloadRequest,
     internal: {
         usersCollectionSlug: string;
-    },
+    }
 ) => {
     const { payload } = request;
 
@@ -206,7 +217,11 @@ export const ForgotPasswordVerify = async (
         return new UnauthorizedAPIRequest();
     }
 
-    const isVerified = await verifyEphemeralCode(body.code, hash, payload.secret);
+    const isVerified = await verifyEphemeralCode(
+        body.code,
+        hash,
+        payload.secret
+    );
 
     if (!isVerified) {
         return new AuthenticationFailed();
@@ -223,7 +238,11 @@ export const ForgotPasswordVerify = async (
         return new UserNotFoundAPIError();
     }
 
-    const { hash: hashedPassword, salt, iterations } = await hashPassword(body.password);
+    const {
+        hash: hashedPassword,
+        salt,
+        iterations,
+    } = await hashPassword(body.password);
 
     await payload.update({
         collection: internal.usersCollectionSlug as any,
@@ -242,11 +261,11 @@ export const ForgotPasswordVerify = async (
             isSuccess: true,
             isError: false,
         }),
-        { status: 201 },
+        { status: 201 }
     );
     res.headers.append(
         "Set-Cookie",
-        `${EPHEMERAL_CODE_COOKIE_NAME}=;Path=/;HttpOnly;Secure=true;SameSite=lax;Expires=Thu, 01 Jan 1970 00:00:00 GMT`,
+        `${EPHEMERAL_CODE_COOKIE_NAME}=;Path=/;HttpOnly;Secure=true;SameSite=lax;Expires=Thu, 01 Jan 1970 00:00:00 GMT`
     );
     return res;
 };
@@ -257,7 +276,7 @@ export const ResetPassword = async (
     internal: {
         usersCollectionSlug: string;
     },
-    request: PayloadRequest,
+    request: PayloadRequest
 ) => {
     const { payload } = request;
     const cookies = parseCookies(request.headers);
@@ -301,13 +320,17 @@ export const ResetPassword = async (
         body.currentPassword,
         user["hashedPassword"],
         user["salt"],
-        user["hashIterations"],
+        user["hashIterations"]
     );
     if (!isVerifed) {
         return new InvalidCredentials();
     }
 
-    const { hash: hashedPassword, salt, iterations } = await hashPassword(body.newPassword);
+    const {
+        hash: hashedPassword,
+        salt,
+        iterations,
+    } = await hashPassword(body.newPassword);
 
     await payload.update({
         collection: internal.usersCollectionSlug as any,
@@ -334,7 +357,7 @@ export const ResetPassword = async (
         }),
         {
             status: 201,
-        },
+        }
     );
     return res;
 };

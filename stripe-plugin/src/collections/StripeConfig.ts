@@ -7,7 +7,9 @@ export type StripConfigProps = {
     };
 };
 
-export const StripeConfig = ({ overrides }: StripConfigProps): CollectionConfig => ({
+export const StripeConfig = ({
+    overrides,
+}: StripConfigProps): CollectionConfig => ({
     slug: "stripe-settings",
     access: {
         ...overrides?.access,

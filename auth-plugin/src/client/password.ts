@@ -1,134 +1,134 @@
-import { AuthPluginOutput } from "../types"
+import { AuthPluginOutput } from "../types";
 
 interface BaseOptions {
-  name: string
+    name: string;
 }
 
 export interface PasswordSigninPayload {
-  email: string
-  password: string
+    email: string;
+    password: string;
 }
 export const passwordSignin = async (
-  opts: BaseOptions,
-  payload: PasswordSigninPayload,
+    opts: BaseOptions,
+    payload: PasswordSigninPayload
 ): Promise<AuthPluginOutput> => {
-  const response = await fetch(`/api/${opts.name}/auth/signin`, {
-    method: "POST",
-    body: JSON.stringify(payload),
-  })
+    const response = await fetch(`/api/${opts.name}/auth/signin`, {
+        method: "POST",
+        body: JSON.stringify(payload),
+    });
 
-  const { data, message, kind, isError, isSuccess } =
-    (await response.json()) as AuthPluginOutput
-  return {
-    data,
-    message,
-    kind,
-    isError,
-    isSuccess,
-  }
-}
+    const { data, message, kind, isError, isSuccess } =
+        (await response.json()) as AuthPluginOutput;
+    return {
+        data,
+        message,
+        kind,
+        isError,
+        isSuccess,
+    };
+};
 
 export interface PasswordSignupPayload {
-  email: string
-  password: string
-  allowAutoSignin?: boolean
-  profile?: Record<string, unknown>
+    email: string;
+    password: string;
+    allowAutoSignin?: boolean;
+    profile?: Record<string, unknown>;
 }
 
 export const passwordSignup = async (
-  opts: BaseOptions,
-  payload: PasswordSignupPayload,
+    opts: BaseOptions,
+    payload: PasswordSignupPayload
 ): Promise<AuthPluginOutput> => {
-  const response = await fetch(`/api/${opts.name}/auth/signup`, {
-    method: "POST",
-    body: JSON.stringify(payload),
-  })
+    const response = await fetch(`/api/${opts.name}/auth/signup`, {
+        method: "POST",
+        body: JSON.stringify(payload),
+    });
 
-  const { data, message, kind, isError, isSuccess } =
-    (await response.json()) as AuthPluginOutput
-  return {
-    data,
-    message,
-    kind,
-    isError,
-    isSuccess,
-  }
-}
+    const { data, message, kind, isError, isSuccess } =
+        (await response.json()) as AuthPluginOutput;
+    return {
+        data,
+        message,
+        kind,
+        isError,
+        isSuccess,
+    };
+};
 
 export interface ForgotPasswordPayload {
-  email: string
+    email: string;
 }
 export const forgotPassword = async (
-  opts: BaseOptions,
-  payload: ForgotPasswordPayload,
+    opts: BaseOptions,
+    payload: ForgotPasswordPayload
 ): Promise<AuthPluginOutput> => {
-  const response = await fetch(
-    `/api/${opts.name}/auth/forgot-password?stage=init`,
-    {
-      method: "POST",
-      body: JSON.stringify(payload),
-    },
-  )
+    const response = await fetch(
+        `/api/${opts.name}/auth/forgot-password?stage=init`,
+        {
+            method: "POST",
+            body: JSON.stringify(payload),
+        }
+    );
 
-  const { data, message, kind, isError, isSuccess } =
-    (await response.json()) as AuthPluginOutput
-  return {
-    data,
-    message,
-    kind,
-    isError,
-    isSuccess,
-  }
-}
+    const { data, message, kind, isError, isSuccess } =
+        (await response.json()) as AuthPluginOutput;
+    return {
+        data,
+        message,
+        kind,
+        isError,
+        isSuccess,
+    };
+};
 
 export interface PasswordRecoverPayload {
-  email: string
-  password: string
-  code: string
+    email: string;
+    password: string;
+    code: string;
 }
 export const passwordRecover = async (
-  opts: BaseOptions,
-  payload: PasswordRecoverPayload,
+    opts: BaseOptions,
+    payload: PasswordRecoverPayload
 ): Promise<AuthPluginOutput> => {
-  const response = await fetch(
-    `/api/${opts.name}/auth/forgot-password?stage=verify`,
-    {
-      method: "POST",
-      body: JSON.stringify(payload),
-    },
-  )
+    const response = await fetch(
+        `/api/${opts.name}/auth/forgot-password?stage=verify`,
+        {
+            method: "POST",
+            body: JSON.stringify(payload),
+        }
+    );
 
-  const { data, message, kind, isError, isSuccess } =
-    (await response.json()) as AuthPluginOutput
-  return {
-    data,
-    message,
-    kind,
-    isError,
-    isSuccess,
-  }
-}
+    const { data, message, kind, isError, isSuccess } =
+        (await response.json()) as AuthPluginOutput;
+    return {
+        data,
+        message,
+        kind,
+        isError,
+        isSuccess,
+    };
+};
 
 export interface PasswordResetPayload {
-  email: string
-  password: string
+    email: string;
+    password: string;
 }
 export const passwordReset = async (
-  opts: BaseOptions,
-  payload: PasswordResetPayload,
+    opts: BaseOptions,
+    payload: PasswordResetPayload
 ): Promise<AuthPluginOutput> => {
-  const response = await fetch(`/api/${opts.name}/auth/reset-password`, {
-    method: "POST",
-    body: JSON.stringify(payload),
-  })
+    const response = await fetch(`/api/${opts.name}/auth/reset-password`, {
+        method: "POST",
+        body: JSON.stringify(payload),
+    });
 
-  const { data, message, kind, isError, isSuccess } =
-    (await response.json()) as AuthPluginOutput
-  return {
-    data,
-    message,
-    kind,
-    isError,
-    isSuccess,
-  }
-}
+    const { data, message, kind, isError, isSuccess } =
+        (await response.json()) as AuthPluginOutput;
+    return {
+        data,
+        message,
+        kind,
+        isError,
+        isSuccess,
+    };
+};

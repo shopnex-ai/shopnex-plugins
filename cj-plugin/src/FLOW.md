@@ -1,4 +1,3 @@
-
 1. User going to /plugins/cj-plugin page
 2. User pass email and password (API token) of cj account
 3. User add link of cj product page
@@ -16,4 +15,3 @@
 
 1. Go to /plugins page
 2. Find the plugin and click install
-

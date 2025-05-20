@@ -25,23 +25,31 @@ export const installDbDependencies = async (dbType: string) => {
     if (dbDeps.length > 0) {
         const depsString = dbDeps.join(" ");
         const spinner = ora(
-            `Installing ${chalk.cyan(dbName)} specific dependencies (${chalk.dim(depsString)})...`,
+            `Installing ${chalk.cyan(dbName)} specific dependencies (${chalk.dim(depsString)})...`
         ).start();
         const command = `pnpm add ${depsString}`;
         try {
             execSync(command, { stdio: "pipe" });
-            spinner.succeed(chalk.green(`${dbName} dependencies installed successfully!`));
+            spinner.succeed(
+                chalk.green(`${dbName} dependencies installed successfully!`)
+            );
         } catch (error: any) {
-            spinner.fail(chalk.red(`Failed to install ${dbName} dependencies.`));
-            console.error(chalk.red(error?.stderr?.toString() || error?.message || error));
-            console.error(chalk.yellow(`Please try running "${command}" manually.`));
+            spinner.fail(
+                chalk.red(`Failed to install ${dbName} dependencies.`)
+            );
+            console.error(
+                chalk.red(error?.stderr?.toString() || error?.message || error)
+            );
+            console.error(
+                chalk.yellow(`Please try running "${command}" manually.`)
+            );
             process.exit(1);
         }
     } else {
         console.log(
             chalk.yellow(
-                `No specific database dependencies needed for ${dbName} based on script logic.`,
-            ),
+                `No specific database dependencies needed for ${dbName} based on script logic.`
+            )
         );
     }
 };

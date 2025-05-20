@@ -10,7 +10,11 @@ interface Args {
     };
 }
 
-export const getFields = ({ collection, pluginConfig, syncConfig }: Args): Field[] => {
+export const getFields = ({
+    collection,
+    pluginConfig,
+    syncConfig,
+}: Args): Field[] => {
     const stripeIDField: Field = {
         name: "stripeID",
         type: "text",
@@ -48,7 +52,12 @@ export const getFields = ({ collection, pluginConfig, syncConfig }: Args): Field
         },
     };
 
-    const fields = [...collection.fields, stripeIDField, skipSyncField, docUrlField];
+    const fields = [
+        ...collection.fields,
+        stripeIDField,
+        skipSyncField,
+        docUrlField,
+    ];
 
     return fields;
 };

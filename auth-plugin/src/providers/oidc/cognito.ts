@@ -1,12 +1,12 @@
 import type {
-  AccountInfo,
-  OIDCProviderConfig,
-  OAuthBaseProviderConfig,
-} from "../../types.js"
+    AccountInfo,
+    OIDCProviderConfig,
+    OAuthBaseProviderConfig,
+} from "../../types.js";
 
 interface CognitoAuthConfig extends OAuthBaseProviderConfig {
-  domain: string
-  region: string
+    domain: string;
+    region: string;
 }
 
 /**
@@ -63,24 +63,24 @@ interface CognitoAuthConfig extends OAuthBaseProviderConfig {
  */
 
 function CognitoAuthProvider(config: CognitoAuthConfig): OIDCProviderConfig {
-  const { domain, region, ...restConfig } = config
-  return {
-    ...restConfig,
-    id: "cognito",
-    scope: "email openid profile",
-    issuer: `https://${domain}/${region}`,
-    name: "Congnito",
-    algorithm: "oidc",
-    kind: "oauth",
-    profile: (profile): AccountInfo => {
-      return {
-        sub: profile.sub as string,
-        name: profile.name as string,
-        email: profile.email as string,
-        picture: profile.picture as string,
-      }
-    },
-  }
+    const { domain, region, ...restConfig } = config;
+    return {
+        ...restConfig,
+        id: "cognito",
+        scope: "email openid profile",
+        issuer: `https://${domain}/${region}`,
+        name: "Congnito",
+        algorithm: "oidc",
+        kind: "oauth",
+        profile: (profile): AccountInfo => {
+            return {
+                sub: profile.sub as string,
+                name: profile.name as string,
+                email: profile.email as string,
+                picture: profile.picture as string,
+            };
+        },
+    };
 }
 
-export default CognitoAuthProvider
+export default CognitoAuthProvider;

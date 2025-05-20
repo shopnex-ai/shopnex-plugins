@@ -1,10 +1,10 @@
 import type {
-  AccountInfo,
-  OIDCProviderConfig,
-  OAuthBaseProviderConfig,
-} from "../../types"
+    AccountInfo,
+    OIDCProviderConfig,
+    OAuthBaseProviderConfig,
+} from "../../types";
 
-type GitLabAuthConfig = OAuthBaseProviderConfig
+type GitLabAuthConfig = OAuthBaseProviderConfig;
 
 /**
  * Add GitLab OIDC Provider
@@ -60,24 +60,24 @@ type GitLabAuthConfig = OAuthBaseProviderConfig
  */
 
 function GitLabAuthProvider(config: GitLabAuthConfig): OIDCProviderConfig {
-  const algorithm = "oidc"
-  return {
-    ...config,
-    id: "gitlab",
-    scope: "openid email profile",
-    issuer: "https://gitlab.com",
-    name: "GitLab",
-    algorithm,
-    kind: "oauth",
-    profile: (profile): AccountInfo => {
-      return {
-        sub: profile.sub as string,
-        name: profile.name as string,
-        email: profile.email as string,
-        picture: profile.picture as string,
-      }
-    },
-  }
+    const algorithm = "oidc";
+    return {
+        ...config,
+        id: "gitlab",
+        scope: "openid email profile",
+        issuer: "https://gitlab.com",
+        name: "GitLab",
+        algorithm,
+        kind: "oauth",
+        profile: (profile): AccountInfo => {
+            return {
+                sub: profile.sub as string,
+                name: profile.name as string,
+                email: profile.email as string,
+                picture: profile.picture as string,
+            };
+        },
+    };
 }
 
-export default GitLabAuthProvider
+export default GitLabAuthProvider;

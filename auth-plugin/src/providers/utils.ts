@@ -1,10 +1,10 @@
-import { ProviderAlreadyExists } from "../core/errors/consoleErrors"
+import { ProviderAlreadyExists } from "../core/errors/consoleErrors";
 import {
-  ProvidersConfig,
-  OAuthProviderConfig,
-  PasskeyProviderConfig,
-  PasswordProviderConfig,
-} from "../types"
+    ProvidersConfig,
+    OAuthProviderConfig,
+    PasskeyProviderConfig,
+    PasswordProviderConfig,
+} from "../types";
 
 /**
  * Reducer function to extract the OAuth providers
@@ -14,18 +14,18 @@ import {
  * @returns {Record<string, OAuthProviderConfig>}
  */
 export function getOAuthProviders(
-  providers: ProvidersConfig[],
+    providers: ProvidersConfig[]
 ): Record<string, OAuthProviderConfig> {
-  const records: Record<string, OAuthProviderConfig> = {}
-  providers.map((provider: ProvidersConfig) => {
-    if (records[provider.id]) {
-      throw new ProviderAlreadyExists()
-    }
-    if (provider.kind === "oauth") {
-      records[provider.id] = provider
-    }
-  })
-  return records
+    const records: Record<string, OAuthProviderConfig> = {};
+    providers.map((provider: ProvidersConfig) => {
+        if (records[provider.id]) {
+            throw new ProviderAlreadyExists();
+        }
+        if (provider.kind === "oauth") {
+            records[provider.id] = provider;
+        }
+    });
+    return records;
 }
 
 /**
@@ -36,15 +36,15 @@ export function getOAuthProviders(
  * @returns {(PasskeyProviderConfig | null)}
  */
 export function getPasskeyProvider(
-  providers: ProvidersConfig[],
+    providers: ProvidersConfig[]
 ): PasskeyProviderConfig | null {
-  const passkeyProvider = providers.find(
-    (provider) => provider.kind === "passkey",
-  )
-  if (passkeyProvider) {
-    return passkeyProvider
-  }
-  return null
+    const passkeyProvider = providers.find(
+        (provider) => provider.kind === "passkey"
+    );
+    if (passkeyProvider) {
+        return passkeyProvider;
+    }
+    return null;
 }
 
 /**
@@ -53,11 +53,11 @@ export function getPasskeyProvider(
  * @internal
  */
 export function getPasswordProvider(
-  providers: ProvidersConfig[],
+    providers: ProvidersConfig[]
 ): PasswordProviderConfig | null {
-  const provider = providers.find((provider) => provider.kind === "password")
-  if (provider) {
-    return provider
-  }
-  return null
+    const provider = providers.find((provider) => provider.kind === "password");
+    if (provider) {
+        return provider;
+    }
+    return null;
 }

@@ -1,8 +1,8 @@
 /* Replace '.plugin-edit-view__textarea' with your actual container class */
 .plugin-edit-view__textarea {
     /* Using theme variables for text and background */
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif,
-        "Apple Color Emoji", "Segoe UI Emoji";
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica,
+        Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
     font-size: 16px;
     line-height: 1.6;
     color: var(--theme-elevation-800); /* Primary text color */
@@ -61,7 +61,7 @@
 
 .plugin-edit-view__textarea a {
     color: var(--theme-elevation-800);
-    opacity: .8;
+    opacity: 0.8;
 }
 
 .plugin-edit-view__textarea a:hover {
@@ -95,7 +95,8 @@
 
 /* Inline Code */
 .plugin-edit-view__textarea code {
-    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier,
+        monospace;
     font-size: 85%;
     padding: 0.2em 0.4em;
     margin: 0;
@@ -155,7 +156,9 @@
     height: 0.25em;
     padding: 0;
     margin: 24px 0;
-    background-color: var(--theme-elevation-200); /* Use a slightly darker elevation for fill */
+    background-color: var(
+        --theme-elevation-200
+    ); /* Use a slightly darker elevation for fill */
     border: 0;
 }
 
@@ -194,7 +197,9 @@
 .plugin-edit-view__textarea img {
     max-width: 100%;
     box-sizing: content-box;
-    background-color: var(--theme-elevation-0); /* Background for transparency */
+    background-color: var(
+        --theme-elevation-0
+    ); /* Background for transparency */
 }
 
 /* Bold and Italic */

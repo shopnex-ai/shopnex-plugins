@@ -11,8 +11,13 @@ const sleep = (ms = 200) => new Promise((resolve) => setTimeout(resolve, ms));
  * @param spinnerText Text to show in the spinner
  * @returns {Promise<boolean>} True if the command succeeded, false otherwise.
  */
-export const runProjectCommand = async (command: string, spinnerText: string): Promise<void> => {
-    const spinner = ora(`${spinnerText} (Running: ${chalk.cyan(command)})...`).start();
+export const runProjectCommand = async (
+    command: string,
+    spinnerText: string
+): Promise<void> => {
+    const spinner = ora(
+        `${spinnerText} (Running: ${chalk.cyan(command)})...`
+    ).start();
     try {
         // execSync is simpler for commands that should finish relatively quickly.
         // Use stdio: 'pipe' to capture output/errors without printing them raw.
@@ -32,7 +37,11 @@ export const runProjectCommand = async (command: string, spinnerText: string): P
             console.error(chalk.redBright(error.message)); // Fallback if no stderr
         }
         console.error(chalk.red(`--- End Error Output ---`));
-        console.log(chalk.yellow(`\nYou might need to run "${command}" manually to fix issues.`));
+        console.log(
+            chalk.yellow(
+                `\nYou might need to run "${command}" manually to fix issues.`
+            )
+        );
         process.exit(1);
     }
 };

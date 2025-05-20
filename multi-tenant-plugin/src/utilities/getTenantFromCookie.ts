@@ -1,5 +1,5 @@
-import { parseCookies } from 'payload'
-import { isNumber } from 'payload/shared'
+import { parseCookies } from "payload";
+import { isNumber } from "payload/shared";
 
 /**
  * A function that takes request headers and an idType and returns the current tenant ID from the cookie
@@ -9,14 +9,14 @@ import { isNumber } from 'payload/shared'
  * @returns string | number | null
  */
 export function getTenantFromCookie(
-  headers: Headers,
-  idType: 'number' | 'text',
+    headers: Headers,
+    idType: "number" | "text"
 ): null | number | string {
-  const cookies = parseCookies(headers)
-  const selectedTenant = cookies.get('payload-tenant') || null
-  return selectedTenant
-    ? idType === 'number' && isNumber(selectedTenant)
-      ? parseFloat(selectedTenant)
-      : selectedTenant
-    : null
+    const cookies = parseCookies(headers);
+    const selectedTenant = cookies.get("payload-tenant") || null;
+    return selectedTenant
+        ? idType === "number" && isNumber(selectedTenant)
+            ? parseFloat(selectedTenant)
+            : selectedTenant
+        : null;
 }

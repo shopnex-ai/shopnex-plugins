@@ -46,11 +46,19 @@ export const tenantField = ({
                     payload: req.payload,
                 });
                 if (!value) {
-                    const tenantFromCookie = getTenantFromCookie(req.headers, idType);
+                    const tenantFromCookie = getTenantFromCookie(
+                        req.headers,
+                        idType
+                    );
                     if (tenantFromCookie) {
                         return tenantFromCookie;
                     }
-                    throw new APIError("You must select a tenant", 400, null, true);
+                    throw new APIError(
+                        "You must select a tenant",
+                        400,
+                        null,
+                        true
+                    );
                 }
 
                 return idType === "number" ? parseFloat(value) : value;

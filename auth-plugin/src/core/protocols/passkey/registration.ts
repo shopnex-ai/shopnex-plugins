@@ -12,7 +12,7 @@ import { hashCode } from "../../utils/hash";
 
 export async function GeneratePasskeyRegistration(
     request: PayloadRequest,
-    rpID: string,
+    rpID: string
 ): Promise<Response> {
     const { data } = (await request.json?.()) as { data: { email: string } };
 
@@ -32,7 +32,7 @@ export async function GeneratePasskeyRegistration(
     const cookieMaxage = new Date(Date.now() + 300 * 1000);
     const cookies: string[] = [];
     cookies.push(
-        `__session-webpk-challenge=${options.challenge};Path=/;HttpOnly;SameSite=lax;Expires=${cookieMaxage.toUTCString()}`,
+        `__session-webpk-challenge=${options.challenge};Path=/;HttpOnly;SameSite=lax;Expires=${cookieMaxage.toUTCString()}`
     );
     const res = new Response(JSON.stringify({ options }), { status: 201 });
     cookies.forEach((cookie) => {
@@ -44,7 +44,7 @@ export async function GeneratePasskeyRegistration(
 export async function VerifyPasskeyRegistration(
     request: PayloadRequest,
     rpID: string,
-    session_callback: (accountInfo: AccountInfo) => Promise<Response>,
+    session_callback: (accountInfo: AccountInfo) => Promise<Response>
 ): Promise<Response> {
     try {
         const parsedCookies = parseCookies(request.headers);

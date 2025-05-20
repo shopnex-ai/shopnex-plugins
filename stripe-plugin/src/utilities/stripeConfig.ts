@@ -10,11 +10,9 @@ const tenantCredentialsMap = new Map<string, Credentials>();
 
 export const getCurrentAccessToken = async () => {
     // const shopId = (await cookies()).get("shopId")?.value;
-
     // if (!shopId) {
     //     throw new Error("No shopId cookie found");
     // }
-
     // const accessToken = await getTenantSecretKey(shopId);
     // return accessToken;
 };

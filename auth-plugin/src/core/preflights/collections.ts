@@ -1,20 +1,20 @@
-import { CollectionConfig } from "payload"
+import { CollectionConfig } from "payload";
 import {
-  InvalidCollectionSlug,
-  MissingCollections,
-} from "../errors/consoleErrors"
+    InvalidCollectionSlug,
+    MissingCollections,
+} from "../errors/consoleErrors";
 
 export function preflightCollectionCheck(
-  slugs: string[],
-  collections: CollectionConfig[] | undefined,
+    slugs: string[],
+    collections: CollectionConfig[] | undefined
 ) {
-  if (!collections?.length) {
-    throw new MissingCollections()
-  }
-  slugs.forEach((slug) => {
-    if (!collections.some((c) => c.slug === slug)) {
-      throw new InvalidCollectionSlug()
+    if (!collections?.length) {
+        throw new MissingCollections();
     }
-  })
-  return
+    slugs.forEach((slug) => {
+        if (!collections.some((c) => c.slug === slug)) {
+            throw new InvalidCollectionSlug();
+        }
+    });
+    return;
 }

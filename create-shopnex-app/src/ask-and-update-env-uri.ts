@@ -9,7 +9,10 @@ import crypto from "crypto";
 // Assuming sleep is available (either defined here or imported)
 const sleep = (ms = 200) => new Promise((resolve) => setTimeout(resolve, ms));
 
-export const askAndUpdateEnvUri = async (projectPath: string, dbType: string) => {
+export const askAndUpdateEnvUri = async (
+    projectPath: string,
+    dbType: string
+) => {
     const envPath = path.join(projectPath, ".env");
     let envContent = "";
     let envExisted = fs.existsSync(envPath);
@@ -49,7 +52,10 @@ export const askAndUpdateEnvUri = async (projectPath: string, dbType: string) =>
 
         if (secretPlaceholderRegex.test(envContent)) {
             const newSecret = crypto.randomBytes(32).toString("hex"); // Generate 32 random bytes -> 64 hex chars
-            envContent = envContent.replace(secretPlaceholderRegex, `PAYLOAD_SECRET=${newSecret}`);
+            envContent = envContent.replace(
+                secretPlaceholderRegex,
+                `PAYLOAD_SECRET=${newSecret}`
+            );
             spinner.text = `Generated and set new ${chalk.cyan("PAYLOAD_SECRET")}.`;
             secretUpdatedOrHandled = true;
             secretJustGenerated = true;
@@ -62,10 +68,13 @@ export const askAndUpdateEnvUri = async (projectPath: string, dbType: string) =>
             // Placeholder not found and no secret exists at all in the current content
             const newSecret = crypto.randomBytes(32).toString("hex");
             spinner.warn(
-                chalk.yellow(`${chalk.cyan("PAYLOAD_SECRET")} not found. Adding generated secret.`),
+                chalk.yellow(
+                    `${chalk.cyan("PAYLOAD_SECRET")} not found. Adding generated secret.`
+                )
             );
             await sleep();
-            const separator = envContent.length > 0 && !envContent.endsWith("\n") ? "\n" : "";
+            const separator =
+                envContent.length > 0 && !envContent.endsWith("\n") ? "\n" : "";
             envContent += `${separator}PAYLOAD_SECRET=${newSecret}\n`; // Append if missing entirely
             secretUpdatedOrHandled = true;
             secretJustGenerated = true;
@@ -81,12 +90,16 @@ export const askAndUpdateEnvUri = async (projectPath: string, dbType: string) =>
                 spinner.text = `Saved ${chalk.cyan(".env")} with updated PAYLOAD_SECRET.`;
                 await sleep();
             }
-            spinner.succeed(chalk.green(`Processed ${chalk.cyan(".env")} for SQLite.`));
-            console.log(chalk.blue(`\nSkipping Database URI prompt for SQLite.`));
+            spinner.succeed(
+                chalk.green(`Processed ${chalk.cyan(".env")} for SQLite.`)
+            );
+            console.log(
+                chalk.blue(`\nSkipping Database URI prompt for SQLite.`)
+            );
             console.log(
                 chalk.yellow(
-                    `  ${chalk.bold("Reminder:")} Check ${chalk.cyan(".env")} for the SQLite path (default: ${chalk.dim("file:./payload.db")}) and ensure PAYLOAD_SECRET is set.`,
-                ),
+                    `  ${chalk.bold("Reminder:")} Check ${chalk.cyan(".env")} for the SQLite path (default: ${chalk.dim("file:./payload.db")}) and ensure PAYLOAD_SECRET is set.`
+                )
             );
             return; // Do not prompt for URI
         }
@@ -94,14 +107,17 @@ export const askAndUpdateEnvUri = async (projectPath: string, dbType: string) =>
         // --- Proceed with URI prompt for Postgres/Mongo ---
         spinner.stop(); // Stop spinner before prompt
         console.log(
-            chalk.blue(`\nPlease provide the Database Connection URI for ${chalk.cyan(dbType)}.`),
+            chalk.blue(
+                `\nPlease provide the Database Connection URI for ${chalk.cyan(dbType)}.`
+            )
         );
         let expectedFormat = "";
         if (dbType === "postgres") {
             expectedFormat = "postgresql://USER:PASSWORD@HOST:PORT/DATABASE";
         } else {
             // mongo
-            expectedFormat = "mongodb+srv://USER:PASSWORD@CLUSTER_URL/DB or mongodb://HOST:PORT/DB";
+            expectedFormat =
+                "mongodb+srv://USER:PASSWORD@CLUSTER_URL/DB or mongodb://HOST:PORT/DB";
         }
         console.log(chalk.dim(`  Expected format: ${expectedFormat}`));
 
@@ -116,7 +132,10 @@ export const askAndUpdateEnvUri = async (projectPath: string, dbType: string) =>
                         return "Database URI cannot be empty.";
                     }
                     // Basic format check (optional but helpful)
-                    if (dbType === "postgres" && !input.startsWith("postgresql://")) {
+                    if (
+                        dbType === "postgres" &&
+                        !input.startsWith("postgresql://")
+                    ) {
                         return "PostgreSQL URI should start with postgresql://";
                     }
                     if (
@@ -131,7 +150,9 @@ export const askAndUpdateEnvUri = async (projectPath: string, dbType: string) =>
             },
         ]);
 
-        spinner.start(`Updating ${chalk.cyan("DATABASE_URI")} in ${chalk.cyan(".env")}...`); // Restart spinner
+        spinner.start(
+            `Updating ${chalk.cyan("DATABASE_URI")} in ${chalk.cyan(".env")}...`
+        ); // Restart spinner
         await sleep();
         const uriLine = `DATABASE_URI=${dbUri}`;
         const uriRegex = /^DATABASE_URI=.*$/m; // Regex to find existing URI line (multiline)
@@ -146,17 +167,26 @@ export const askAndUpdateEnvUri = async (projectPath: string, dbType: string) =>
         // If line wasn't found, append it
         if (!uriFoundAndReplaced) {
             // Add a newline before appending if content exists and doesn't end with newline
-            const separator = envContent.length > 0 && !envContent.endsWith("\n") ? "\n" : "";
+            const separator =
+                envContent.length > 0 && !envContent.endsWith("\n") ? "\n" : "";
             envContent += separator + uriLine + "\n";
         }
 
         // Write the final content (with potentially updated secret and URI) back to the file
         fs.writeFileSync(envPath, envContent);
-        spinner.succeed(chalk.green(`Successfully processed ${chalk.cyan(".env")} file.`));
+        spinner.succeed(
+            chalk.green(`Successfully processed ${chalk.cyan(".env")} file.`)
+        );
     } catch (error: any) {
-        spinner.fail(chalk.red(`Failed during ${chalk.cyan(".env")} processing.`));
+        spinner.fail(
+            chalk.red(`Failed during ${chalk.cyan(".env")} processing.`)
+        );
         console.error(chalk.red(error?.message || error));
-        console.log(chalk.yellow(`Please check your ${chalk.cyan(".env")} file manually.`));
+        console.log(
+            chalk.yellow(
+                `Please check your ${chalk.cyan(".env")} file manually.`
+            )
+        );
         // Decide if you want to exit or continue based on overall script logic
     }
 };

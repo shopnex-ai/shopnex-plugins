@@ -1,71 +1,78 @@
-'use client'
+"use client";
 
-import type React from 'react'
+import type React from "react";
 
-import { useDocumentInfo, useField, useListQuery, useSelection } from '@payloadcms/ui'
-import { useEffect } from 'react'
+import {
+    useDocumentInfo,
+    useField,
+    useListQuery,
+    useSelection,
+} from "@payloadcms/ui";
+import { useEffect } from "react";
 
-import './index.scss'
+import "./index.scss";
 
 export const WhereField: React.FC = () => {
-  const { setValue: setSelectionToUseValue, value: selectionToUseValue } = useField({
-    path: 'selectionToUse',
-  })
-  const { setValue } = useField({ path: 'where' })
-  const { selectAll, selected } = useSelection()
-  const { query } = useListQuery()
-  const { id } = useDocumentInfo()
+    const { setValue: setSelectionToUseValue, value: selectionToUseValue } =
+        useField({
+            path: "selectionToUse",
+        });
+    const { setValue } = useField({ path: "where" });
+    const { selectAll, selected } = useSelection();
+    const { query } = useListQuery();
+    const { id } = useDocumentInfo();
 
-  // setValue based on selectionToUseValue
-  useEffect(() => {
-    if (id) {
-      return
-    }
-
-    if (selectionToUseValue === 'currentFilters' && query && query?.where) {
-      setValue(query.where)
-    }
-
-    if (selectionToUseValue === 'currentSelection' && selected) {
-      const ids: (string | number)[] = []
-
-      for (const [key, value] of selected) {
-        if (value) {
-          ids.push(key)
+    // setValue based on selectionToUseValue
+    useEffect(() => {
+        if (id) {
+            return;
         }
-      }
 
-      setValue({
-        id: {
-          in: ids,
-        },
-      })
-    }
+        if (selectionToUseValue === "currentFilters" && query && query?.where) {
+            setValue(query.where);
+        }
 
-    if (selectionToUseValue === 'all' && selected) {
-      setValue({})
-    }
+        if (selectionToUseValue === "currentSelection" && selected) {
+            const ids: (string | number)[] = [];
 
-    // Selected set a where query with IDs
-  }, [id, selectionToUseValue, query, selected, setValue])
+            for (const [key, value] of selected) {
+                if (value) {
+                    ids.push(key);
+                }
+            }
 
-  // handles default value of selectionToUse
-  useEffect(() => {
-    if (id) {
-      return
-    }
-    let defaultSelection: 'all' | 'currentFilters' | 'currentSelection' = 'all'
+            setValue({
+                id: {
+                    in: ids,
+                },
+            });
+        }
 
-    if (['allInPage', 'some'].includes(selectAll)) {
-      defaultSelection = 'currentSelection'
-    }
+        if (selectionToUseValue === "all" && selected) {
+            setValue({});
+        }
 
-    if (defaultSelection === 'all' && query?.where) {
-      defaultSelection = 'currentFilters'
-    }
+        // Selected set a where query with IDs
+    }, [id, selectionToUseValue, query, selected, setValue]);
 
-    setSelectionToUseValue(defaultSelection)
-  }, [id, query, selectAll, setSelectionToUseValue])
+    // handles default value of selectionToUse
+    useEffect(() => {
+        if (id) {
+            return;
+        }
+        let defaultSelection: "all" | "currentFilters" | "currentSelection" =
+            "all";
 
-  return null
-}
+        if (["allInPage", "some"].includes(selectAll)) {
+            defaultSelection = "currentSelection";
+        }
+
+        if (defaultSelection === "all" && query?.where) {
+            defaultSelection = "currentFilters";
+        }
+
+        setSelectionToUseValue(defaultSelection);
+    }, [id, query, selectAll, setSelectionToUseValue]);
+
+    return null;
+};

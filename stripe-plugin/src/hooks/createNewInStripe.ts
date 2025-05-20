@@ -15,10 +15,12 @@ export type CollectionBeforeValidateHookWithArgs = (
     args: {
         collection?: CollectionConfig;
         pluginConfig?: StripePluginConfig;
-    } & HookArgsWithCustomCollection,
+    } & HookArgsWithCustomCollection
 ) => Promise<Partial<any>>;
 
-export const createNewInStripe: CollectionBeforeValidateHookWithArgs = async (args) => {
+export const createNewInStripe: CollectionBeforeValidateHookWithArgs = async (
+    args
+) => {
     const { collection, data, operation, pluginConfig, req } = args;
 
     const { logs, sync } = pluginConfig || {};
@@ -44,7 +46,9 @@ export const createNewInStripe: CollectionBeforeValidateHookWithArgs = async (ar
             dataRef.skipSync = false;
 
             const { slug: collectionSlug } = collection || {};
-            const syncConfig = sync?.find((conf) => conf.collection === collectionSlug);
+            const syncConfig = sync?.find(
+                (conf) => conf.collection === collectionSlug
+            );
 
             if (syncConfig) {
                 // combine all fields of this object and match their respective values within the document
@@ -55,7 +59,7 @@ export const createNewInStripe: CollectionBeforeValidateHookWithArgs = async (ar
                         acc[stripeProperty] = dataRef[fieldPath];
                         return acc;
                     },
-                    {} as Record<string, any>,
+                    {} as Record<string, any>
                 );
 
                 syncedFields = deepen(syncedFields);
@@ -68,7 +72,7 @@ export const createNewInStripe: CollectionBeforeValidateHookWithArgs = async (ar
                 if (operation === "update") {
                     if (logs) {
                         payload.logger.info(
-                            `A '${collectionSlug}' document has changed in Payload with ID: '${data?.id}', syncing with Stripe...`,
+                            `A '${collectionSlug}' document has changed in Payload with ID: '${data?.id}', syncing with Stripe...`
                         );
                     }
 
@@ -80,12 +84,12 @@ export const createNewInStripe: CollectionBeforeValidateHookWithArgs = async (ar
                                 syncConfig.stripeResourceType
                             ]?.create(
                                 // @ts-expect-error
-                                syncedFields,
+                                syncedFields
                             );
 
                             if (logs) {
                                 payload.logger.info(
-                                    `✅ Successfully created new '${syncConfig.stripeResourceType}' resource in Stripe with ID: '${stripeResource.id}'.`,
+                                    `✅ Successfully created new '${syncConfig.stripeResourceType}' resource in Stripe with ID: '${stripeResource.id}'.`
                                 );
                             }
 
@@ -94,9 +98,12 @@ export const createNewInStripe: CollectionBeforeValidateHookWithArgs = async (ar
                             // NOTE: this is to prevent sync in the "afterChange" hook
                             dataRef.skipSync = true;
                         } catch (error: unknown) {
-                            const msg = error instanceof Error ? error.message : error;
+                            const msg =
+                                error instanceof Error ? error.message : error;
                             if (logs) {
-                                payload.logger.error(`- Error creating Stripe document: ${msg}`);
+                                payload.logger.error(
+                                    `- Error creating Stripe document: ${msg}`
+                                );
                             }
                         }
                     }
@@ -105,14 +112,14 @@ export const createNewInStripe: CollectionBeforeValidateHookWithArgs = async (ar
                 if (operation === "create") {
                     if (logs) {
                         payload.logger.info(
-                            `A new '${collectionSlug}' document was created in Payload with ID: '${data?.id}', syncing with Stripe...`,
+                            `A new '${collectionSlug}' document was created in Payload with ID: '${data?.id}', syncing with Stripe...`
                         );
                     }
 
                     try {
                         if (logs) {
                             payload.logger.info(
-                                `- Creating new '${syncConfig.stripeResourceType}' resource in Stripe...`,
+                                `- Creating new '${syncConfig.stripeResourceType}' resource in Stripe...`
                             );
                         }
 
@@ -121,12 +128,12 @@ export const createNewInStripe: CollectionBeforeValidateHookWithArgs = async (ar
                             syncConfig.stripeResourceType
                         ]?.create(
                             // @ts-expect-error
-                            syncedFields,
+                            syncedFields
                         );
 
                         if (logs) {
                             payload.logger.info(
-                                `✅ Successfully created new '${syncConfig.stripeResourceType}' resource in Stripe with ID: '${stripeResource.id}'.`,
+                                `✅ Successfully created new '${syncConfig.stripeResourceType}' resource in Stripe with ID: '${stripeResource.id}'.`
                             );
                         }
 
@@ -135,9 +142,10 @@ export const createNewInStripe: CollectionBeforeValidateHookWithArgs = async (ar
                         // IMPORTANT: this is to prevent sync in the "afterChange" hook
                         dataRef.skipSync = true;
                     } catch (error: unknown) {
-                        const msg = error instanceof Error ? error.message : error;
+                        const msg =
+                            error instanceof Error ? error.message : error;
                         throw new APIError(
-                            `Failed to create new '${syncConfig.stripeResourceType}' resource in Stripe: ${msg}`,
+                            `Failed to create new '${syncConfig.stripeResourceType}' resource in Stripe: ${msg}`
                         );
                     }
                 }

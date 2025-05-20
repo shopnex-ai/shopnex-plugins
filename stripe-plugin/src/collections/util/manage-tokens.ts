@@ -22,7 +22,10 @@ export const encryptToken = (token: TokenPayload): string => {
     const iv = crypto.randomBytes(12);
     const cipher = crypto.createCipheriv("aes-256-gcm", key, iv);
 
-    const encrypted = Buffer.concat([cipher.update(token, "utf8"), cipher.final()]);
+    const encrypted = Buffer.concat([
+        cipher.update(token, "utf8"),
+        cipher.final(),
+    ]);
 
     const tag = cipher.getAuthTag();
 
@@ -38,7 +41,7 @@ export const encryptToken = (token: TokenPayload): string => {
 export const decryptToken = (encryptedToken: string): string => {
     const key = getKey(process.env.ENCRYPTION_KEY!);
     const decoded = JSON.parse(
-        Buffer.from(encryptedToken, "base64").toString("utf8"),
+        Buffer.from(encryptedToken, "base64").toString("utf8")
     ) as EncryptedData;
 
     const iv = Buffer.from(decoded.iv, "hex");
@@ -48,7 +51,10 @@ export const decryptToken = (encryptedToken: string): string => {
     const decipher = crypto.createDecipheriv("aes-256-gcm", key, iv);
     decipher.setAuthTag(tag);
 
-    const decrypted = Buffer.concat([decipher.update(content), decipher.final()]);
+    const decrypted = Buffer.concat([
+        decipher.update(content),
+        decipher.final(),
+    ]);
 
     return decrypted.toString("utf8");
 };

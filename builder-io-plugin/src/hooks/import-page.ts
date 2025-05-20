@@ -6,7 +6,7 @@ import { modelSchema } from "./schema";
 export const importPageHook = async (
     privateApiKey: string,
     publicApiKey: string,
-    pageName: string,
+    pageName: string
 ) => {
     const apiKey = SOURCE_BUILDER_IO_PUBLIC_KEY;
     const modelName = "page";
@@ -14,7 +14,9 @@ export const importPageHook = async (
     try {
         const exists = await checkIfPageExists(pageName, publicApiKey);
         if (exists) {
-            console.log(`Page "${pageName}" already exists in destination. Skipping import.`);
+            console.log(
+                `Page "${pageName}" already exists in destination. Skipping import.`
+            );
             return;
         }
 
@@ -54,7 +56,10 @@ export const importSymbolsInit = async (privateApiKey: string) => {
     }
 };
 
-async function checkIfPageExists(pageName: string, publicApiKey: string): Promise<boolean> {
+async function checkIfPageExists(
+    pageName: string,
+    publicApiKey: string
+): Promise<boolean> {
     try {
         builder.init(publicApiKey);
         const data = await builder.get("page", {
@@ -73,30 +78,37 @@ async function checkIfPageExists(pageName: string, publicApiKey: string): Promis
     }
 }
 
-async function importPage(modelName: string, privateApiKey: string, pageContent: any) {
+async function importPage(
+    modelName: string,
+    privateApiKey: string,
+    pageContent: any
+) {
     try {
-        const response = await fetch(`https://builder.io/api/v1/write/${modelName}`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${privateApiKey}`,
-            },
-            body: JSON.stringify({
-                data: pageContent.data,
-                name: pageContent.name,
-                model: modelName,
-                published: pageContent.published ?? true,
-                query: pageContent.data?.url
-                    ? [
-                          {
-                              property: "urlPath",
-                              operator: "is",
-                              value: pageContent.data.url,
-                          },
-                      ]
-                    : [],
-            }),
-        });
+        const response = await fetch(
+            `https://builder.io/api/v1/write/${modelName}`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${privateApiKey}`,
+                },
+                body: JSON.stringify({
+                    data: pageContent.data,
+                    name: pageContent.name,
+                    model: modelName,
+                    published: pageContent.published ?? true,
+                    query: pageContent.data?.url
+                        ? [
+                              {
+                                  property: "urlPath",
+                                  operator: "is",
+                                  value: pageContent.data.url,
+                              },
+                          ]
+                        : [],
+                }),
+            }
+        );
 
         const result = await response.json();
 
@@ -110,23 +122,30 @@ async function importPage(modelName: string, privateApiKey: string, pageContent:
     }
 }
 
-async function createEmptyPage(modelName: string, privateApiKey: string, pageName: string) {
+async function createEmptyPage(
+    modelName: string,
+    privateApiKey: string,
+    pageName: string
+) {
     try {
-        const response = await fetch(`https://builder.io/api/v1/write/${modelName}`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${privateApiKey}`,
-            },
-            body: JSON.stringify({
-                data: {
-                    url: pageName,
+        const response = await fetch(
+            `https://builder.io/api/v1/write/${modelName}`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${privateApiKey}`,
                 },
-                name: pageName,
-                model: modelName,
-                published: true,
-            }),
-        });
+                body: JSON.stringify({
+                    data: {
+                        url: pageName,
+                    },
+                    name: pageName,
+                    model: modelName,
+                    published: true,
+                }),
+            }
+        );
 
         const result = await response.json();
 

@@ -1,10 +1,13 @@
-import type { SanitizedStripePluginConfig, StripeWebhookHandler } from "../types";
+import type {
+    SanitizedStripePluginConfig,
+    StripeWebhookHandler,
+} from "../types";
 
 type HandleDeleted = (
     args: {
         resourceType: string;
         syncConfig: SanitizedStripePluginConfig["sync"][0];
-    } & Parameters<StripeWebhookHandler>[0],
+    } & Parameters<StripeWebhookHandler>[0]
 ) => Promise<void>;
 
 export const handleDeleted: HandleDeleted = async (args) => {
@@ -25,7 +28,7 @@ export const handleDeleted: HandleDeleted = async (args) => {
     if (isNestedDelete) {
         if (logs) {
             payload.logger.info(
-                `- This deletion occurred on a nested field of ${resourceType}. Nested fields are not yet supported.`,
+                `- This deletion occurred on a nested field of ${resourceType}. Nested fields are not yet supported.`
             );
         }
     }
@@ -33,7 +36,7 @@ export const handleDeleted: HandleDeleted = async (args) => {
     if (!isNestedDelete) {
         if (logs) {
             payload.logger.info(
-                `- A '${resourceType}' resource was deleted in Stripe, now deleting '${collectionSlug}' document in Payload with Stripe ID: '${stripeID}'...`,
+                `- A '${resourceType}' resource was deleted in Stripe, now deleting '${collectionSlug}' document in Payload with Stripe ID: '${stripeID}'...`
             );
         }
 
@@ -54,14 +57,16 @@ export const handleDeleted: HandleDeleted = async (args) => {
             if (!foundDoc) {
                 if (logs) {
                     payload.logger.info(
-                        `- Nothing to delete, no existing document found with Stripe ID: '${stripeID}'.`,
+                        `- Nothing to delete, no existing document found with Stripe ID: '${stripeID}'.`
                     );
                 }
             }
 
             if (foundDoc) {
                 if (logs) {
-                    payload.logger.info(`- Deleting Payload document with ID: '${foundDoc.id}'...`);
+                    payload.logger.info(
+                        `- Deleting Payload document with ID: '${foundDoc.id}'...`
+                    );
                 }
 
                 try {
@@ -75,7 +80,7 @@ export const handleDeleted: HandleDeleted = async (args) => {
                     // There is no known way of preventing this from happening. In other hooks we use the `skipSync` field, but here the document is already deleted.
                     if (logs) {
                         payload.logger.info(
-                            `- ✅ Successfully deleted Payload document with ID: '${foundDoc.id}'.`,
+                            `- ✅ Successfully deleted Payload document with ID: '${foundDoc.id}'.`
                         );
                     }
                 } catch (error: unknown) {

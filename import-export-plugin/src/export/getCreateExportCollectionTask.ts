@@ -5,7 +5,9 @@ import type { CreateExportArgs } from "./createExport";
 import { createExport } from "./createExport";
 import { getFields } from "./getFields";
 
-export const getCreateCollectionExportTask = (config: Config): TaskHandler<any, never> => {
+export const getCreateCollectionExportTask = (
+    config: Config
+): TaskHandler<any, never> => {
     const inputSchema = getFields(config).concat(
         {
             name: "user",
@@ -18,7 +20,7 @@ export const getCreateCollectionExportTask = (config: Config): TaskHandler<any, 
         {
             name: "exportsCollection",
             type: "text",
-        },
+        }
     );
 
     return {
