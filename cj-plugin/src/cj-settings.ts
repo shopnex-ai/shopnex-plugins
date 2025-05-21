@@ -51,7 +51,7 @@ export const CjConfigCollection = ({
                     fields: [
                         {
                             name: "emailAddress",
-                            type: "text",
+                            type: "email",
                         },
                         encryptedField({
                             name: "apiToken",
