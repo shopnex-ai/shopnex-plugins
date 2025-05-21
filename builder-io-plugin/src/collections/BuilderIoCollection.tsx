@@ -9,6 +9,7 @@ export const BuilderIoCollection: CollectionConfig = {
     },
     admin: {
         group: "Plugins",
+        useAsTitle: "builderIoPublicKey",
     },
     fields: [
         {
