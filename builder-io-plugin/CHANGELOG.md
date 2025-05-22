@@ -1,5 +1,17 @@
 # @shopnex/stripe-plugin
 
+## 1.0.9
+
+### Patch Changes
+
+- Remove check credentials from init
+
+## 1.0.8
+
+### Patch Changes
+
+- Remove check credentials from init
+
 ## 1.0.7
 
 ### Patch Changes
