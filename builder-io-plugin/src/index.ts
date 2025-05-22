@@ -70,9 +70,6 @@ export const builderIoPlugin =
             if (incomingOnInit) {
                 await incomingOnInit(payload);
             }
-            if (!pluginConfig.privateKey || !pluginConfig.publicKey) {
-                throw new Error("Private or public API key is not set");
-            }
         };
 
         return incomingConfig;
