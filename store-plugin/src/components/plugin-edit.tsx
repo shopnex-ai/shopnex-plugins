@@ -25,14 +25,14 @@ export function PluginEditView() {
 
     const [plugin, setPlugin] = React.useState<any>(null);
 
-    const navItem = [
+    const navItems = [
         {
             label: "Plugin Space",
-            url: "/plugins-space",
+            url: "/admin/collections/plugins-space",
         },
         {
             label: plugin?.title,
-            url: `/plugins-space/plugins/${pluginId}`,
+            url: `/admin/collections/plugins-space/plugins/${pluginId}`,
         },
     ];
 
@@ -66,7 +66,7 @@ export function PluginEditView() {
 
     return (
         <>
-            <SetStepNav nav={navItem} />
+            <SetStepNav nav={navItems} />
             <Gutter className={baseClass}>
                 <div className={`${baseClass}__header`}>
                     {imageUrl ? (
