@@ -15,16 +15,16 @@ export const BuilderIoCollection: CollectionConfig = {
         {
             type: "row",
             fields: [
-                encryptedField({
-                    required: true,
-                    name: "builderIoPrivateKey",
-                    type: "text",
-                }),
                 {
                     name: "builderIoPublicKey",
                     type: "text",
                     required: true,
                 },
+                encryptedField({
+                    required: true,
+                    name: "builderIoPrivateKey",
+                    type: "text",
+                }),
             ],
         },
     ],
