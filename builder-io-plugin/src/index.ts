@@ -1,6 +1,9 @@
 import type { Config } from "payload";
 import { importPageHook, importSymbolsInit } from "./hooks/import-page";
-import { BuilderIoCollection } from "./collections/BuilderIoCollection";
+import {
+    BuilderIoCollection,
+    BuilderIoCollectionProps,
+} from "./collections/BuilderIoCollection";
 export { importSymbolsInit } from "./hooks/import-page";
 
 export interface BuilderIoConfig {
@@ -9,6 +12,7 @@ export interface BuilderIoConfig {
     privateKey?: string;
     collectionDesignSlug?: string;
     collectionPagesSlug?: string;
+    collectionOverrides?: BuilderIoCollectionProps["overrides"];
 }
 
 export const defaultConfig: BuilderIoConfig = {
@@ -17,6 +21,7 @@ export const defaultConfig: BuilderIoConfig = {
     privateKey: process.env.BUILDER_IO_PRIVATE_KEY,
     collectionDesignSlug: "design",
     collectionPagesSlug: "pages",
+    collectionOverrides: {},
 };
 
 export const builderIoPlugin =
@@ -58,7 +63,9 @@ export const builderIoPlugin =
             );
         });
 
-        incomingConfig.collections?.push(BuilderIoCollection);
+        incomingConfig.collections?.push(
+            BuilderIoCollection({ overrides: finalConfig.collectionOverrides })
+        );
 
         if (!enabled) {
             return incomingConfig;
