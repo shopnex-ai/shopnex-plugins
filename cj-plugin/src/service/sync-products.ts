@@ -14,7 +14,7 @@ import { JSDOM } from "jsdom";
 import type { ProductDetails } from "../sdk/products/product-types";
 
 import { cjSdk } from "../sdk/cj-sdk";
-import { CjData } from "../cj-settings";
+import { CjData } from "../CjCollection";
 import { retrieveAccessToken } from "./access-token";
 
 interface Product {

@@ -1,4 +1,4 @@
-import { CjData } from "../cj-settings";
+import { CjData } from "../CjCollection";
 import { getAccessToken, refreshAccessToken } from "../sdk/auth";
 
 interface TokenResponse {

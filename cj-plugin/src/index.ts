@@ -1,7 +1,7 @@
 import type { Config, SelectField } from "payload";
 import { setTenantCredentials } from "./sdk/access-token";
 import { createOrderHook } from "./service/create-order.hook";
-import { CjCollectionProps, CjConfigCollection } from "./cj-settings";
+import { CjCollectionProps, CjCollection } from "./CjCollection";
 
 interface PluginOptions {
     isEnabled?: boolean;
@@ -35,7 +35,9 @@ export const cjPlugin =
             ordersCollection.hooks.afterChange = [];
         }
         config.collections?.push(
-            CjConfigCollection({ overrides: pluginOptions.collectionOverrides })
+            CjCollection({
+                overrides: pluginOptions.collectionOverrides,
+            })
         );
         const productCollection = config.collections?.find(
             (collection) => collection.slug === "products"
