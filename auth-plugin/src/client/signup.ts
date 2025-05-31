@@ -10,3 +10,10 @@ export const appSignup = (options: BaseOptions) => {
             await passwordSignup(options, paylaod),
     };
 };
+
+export const adminSignup = () => {
+    return {
+        password: async (paylaod: PasswordSignupPayload) =>
+            await passwordSignup({ name: "admin" }, paylaod),
+    };
+};

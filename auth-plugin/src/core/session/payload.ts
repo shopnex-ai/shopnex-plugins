@@ -163,4 +163,28 @@ export class PayloadSession {
 
         return shopID;
     }
+
+    // In payload.ts, add this method
+    async passwordSessionCallback(
+        user: Pick<AccountInfo, "email"> & { id: string },
+        payload: BasePayload,
+        clientOrigin?: string
+    ) {
+        const fieldsToSign = {
+            id: user.id,
+            email: user.email,
+            collection: this.#collections.usersCollectionSlug,
+        };
+
+        let cookies: string[] = [
+            ...(await createSessionCookies(
+                `${payload.config.cookiePrefix!}-token`,
+                payload.secret,
+                fieldsToSign
+            )),
+        ];
+        cookies = invalidateOAuthCookies(cookies);
+
+        return sessionResponse(cookies, clientOrigin);
+    }
 }

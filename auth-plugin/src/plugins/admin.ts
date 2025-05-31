@@ -39,7 +39,7 @@ interface PluginOptions {
 
 export const adminAuthPlugin =
     (pluginOptions: PluginOptions): Plugin =>
-    (incomingConfig: Config): Config => {
+    async (incomingConfig: Config): Promise<Config> => {
         const config = { ...incomingConfig };
 
         if (pluginOptions.enabled === false) {
@@ -72,11 +72,15 @@ export const adminAuthPlugin =
 
         const oauthProviders = getOAuthProviders(providers);
         const passkeyProvider = getPasskeyProvider(providers);
+        const passwordProvider = providers.find(
+            (provider) => provider.kind === "password"
+        );
 
         const endpointsFactory = new EndpointsFactory("admin");
 
         let oauthEndpoints: Endpoint[] = [];
         let passkeyEndpoints: Endpoint[] = [];
+        let passwordEndpoints: Endpoint[] = [];
 
         if (Object.keys(oauthProviders).length > 0) {
             endpointsFactory.registerStrategy(
@@ -109,10 +113,97 @@ export const adminAuthPlugin =
             passkeyEndpoints = endpointsFactory.createEndpoints("passkey");
         }
 
+        if (passwordProvider) {
+            const { PasswordAuthHandlers } = await import(
+                "../core/routeHandlers/password"
+            );
+
+            passwordEndpoints.push(
+                {
+                    path: "/admin/auth/signin",
+                    method: "post",
+                    handler: async (req: PayloadRequest) => {
+                        return PasswordAuthHandlers(
+                            req,
+                            "admin",
+                            "signin",
+                            { usersCollectionSlug: config.admin?.user! },
+                            (user) =>
+                                session.passwordSessionCallback(
+                                    user,
+                                    req.payload,
+                                    req.query.origin as string
+                                ),
+                            req.payload.secret
+                        );
+                    },
+                },
+                {
+                    path: "/admin/auth/signup",
+                    method: "post",
+                    handler: async (req: PayloadRequest) => {
+                        return PasswordAuthHandlers(
+                            req,
+                            "admin",
+                            "signup",
+                            { usersCollectionSlug: config.admin?.user! },
+                            (user) =>
+                                session.passwordSessionCallback(
+                                    user,
+                                    req.payload,
+                                    req.query.origin as string
+                                ),
+                            req.payload.secret
+                        );
+                    },
+                },
+                {
+                    path: "/admin/auth/forgot-password",
+                    method: "post",
+                    handler: async (req: PayloadRequest) => {
+                        return PasswordAuthHandlers(
+                            req,
+                            "admin",
+                            "forgot-password",
+                            { usersCollectionSlug: config.admin?.user! },
+                            (user) =>
+                                session.passwordSessionCallback(
+                                    user,
+                                    req.payload,
+                                    req.query.origin as string
+                                ),
+                            req.payload.secret,
+                            req.query.stage as string
+                        );
+                    },
+                },
+                {
+                    path: "/admin/auth/reset-password",
+                    method: "post",
+                    handler: async (req: PayloadRequest) => {
+                        return PasswordAuthHandlers(
+                            req,
+                            "admin",
+                            "reset-password",
+                            { usersCollectionSlug: config.admin?.user! },
+                            (user) =>
+                                session.passwordSessionCallback(
+                                    user,
+                                    req.payload,
+                                    req.query.origin as string
+                                ),
+                            req.payload.secret
+                        );
+                    },
+                }
+            );
+        }
+
         config.endpoints = [
             ...(config.endpoints ?? []),
             ...oauthEndpoints,
             ...passkeyEndpoints,
+            ...passwordEndpoints,
         ];
         return config;
     };

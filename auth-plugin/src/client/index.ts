@@ -1,3 +1,4 @@
+import { sign } from "crypto";
 import { MissingEnv } from "../core/errors/consoleErrors";
 import {
     forgotPassword,
@@ -9,7 +10,7 @@ import {
 } from "./password";
 import { refresh } from "./refresh";
 import { adminSignin, appSignin } from "./signin";
-import { appSignup } from "./signup";
+import { adminSignup, appSignup } from "./signup";
 
 interface AppClientOptions {
     name: string;
@@ -35,5 +36,6 @@ export const appClient = (options: AppClientOptions) => {
 export const adminClient = () => {
     return {
         signin: () => adminSignin(),
+        signup: () => adminSignup(),
     };
 };

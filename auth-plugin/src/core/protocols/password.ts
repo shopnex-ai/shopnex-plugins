@@ -74,6 +74,7 @@ export const PasswordSignup = async (
     },
     sessionCallBack: (user: { id: string; email: string }) => Promise<Response>
 ) => {
+    const { logger } = request.payload;
     const body =
         request.json &&
         ((await request.json?.()) as {
@@ -106,15 +107,56 @@ export const PasswordSignup = async (
         iterations,
     } = await hashPassword(body.password);
 
+    logger.info("Creating shop", "My Shop");
+    const newShop = await payload.create({
+        collection: "shops" as any,
+        data: {
+            name: "My Shop",
+            handle: Math.random().toString(36).substring(2, 15),
+        },
+        req: request,
+    });
+    logger.debug("New shop created", newShop);
+
+    logger.info("Creating user", body.email);
     const user = await payload.create({
         collection: internal.usersCollectionSlug as any,
         data: {
             email: body.email,
-            hashedPassword: hashedPassword,
+            emailVerified: false,
+            password: hashedPassword,
             hashIterations: iterations,
             salt,
+            shops: [
+                {
+                    shop: newShop.id,
+                    roles: ["shop-admin"],
+                },
+            ],
             ...body.profile,
         },
+        showHiddenFields: true,
+        req: request,
+    });
+    logger.debug("User created", user);
+    // send verification email
+    const verificationResult = await payload.verifyEmail({
+        collection: internal.usersCollectionSlug as any,
+        token: user._verificationToken,
+    });
+
+    logger.info("Creating account entry");
+    await payload.create({
+        collection: "admins" as any,
+        data: {
+            sub: body.email,
+            issuerName: "Password",
+            user: user.id,
+            shop: newShop.id,
+            scope: "admin",
+            name: body.profile?.name || body.email.split("@")[0],
+        },
+        req: request,
     });
 
     if (body.allowAutoSignin) {
