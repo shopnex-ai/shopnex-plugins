@@ -27,11 +27,11 @@ export const TenantDetails = () => {
     }, [selectedTenantName]);
 
     const tenantDomain = useMemo(() => {
-        const domain = process.env.NEXT_PUBLIC_SERVER_URL.replace(
+        const domain = process.env.NEXT_PUBLIC_SERVER_URL?.replace(
             "https://",
             ""
         ).replace("http://", "");
-        const protocol = process.env.NEXT_PUBLIC_SERVER_URL.includes("https")
+        const protocol = process.env.NEXT_PUBLIC_SERVER_URL?.includes("https")
             ? "https://"
             : "http://";
         return `${protocol}${data.selectedTenantSlug ? data.selectedTenantSlug + "." : ""}${domain}`;
