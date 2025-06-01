@@ -27,14 +27,16 @@ export const TenantDetails = () => {
     }, [selectedTenantName]);
 
     const tenantDomain = useMemo(() => {
-        const domain = process.env.NEXT_PUBLIC_SERVER_URL?.replace(
+        const originDomain = process.env.NEXT_PUBLIC_SERVER_URL?.replace(
             "https://",
             ""
-        ).replace("http://", "");
+        )
+            .replace("http://", "")
+            .replace("app.", "");
         const protocol = process.env.NEXT_PUBLIC_SERVER_URL?.includes("https")
             ? "https://"
             : "http://";
-        return `${protocol}${data.selectedTenantSlug ? data.selectedTenantSlug + "." : ""}${domain}`;
+        return `${protocol}${data.selectedTenantSlug ? data.selectedTenantSlug + "." : ""}${originDomain}`;
     }, [data.selectedTenantSlug]);
 
     return (
