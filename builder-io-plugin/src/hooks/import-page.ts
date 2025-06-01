@@ -163,6 +163,16 @@ async function createSymbolModel({ privateKey }: { privateKey: string }) {
     const adminSDK = createAdminApiClient(privateKey);
 
     try {
+        // const models = await adminSDK.query({
+        //     models: {
+        //         id: true,
+        //         fields: true,
+        //         name: true,
+        //     },
+        // });
+        // const symbolModelExists = models.data?.models.some(
+        //     (model) => model.name === "symbol"
+        // );
         const model = await adminSDK.chain.mutation
             .addModel({ body: modelSchema })
             .execute({ id: true });

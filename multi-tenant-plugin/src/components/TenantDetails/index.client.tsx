@@ -27,7 +27,14 @@ export const TenantDetails = () => {
     }, [selectedTenantName]);
 
     const tenantDomain = useMemo(() => {
-        return `https://${data.selectedTenantSlug ? data.selectedTenantSlug + "." : ""}shopnex.ai`;
+        const domain = process.env.NEXT_PUBLIC_SERVER_URL.replace(
+            "https://",
+            ""
+        ).replace("http://", "");
+        const protocol = process.env.NEXT_PUBLIC_SERVER_URL.includes("https")
+            ? "https://"
+            : "http://";
+        return `${protocol}${data.selectedTenantSlug ? data.selectedTenantSlug + "." : ""}${domain}`;
     }, [data.selectedTenantSlug]);
 
     return (
