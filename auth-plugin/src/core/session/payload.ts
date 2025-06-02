@@ -51,9 +51,9 @@ export class PayloadSession {
             console.log("Creating user", accountInfo);
             const newUser = await payload.create({
                 collection: this.#collections.usersCollectionSlug as any,
+                disableVerificationEmail: true,
                 data: {
                     email: accountInfo.email,
-                    emailVerified: true,
                     shops: [
                         {
                             shop: newShop.id,
