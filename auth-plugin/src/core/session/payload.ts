@@ -54,6 +54,7 @@ export class PayloadSession {
                 disableVerificationEmail: true,
                 data: {
                     email: accountInfo.email,
+                    _verified: true,
                     shops: [
                         {
                             shop: newShop.id,
