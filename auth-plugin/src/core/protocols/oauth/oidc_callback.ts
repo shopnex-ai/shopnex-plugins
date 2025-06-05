@@ -45,6 +45,8 @@ export async function OIDCCallback(
             oauth.processDiscoveryResponse(issuer_url, response)
         );
 
+    request.payload.logger.info(new URL(current_url).searchParams.toString());
+
     const params = oauth.validateAuthResponse(as, client, current_url);
 
     const grantResponse = await oauth.authorizationCodeGrantRequest(
