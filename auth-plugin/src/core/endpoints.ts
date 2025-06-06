@@ -6,7 +6,7 @@ import { PasswordAuthHandlers } from "./routeHandlers/password";
 import { SessionHandlers } from "./routeHandlers/session";
 import { UserSession } from "./protocols/session";
 import { APP_COOKIE_SUFFIX } from "../constants";
-import * as qs from "qs-esm/lib/index.js";
+import * as qs from "qs-esm";
 /**
  * Base interface for all endpoint strategies. Useful to keep extending for providers with
  * different requirements to interact with

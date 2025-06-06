@@ -1,5 +1,5 @@
 import { AuthPluginOutput } from "../types";
-import * as qs from "qs-esm/lib/index.js";
+import * as qs from "qs-esm";
 
 interface BaseOptions {
     name: string;
