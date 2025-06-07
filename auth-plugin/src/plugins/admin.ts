@@ -46,9 +46,9 @@ export const adminAuthPlugin =
             return config;
         }
 
-        if (!config.serverURL) {
-            throw new InvalidServerURL();
-        }
+        // if (!config.serverURL) {
+        //     throw new InvalidServerURL();
+        // }
 
         const { accountsCollectionSlug, providers, allowSignUp } =
             pluginOptions;

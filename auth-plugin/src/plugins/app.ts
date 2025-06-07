@@ -129,9 +129,9 @@ export const appAuthPlugin =
             return config;
         }
 
-        if (!config.serverURL) {
-            throw new InvalidServerURL();
-        }
+        // if (!config.serverURL) {
+        //     throw new InvalidServerURL();
+        // }
 
         const {
             usersCollectionSlug,
