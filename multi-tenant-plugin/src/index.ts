@@ -263,6 +263,7 @@ export const multiTenantPlugin =
             } else if (pluginConfig.collections?.[collection.slug]) {
                 // @ts-ignore
                 const isGlobal = Boolean(
+                    // @ts-ignorepn
                     pluginConfig.collections[collection.slug]?.isGlobal
                 );
 
@@ -298,6 +299,7 @@ export const multiTenantPlugin =
                 );
 
                 if (
+                    // @ts-ignore
                     pluginConfig.collections[collection.slug]
                         ?.useBaseListFilter !== false
                 ) {
@@ -322,6 +324,7 @@ export const multiTenantPlugin =
                 }
 
                 if (
+                    // @ts-ignore
                     pluginConfig.collections[collection.slug]
                         ?.useTenantAccess !== false
                 ) {
