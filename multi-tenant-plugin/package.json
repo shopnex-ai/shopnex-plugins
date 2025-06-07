@@ -76,10 +76,6 @@
         "pack:plugin": "pnpm prepublishOnly && pnpm copyfiles && pnpm pack",
         "prepublishOnly": "pnpm clean && pnpm build"
     },
-    "dependencies": {
-        "next": "^15.0.3",
-        "payload": "3.31.0"
-    },
     "publishConfig": {
         "exports": {
             ".": {

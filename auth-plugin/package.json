@@ -68,7 +68,6 @@
         "prepublishOnly": "pnpm clean && pnpm build"
     },
     "peerDependencies": {
-        "payload": "3.26.0",
         "qs-esm": "7.0.2"
     },
     "devDependencies": {
