@@ -1,6 +1,5 @@
 import type { Block, BlocksField, Config } from "payload";
 import { importPageHook, importSymbolsInit } from "./hooks/import-page";
-import { BuilderIoCollectionProps } from "./collections/BuilderIoCollection";
 import { ThemesListField } from "./fields/ThemesListField";
 import { BuilderIoBlock } from "./blocks/builder-io-block";
 import { uploadThemeHandler } from "./endpoints/upload-theme";
@@ -12,7 +11,7 @@ export interface BuilderIoConfig {
     privateKey?: string;
     collectionDesignSlug?: string;
     collectionPagesSlug?: string;
-    collectionOverrides?: BuilderIoCollectionProps["overrides"];
+    collectionOverrides?: any;
 }
 
 export const defaultConfig: BuilderIoConfig = {
