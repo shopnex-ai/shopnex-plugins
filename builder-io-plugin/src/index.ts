@@ -1,9 +1,9 @@
-import type { Config } from "payload";
+import type { Block, BlocksField, Config } from "payload";
 import { importPageHook, importSymbolsInit } from "./hooks/import-page";
-import {
-    BuilderIoCollection,
-    BuilderIoCollectionProps,
-} from "./collections/BuilderIoCollection";
+import { BuilderIoCollectionProps } from "./collections/BuilderIoCollection";
+import { ThemesListField } from "./fields/ThemesListField";
+import { BuilderIoBlock } from "./blocks/builder-io-block";
+import { uploadThemeHandler } from "./endpoints/upload-theme";
 export { importSymbolsInit } from "./hooks/import-page";
 
 export interface BuilderIoConfig {
@@ -19,7 +19,7 @@ export const defaultConfig: BuilderIoConfig = {
     enabled: true,
     publicKey: process.env.BUILDER_IO_PUBLIC_KEY,
     privateKey: process.env.BUILDER_IO_PRIVATE_KEY,
-    collectionDesignSlug: "design",
+    collectionDesignSlug: undefined,
     collectionPagesSlug: "pages",
     collectionOverrides: {},
 };
@@ -36,6 +36,33 @@ export const builderIoPlugin =
         const pagesCollection = incomingConfig.collections?.find(
             (collection) => collection.slug === finalConfig.collectionPagesSlug
         );
+
+        if (finalConfig.collectionDesignSlug) {
+            const designCollection = incomingConfig.collections?.find(
+                (collection) =>
+                    collection.slug === finalConfig.collectionDesignSlug
+            );
+            if (!designCollection || typeof designCollection !== "object") {
+                throw new Error("Design collection not found");
+            }
+            designCollection.fields.push(ThemesListField);
+            const editorModeField = designCollection.fields.find(
+                (field) => (field as any).name === "editorMode"
+            ) as BlocksField;
+            if (editorModeField) {
+                editorModeField.blocks.unshift(BuilderIoBlock);
+            }
+
+            if (!designCollection.endpoints) {
+                designCollection.endpoints = [];
+            }
+
+            designCollection.endpoints.push({
+                method: "post",
+                path: "/upload-theme/:themeId",
+                handler: uploadThemeHandler,
+            });
+        }
 
         if (!pagesCollection || typeof pagesCollection !== "object") {
             throw new Error("Pages collection not found");
@@ -62,10 +89,6 @@ export const builderIoPlugin =
                 doc.handle
             );
         });
-
-        incomingConfig.collections?.push(
-            BuilderIoCollection({ overrides: finalConfig.collectionOverrides })
-        );
 
         if (!enabled) {
             return incomingConfig;
