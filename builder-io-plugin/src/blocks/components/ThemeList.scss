@@ -1,0 +1,55 @@
+.builder-theme-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.theme-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--theme-elevation-150);
+    padding-bottom: 1.5rem;
+
+    .theme-preview {
+        width: 120px;
+        height: auto;
+        border-radius: 4px;
+        object-fit: cover;
+    }
+
+    .theme-info {
+        flex-grow: 1;
+        margin-left: 1.5rem;
+
+        h2 {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+
+        .date {
+            color: #666;
+            margin-top: 0.2rem;
+        }
+
+        .version {
+            margin-top: 0.4rem;
+            color: #444;
+
+            .dot {
+                display: inline-block;
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+                background-color: #007aff;
+                margin-right: 6px;
+                vertical-align: middle;
+            }
+        }
+    }
+
+    .theme-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+}
