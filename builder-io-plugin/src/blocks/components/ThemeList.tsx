@@ -23,7 +23,7 @@ const themes = [
     },
 ];
 
-export const ThemeList = ({ data }) => {
+export const ThemeList = ({ data }: any) => {
     const isKeysDefined = data?.editorMode?.some(
         (type: any) => type.builderIoPublicKey && type.builderIoPrivateKey
     );

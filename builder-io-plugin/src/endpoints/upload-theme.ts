@@ -41,7 +41,7 @@ const isThemeModelExists = async ({
     return symbolModelExists;
 };
 
-export const uploadTheme = async ({ privateKey, themeName }) => {
+export const uploadTheme = async ({ privateKey, themeName }: any) => {
     await createThemeModel({
         privateKey,
         themeName,
@@ -71,7 +71,7 @@ export const uploadThemeHandler: PayloadHandler = async (req) => {
             },
             ...(!isSuperAdmin && {
                 shop: {
-                    equals: req.user.shops[0]?.shop?.id,
+                    equals: (req.user.shops[0]?.shop as any)?.id,
                 },
             }),
         },
