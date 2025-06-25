@@ -9,8 +9,11 @@ import {
     getProductCategory,
     getProductDetails,
     getProductList,
+    getProductStockByVid,
 } from "./products/products";
 import { getSettings } from "./settings/settings-api";
+
+export type CjSdk = ReturnType<typeof cjSdk>;
 
 export function cjSdk({ accessToken }: { accessToken: string }) {
     return {
@@ -31,6 +34,8 @@ export function cjSdk({ accessToken }: { accessToken: string }) {
                 getProductDetails({ ...params, accessToken }),
             // getProductList: (params) =>
             //     getProductList({ ...params, accessToken }),
+            getProductStockByVid: (params: any) =>
+                getProductStockByVid({ ...params, accessToken }),
         },
         // settings: {
         //     getSettings: () => getSettings({ accessToken }),

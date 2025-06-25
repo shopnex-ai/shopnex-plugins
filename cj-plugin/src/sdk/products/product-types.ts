@@ -200,3 +200,15 @@ export type ProductListResponse = CJApiResponse<{
  * API response format for product query.
  */
 export type ProductQueryResponse = CJApiResponse<ProductDetails>;
+
+export interface StockInfo {
+    vid?: string;
+    areaId: number;
+    areaEn: string;
+    countryCode: string;
+    countryNameEn?: string;
+    storageNum?: number;
+    totalInventoryNum: number;
+    cjInventoryNum: number;
+    factoryInventoryNum: number;
+}

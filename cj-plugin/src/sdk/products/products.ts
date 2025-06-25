@@ -5,6 +5,7 @@ import type {
     Product,
     ProductDetails,
     ProductListResponse,
+    StockInfo,
 } from "./product-types.ts";
 
 import { cjApiClient } from "../../api-client";
@@ -116,5 +117,76 @@ export async function getProductDetails(queryParams: {
             `Error fetching product details [${error.code}]: ${error.message}`
         );
         throw new Error(error.message);
+    }
+}
+
+export async function getProductStockByVid({
+    vid,
+    accessToken,
+}: {
+    vid: string;
+    accessToken: string;
+}): Promise<APIResponse<StockInfo[]>> {
+    try {
+        const response = await cjApiClient.get<{
+            code: number;
+            result: boolean;
+            message: string;
+            data: StockInfo[];
+        }>("/product/stock/queryByVid", {
+            headers: {
+                "CJ-Access-Token": accessToken,
+            },
+            params: { vid },
+        });
+
+        if (!response.data.result) {
+            return {
+                error:
+                    response.data.message ||
+                    "Failed to fetch stock information",
+            };
+        }
+
+        return { data: response.data.data };
+    } catch (error: any) {
+        console.error(
+            `Error fetching stock by VID [${error.code}]: ${error.message}`
+        );
+        return { error: error.message || "Failed to fetch stock information" };
+    }
+}
+
+export async function getProductStockBySku(
+    sku: string,
+    accessToken: string
+): Promise<APIResponse<StockInfo[]>> {
+    try {
+        const response = await cjApiClient.get<{
+            code: number;
+            result: boolean;
+            message: string;
+            data: StockInfo[];
+        }>("/product/stock/queryBySku", {
+            headers: {
+                "CJ-Access-Token": accessToken,
+            },
+            params: { sku },
+        });
+
+        if (!response.data.result) {
+            return {
+                error:
+                    response.data.message ||
+                    "Failed to fetch stock information",
+            };
+        }
+
+        return { data: response.data.data };
+    } catch (error: any) {
+        console.error(
+            `Error fetching stock by SKU [${error.code}]: ${error.message}`
+        );
+        return { error: error.message || "Failed to fetch stock information" };
     }
 }
