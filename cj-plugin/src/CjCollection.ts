@@ -5,6 +5,7 @@ import {
 } from "payload";
 import { syncProducts } from "./service/sync-products";
 import { encryptedField } from "@shopnex/utils";
+import { getTenantFromCookie } from "@shopnex/utils/helpers";
 
 export type CjCollectionProps = {
     overrides?: Partial<CollectionConfig>;
@@ -121,13 +122,13 @@ export const CjCollection = ({
 
                     if (!productIds) return;
 
-                    const shopId = (req.user?.shops as any)?.[0]?.shop?.id;
+                    const shopId = getTenantFromCookie(req.headers, "number");
 
                     if (productIds.length > 0) {
                         await syncProducts({
                             productIds,
                             payload: req.payload,
-                            shopId,
+                            shopId: shopId as number,
                             data,
                         });
                     }

@@ -74,7 +74,7 @@ async function mapMockProductToSchema({
     const variants: Product["variants"] = [];
 
     for (const variant of product.variants || []) {
-        const filename = variant?.variantImage?.split("/").pop();
+        const filename = `${shopId}-${variant?.variantImage?.split("/").pop()}`;
         if (!filename || !variant.variantImage) {
             continue;
         }
@@ -155,6 +155,11 @@ const createOrUpdateProduct = async ({
             pid: {
                 equals: product.pid,
             },
+            ...(shopId && {
+                shop: {
+                    equals: shopId,
+                },
+            }),
         },
     });
 
