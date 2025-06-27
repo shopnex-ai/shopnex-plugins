@@ -135,6 +135,8 @@ type Args = {
     fetch?: typeof fetch;
 };
 
+export type * from "./types";
+
 export class PayloadSDK<
     T extends PayloadGeneratedTypes = PayloadGeneratedTypes,
 > {
