@@ -6,6 +6,7 @@ import {
 import { syncProducts } from "./service/sync-products";
 import { encryptedField } from "@shopnex/utils";
 import { getTenantFromCookie } from "@shopnex/utils/helpers";
+import { getProductId } from "./util/get-product-id";
 
 export type CjCollectionProps = {
     overrides?: Partial<CollectionConfig>;
@@ -113,12 +114,12 @@ export const CjCollection = ({
         hooks: {
             beforeChange: [
                 async ({ data, req }) => {
-                    const productIds = data.items?.map((item: any) => {
-                        const match = item.productUrl.match(
-                            /(?<=-p-)([0-9A-Fa-f-]+)(?=\.html)/
-                        );
-                        return match ? match[0] : null;
-                    });
+                    const productIds = data.items
+                        ?.map((item: any) => {
+                            const productId = getProductId(item.productUrl);
+                            return productId;
+                        })
+                        .filter((productId) => typeof productId === "string");
 
                     if (!productIds) return;
 
