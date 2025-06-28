@@ -1,5 +1,5 @@
 import { Block } from "payload";
-import { encryptedField } from "@shopnex/utils";
+import { EncryptedField } from "@shopnex/utils";
 
 export const BuilderIoBlock: Block = {
     slug: "builder-io",
@@ -20,7 +20,7 @@ export const BuilderIoBlock: Block = {
                     type: "text",
                     required: true,
                 },
-                encryptedField({
+                EncryptedField({
                     required: true,
                     name: "builderIoPrivateKey",
                     type: "text",

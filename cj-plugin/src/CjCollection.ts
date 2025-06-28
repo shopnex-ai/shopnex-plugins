@@ -4,7 +4,7 @@ import {
     type CollectionConfig,
 } from "payload";
 import { syncProducts } from "./service/sync-products";
-import { encryptedField } from "@shopnex/utils";
+import { EncryptedField } from "@shopnex/utils";
 import { getTenantFromCookie } from "@shopnex/utils/helpers";
 import { getProductId } from "./util/get-product-id";
 
@@ -51,7 +51,7 @@ export const CjCollection = ({
                                 name: "emailAddress",
                                 type: "email",
                             },
-                            encryptedField({
+                            EncryptedField({
                                 name: "apiToken",
                                 type: "text",
                             }),
@@ -60,7 +60,7 @@ export const CjCollection = ({
                     {
                         type: "row",
                         fields: [
-                            encryptedField({
+                            EncryptedField({
                                 name: "refreshToken",
                                 type: "text",
                             }),
@@ -73,7 +73,7 @@ export const CjCollection = ({
                     {
                         type: "row",
                         fields: [
-                            encryptedField({
+                            EncryptedField({
                                 name: "accessToken",
                                 type: "text",
                             }),
