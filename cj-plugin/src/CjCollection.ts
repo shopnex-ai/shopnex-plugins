@@ -123,7 +123,7 @@ export const CjCollection = ({
 
                     if (!productIds) return;
 
-                    const shopId = getTenantFromCookie(req.headers, "number");
+                    const shopId = getTenantFromCookie(req.headers);
 
                     if (productIds.length > 0) {
                         await syncProducts({
