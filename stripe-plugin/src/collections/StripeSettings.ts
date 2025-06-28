@@ -5,7 +5,7 @@ export type StripConfigProps = {
     overrides?: Partial<CollectionConfig>;
 };
 
-export const StripeConfig = ({
+export const StripeSettings = ({
     overrides = {},
 }: StripConfigProps): CollectionConfig => {
     const baseConfig: CollectionConfig = {

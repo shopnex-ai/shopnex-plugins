@@ -8,8 +8,7 @@ import { deleteFromStripe } from "./hooks/deleteFromStripe";
 import { syncExistingWithStripe } from "./hooks/syncExistingWithStripe";
 import { stripeREST } from "./routes/rest";
 import { stripeWebhooks } from "./routes/webhooks";
-import { setTenantCredentials } from "./utilities/stripeConfig";
-import { StripeConfig } from "./collections/StripeSettings";
+import { StripeSettings } from "./collections/StripeSettings";
 import { StripeBlock } from "./blocks/StripeBlock";
 
 export { stripeProxy } from "./utilities/stripeProxy";
@@ -126,7 +125,7 @@ export const stripePlugin =
         }
 
         collections?.push(
-            StripeConfig({ overrides: pluginConfig.collectionOverrides })
+            StripeSettings({ overrides: pluginConfig.collectionOverrides })
         );
 
         const incomingOnInit = config.onInit;

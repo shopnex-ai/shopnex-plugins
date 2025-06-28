@@ -3,6 +3,7 @@ import type { Config as PayloadConfig, PayloadRequest } from "payload";
 import Stripe from "stripe";
 
 import type { StripePluginConfig } from "../types";
+import { getTenantFromCookie } from "@shopnex/utils/helpers";
 
 import { handleWebhooks } from "../webhooks/index";
 
@@ -13,9 +14,33 @@ export const stripeWebhooks = async (args: {
 }): Promise<any> => {
     const { config, pluginConfig, req } = args;
     let returnStatus = 200;
+    const shopId = getTenantFromCookie(req.headers);
 
-    const { stripeSecretKey, stripeWebhooksEndpointSecret, webhooks } =
-        pluginConfig;
+    const stripeSettings = await req.payload.find({
+        collection: "stripe-settings",
+        where: {
+            shop: {
+                equals: shopId,
+            },
+        },
+    });
+
+    if (!stripeSettings?.docs?.[0]) {
+        req.payload.logger.error(
+            `No Stripe settings found for shop: ${shopId}`
+        );
+        return Response.json(
+            { error: "Invalid shop configuration" },
+            { status: 400 }
+        );
+    }
+
+    const { webhooks } = pluginConfig;
+
+    const {
+        secretKey: stripeSecretKey,
+        webhooksEndpointSecret: stripeWebhooksEndpointSecret,
+    } = stripeSettings.docs[0];
 
     if (stripeWebhooksEndpointSecret) {
         const stripe = new Stripe(stripeSecretKey, {
