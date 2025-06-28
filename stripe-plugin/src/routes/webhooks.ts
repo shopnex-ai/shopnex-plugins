@@ -25,7 +25,11 @@ export const stripeWebhooks = async (args: {
         },
     });
 
-    if (!stripeSettings?.docs?.[0]) {
+    if (
+        !stripeSettings?.docs?.[0] ||
+        !stripeSettings?.docs?.[0].secretKey ||
+        !stripeSettings?.docs?.[0].webhooksEndpointSecret
+    ) {
         req.payload.logger.error(
             `No Stripe settings found for shop: ${shopId}`
         );
