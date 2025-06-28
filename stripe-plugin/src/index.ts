@@ -9,7 +9,7 @@ import { syncExistingWithStripe } from "./hooks/syncExistingWithStripe";
 import { stripeREST } from "./routes/rest";
 import { stripeWebhooks } from "./routes/webhooks";
 import { setTenantCredentials } from "./utilities/stripeConfig";
-import { StripeConfig } from "./collections/StripeConfig";
+import { StripeConfig } from "./collections/StripeSettings";
 import { StripeBlock } from "./blocks/StripeBlock";
 
 export { stripeProxy } from "./utilities/stripeProxy";
@@ -125,7 +125,9 @@ export const stripePlugin =
             providerField.blocks.push(StripeBlock);
         }
 
-        // collections?.push(StripeConfig({ overrides: pluginConfig.collectionOverrides }));
+        collections?.push(
+            StripeConfig({ overrides: pluginConfig.collectionOverrides })
+        );
 
         const incomingOnInit = config.onInit;
 
