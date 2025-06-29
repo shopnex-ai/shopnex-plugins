@@ -7,19 +7,19 @@ import { ThemeActions } from "./ThemeActions";
 const themes = [
     {
         id: 1,
-        name: "Freebie",
-        dateAdded: "Added by Shopnex",
-        version: "15.3.0",
-        availableUpdate: false,
-        preview: "/freebie-theme-preview.png",
-    },
-    {
-        id: 2,
-        name: "Furniro",
+        name: "furniro",
         dateAdded: "Added by Shopnex",
         version: "15.3.0",
         availableUpdate: true,
         preview: "/furniro-theme-preview.png",
+    },
+    {
+        id: 2,
+        name: "freebie",
+        dateAdded: "Added by Shopnex",
+        version: "15.3.0",
+        availableUpdate: false,
+        preview: "/freebie-theme-preview.png",
     },
 ];
 
