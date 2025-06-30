@@ -57,6 +57,7 @@ export const uploadThemeHandler: PayloadHandler = async (req) => {
         });
 
         const success = await uploadTheme({
+            // @ts-ignore
             privateKey: themeMode.builderIoPrivateKey,
             themeName: body.themeName,
             sourcePublicKey: process.env
