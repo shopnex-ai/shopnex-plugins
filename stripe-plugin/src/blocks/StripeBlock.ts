@@ -1,46 +1,42 @@
+import { EncryptedField } from "packages/utils/src";
 import { Block } from "payload";
 
 export const StripeBlock: Block = {
     slug: "stripe",
     fields: [
         {
-            type: "row",
-            fields: [
-                {
-                    name: "stripeSecretKey",
-                    type: "text",
-                    label: "Stripe Secret Key",
-                    required: true,
-                    admin: {
-                        components: {
-                            Field: "@shopnex/stripe-plugin/client#ApiToken",
-                        },
-                    },
-                },
-                {
-                    name: "stripeWebhooksEndpointSecret",
-                    type: "text",
-                    label: "Stripe Webhooks Endpoint Secret",
-                    required: true,
-                    admin: {
-                        components: {
-                            Field: "@shopnex/stripe-plugin/client#ApiToken",
-                        },
-                    },
-                },
-            ],
+            name: "providerName",
+            type: "text",
+            defaultValue: "Stripe",
+            required: true,
         },
         {
-            name: "publishableKey",
-            type: "text",
-            label: "Publishable Key",
-            required: true,
+            name: "testMode",
+            type: "checkbox",
             admin: {
-                components: {
-                    Field: "@shopnex/stripe-plugin/client#ApiToken",
-                },
+                position: "sidebar",
             },
         },
+        {
+            type: "row",
+            fields: [
+                EncryptedField({
+                    name: "stripeSecretKey",
+                    type: "text",
+                    required: true,
+                }),
+                EncryptedField({
+                    name: "stripeWebhooksEndpointSecret",
+                    type: "text",
+                    required: true,
+                }),
+            ],
+        },
+        EncryptedField({
+            name: "publishableKey",
+            type: "text",
+            required: true,
+        }),
     ],
     imageURL: "https://cdn.shopnex.ai/shopnex-images/media/stripe.png",
     labels: {
