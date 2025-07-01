@@ -1,4 +1,4 @@
-import { EncryptedField } from "packages/utils/src";
+import { EncryptedField } from "@shopnex/utils";
 import { Block } from "payload";
 
 export const StripeBlock: Block = {
