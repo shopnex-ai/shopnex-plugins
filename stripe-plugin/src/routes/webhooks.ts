@@ -20,20 +20,21 @@ export const stripeWebhooks = async (args: {
     const paymentsDocument = await req.payload.find({
         collection: "payments",
         where: {
-            shopId: {
+            shop: {
                 equals: shopId,
             },
         },
     });
 
-    const stripeBlock = paymentsDocument.docs[0]?.providers.find(
+    const stripeBlock = paymentsDocument.docs[0]?.providers?.find(
         (provider: any) => provider.blockType === "stripeProvider"
     );
 
     if (
         !stripeBlock ||
-        !stripeBlock.secretKey ||
-        !stripeBlock.webhooksEndpointSecret
+        typeof stripeBlock !== "object" ||
+        !("secretKey" in stripeBlock) ||
+        !("webhooksEndpointSecret" in stripeBlock)
     ) {
         req.payload.logger.error(
             `No Stripe settings found for shop: ${shopId}`
@@ -51,7 +52,7 @@ export const stripeWebhooks = async (args: {
     } = stripeBlock;
 
     if (stripeWebhooksEndpointSecret) {
-        const stripe = new Stripe(stripeSecretKey, {
+        const stripe = new Stripe(stripeSecretKey as string, {
             apiVersion: "2022-08-01",
             appInfo: {
                 name: "Stripe Payload Plugin",
@@ -69,7 +70,7 @@ export const stripeWebhooks = async (args: {
                 event = stripe.webhooks.constructEvent(
                     body!,
                     stripeSignature,
-                    stripeWebhooksEndpointSecret
+                    stripeWebhooksEndpointSecret as string
                 );
             } catch (err: unknown) {
                 const msg: string =
