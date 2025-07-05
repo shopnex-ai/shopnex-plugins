@@ -124,10 +124,6 @@ export const stripePlugin =
             providerField.blocks.push(StripeBlock);
         }
 
-        collections?.push(
-            StripeSettings({ overrides: pluginConfig.collectionOverrides })
-        );
-
         const incomingOnInit = config.onInit;
 
         config.onInit = async (payload) => {

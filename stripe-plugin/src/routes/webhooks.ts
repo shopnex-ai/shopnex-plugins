@@ -16,19 +16,24 @@ export const stripeWebhooks = async (args: {
     let returnStatus = 200;
     const shopId = getTenantFromCookie(req.headers);
 
-    const stripeSettings = await req.payload.find({
-        collection: "stripe-settings",
+    // Fetch a specific Payments document corresponding to the shopId
+    const paymentsDocument = await req.payload.find({
+        collection: "payments",
         where: {
-            shop: {
+            shopId: {
                 equals: shopId,
             },
         },
     });
 
+    const stripeBlock = paymentsDocument.docs[0]?.providers.find(
+        (provider: any) => provider.blockType === "stripeProvider"
+    );
+
     if (
-        !stripeSettings?.docs?.[0] ||
-        !stripeSettings?.docs?.[0].secretKey ||
-        !stripeSettings?.docs?.[0].webhooksEndpointSecret
+        !stripeBlock ||
+        !stripeBlock.secretKey ||
+        !stripeBlock.webhooksEndpointSecret
     ) {
         req.payload.logger.error(
             `No Stripe settings found for shop: ${shopId}`
@@ -40,15 +45,13 @@ export const stripeWebhooks = async (args: {
     }
 
     const { webhooks } = pluginConfig;
-
     const {
         secretKey: stripeSecretKey,
         webhooksEndpointSecret: stripeWebhooksEndpointSecret,
-    } = stripeSettings.docs[0];
+    } = stripeBlock;
 
     if (stripeWebhooksEndpointSecret) {
         const stripe = new Stripe(stripeSecretKey, {
-            // api version can only be the latest, stripe recommends ts ignoring it
             apiVersion: "2022-08-01",
             appInfo: {
                 name: "Stripe Payload Plugin",
