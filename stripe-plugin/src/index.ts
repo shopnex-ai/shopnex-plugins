@@ -121,7 +121,9 @@ export const stripePlugin =
             const providerField = paymentsCollection.fields.find(
                 (f: any) => f.name === "providers"
             ) as BlocksField;
-            providerField.blocks.push(StripeBlock);
+            providerField.blocks.push(
+                StripeBlock({ secretAccess: pluginConfig.secretAccess })
+            );
         }
 
         const incomingOnInit = config.onInit;

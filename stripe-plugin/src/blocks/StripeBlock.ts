@@ -1,7 +1,17 @@
 import { EncryptedField } from "@shopnex/utils";
-import { Block } from "payload";
+import { Block, FieldAccess } from "payload";
 
-export const StripeBlock: Block = {
+export type SecretAccess = {
+    create?: FieldAccess;
+    read?: FieldAccess;
+    update?: FieldAccess;
+};
+
+export const StripeBlock = ({
+    secretAccess,
+}: {
+    secretAccess?: SecretAccess;
+}): Block => ({
     slug: "stripe",
     admin: {
         disableBlockName: true,
@@ -46,11 +56,13 @@ export const StripeBlock: Block = {
                     name: "stripeSecretKey",
                     type: "text",
                     required: true,
+                    access: secretAccess,
                 }),
                 EncryptedField({
                     name: "stripeWebhooksEndpointSecret",
                     type: "text",
                     required: true,
+                    access: secretAccess,
                 }),
             ],
         },
@@ -58,6 +70,7 @@ export const StripeBlock: Block = {
             name: "publishableKey",
             type: "text",
             required: true,
+            access: secretAccess,
         }),
     ],
     imageURL: "https://cdn.shopnex.ai/shopnex-images/media/stripe.png",
@@ -65,4 +78,4 @@ export const StripeBlock: Block = {
         plural: "Stripe Providers",
         singular: "Stripe Provider",
     },
-};
+});

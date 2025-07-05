@@ -6,6 +6,7 @@ import type {
     PayloadRequest,
 } from "payload";
 import type Stripe from "stripe";
+import { SecretAccess } from "./blocks/StripeBlock";
 
 export type StripeWebhookHandler<T = any> = (args: {
     config: PayloadConfig;
@@ -48,6 +49,7 @@ export type StripePluginConfig = {
      * The collection slug for the payments collection
      */
     paymentCollectionSlug?: string;
+    secretAccess?: SecretAccess;
 };
 
 export type SanitizedStripePluginConfig = {
