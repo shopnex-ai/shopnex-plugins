@@ -3,6 +3,9 @@ import { Block } from "payload";
 
 export const StripeBlock: Block = {
     slug: "stripe",
+    admin: {
+        disableBlockName: true,
+    },
     fields: [
         {
             name: "providerName",
@@ -13,9 +16,28 @@ export const StripeBlock: Block = {
         {
             name: "testMode",
             type: "checkbox",
+        },
+        {
+            name: "methodType",
+            type: "select",
             admin: {
-                position: "sidebar",
+                readOnly: true,
             },
+            options: [
+                {
+                    label: "Credit Card",
+                    value: "card",
+                },
+                {
+                    label: "Bank Transfer (ACH)",
+                    value: "ach",
+                },
+                {
+                    label: "Let Customer Choose (All Available)",
+                    value: "auto",
+                },
+            ],
+            defaultValue: "auto",
         },
         {
             type: "row",

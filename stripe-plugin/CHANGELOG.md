@@ -1,5 +1,11 @@
 # @shopnex/stripe-plugin
 
+## 3.31.4
+
+### Patch Changes
+
+- Add stripe name and testMe inputs
+
 ## 3.31.3
 
 ### Patch Changes

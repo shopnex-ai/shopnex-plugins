@@ -1,6 +1,6 @@
 {
     "name": "@shopnex/stripe-plugin",
-    "version": "3.31.3",
+    "version": "3.31.4",
     "description": "Stripe plugin for Payload",
     "keywords": [
         "payload",
@@ -68,7 +68,8 @@
     "dependencies": {
         "lodash.get": "^4.4.2",
         "stripe": "^10.2.0",
-        "uuid": "10.0.0"
+        "uuid": "10.0.0",
+        "@shopnex/utils": "workspace:*"
     },
     "devDependencies": {
         "@types/lodash.get": "^4.4.7",
