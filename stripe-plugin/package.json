@@ -66,11 +66,12 @@
         "prepublishOnly": "pnpm clean && pnpm build"
     },
     "dependencies": {
+        "@shopnex/types": "workspace:*",
+        "@shopnex/utils": "workspace:*",
+        "decimal.js": "^10.5.0",
         "lodash.get": "^4.4.2",
         "stripe": "^10.2.0",
-        "uuid": "10.0.0",
-        "@shopnex/utils": "workspace:*",
-        "@shopnex/types": "workspace:*"
+        "uuid": "10.0.0"
     },
     "devDependencies": {
         "@types/lodash.get": "^4.4.7",

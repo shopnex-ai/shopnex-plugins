@@ -2,8 +2,6 @@ import type { Config } from "payload";
 
 import type { SanitizedStripePluginConfig, StripePluginConfig } from "./types";
 
-import { getFields } from "./fields/getFields";
-
 export const stripePlugin =
     (incomingPluginConfig: StripePluginConfig) =>
     (config: Config): Config => {

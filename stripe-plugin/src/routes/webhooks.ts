@@ -8,33 +8,7 @@ import Stripe from "stripe";
 
 import type { StripePluginConfig } from "../types";
 import { getTenantFromCookie } from "@shopnex/utils/helpers";
-
-import { handleWebhooks } from "../webhooks/index";
-import { Payment } from "@shopnex/types";
-
-const getStripeBlock = async ({
-    req,
-    shopId,
-}: {
-    req: PayloadRequest;
-    shopId: number;
-}) => {
-    const paymentsDocument: PaginatedDocs<Payment> = await req.payload.find({
-        collection: "payments",
-        where: {
-            shop: {
-                equals: shopId,
-            },
-        },
-    });
-
-    const stripeBlock = paymentsDocument.docs[0]?.providers?.find(
-        (provider: any) => provider.blockType === "stripe"
-    );
-    if (stripeBlock?.blockType === "stripe") {
-        return stripeBlock;
-    }
-};
+import { getStripeBlock } from "../utilities/get-stripe-block";
 
 export const stripeWebhooks = async (args: {
     config: PayloadConfig;
