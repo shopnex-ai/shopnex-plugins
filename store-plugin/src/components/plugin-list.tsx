@@ -31,9 +31,7 @@ export function PluginListView(
 
     const fetchData = useCallback(async (query: ListQuery) => {
         const whereQuery: Where = {
-            shop: {
-                equals: 1,
-            },
+            shop: {},
         };
 
         if (query.search) {
