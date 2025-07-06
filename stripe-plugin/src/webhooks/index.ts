@@ -1,8 +1,5 @@
 import type { StripeWebhookHandler } from "../types";
 
-import { handleCreatedOrUpdated } from "./handleCreatedOrUpdated";
-import { handleDeleted } from "./handleDeleted";
-
 export const handleWebhooks: StripeWebhookHandler = (args) => {
     const { event, payload, pluginConfig } = args;
 
@@ -13,46 +10,4 @@ export const handleWebhooks: StripeWebhookHandler = (args) => {
     }
 
     // could also traverse into event.data.object.object to get the type, but that seems unreliable
-    // use cli: `stripe resources` to see all available resources
-    const resourceType = event.type.split(".")[0];
-    const method = event.type.split(".").pop();
-
-    const syncConfig = pluginConfig?.sync?.find(
-        (sync) => sync.stripeResourceTypeSingular === resourceType
-    );
-
-    if (syncConfig) {
-        switch (method) {
-            case "created": {
-                void handleCreatedOrUpdated({
-                    ...args,
-                    pluginConfig,
-                    resourceType,
-                    syncConfig,
-                });
-                break;
-            }
-            case "deleted": {
-                void handleDeleted({
-                    ...args,
-                    pluginConfig,
-                    resourceType,
-                    syncConfig,
-                });
-                break;
-            }
-            case "updated": {
-                void handleCreatedOrUpdated({
-                    ...args,
-                    pluginConfig,
-                    resourceType,
-                    syncConfig,
-                });
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-    }
 };

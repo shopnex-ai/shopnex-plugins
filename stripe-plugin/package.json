@@ -69,7 +69,8 @@
         "lodash.get": "^4.4.2",
         "stripe": "^10.2.0",
         "uuid": "10.0.0",
-        "@shopnex/utils": "workspace:*"
+        "@shopnex/utils": "workspace:*",
+        "@shopnex/types": "workspace:*"
     },
     "devDependencies": {
         "@types/lodash.get": "^4.4.7",

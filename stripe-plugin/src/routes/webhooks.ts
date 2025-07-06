@@ -1,4 +1,8 @@
-import type { Config as PayloadConfig, PayloadRequest } from "payload";
+import type {
+    PaginatedDocs,
+    Config as PayloadConfig,
+    PayloadRequest,
+} from "payload";
 
 import Stripe from "stripe";
 
@@ -6,6 +10,31 @@ import type { StripePluginConfig } from "../types";
 import { getTenantFromCookie } from "@shopnex/utils/helpers";
 
 import { handleWebhooks } from "../webhooks/index";
+import { Payment } from "@shopnex/types";
+
+const getStripeBlock = async ({
+    req,
+    shopId,
+}: {
+    req: PayloadRequest;
+    shopId: number;
+}) => {
+    const paymentsDocument: PaginatedDocs<Payment> = await req.payload.find({
+        collection: "payments",
+        where: {
+            shop: {
+                equals: shopId,
+            },
+        },
+    });
+
+    const stripeBlock = paymentsDocument.docs[0]?.providers?.find(
+        (provider: any) => provider.blockType === "stripe"
+    );
+    if (stripeBlock?.blockType === "stripe") {
+        return stripeBlock;
+    }
+};
 
 export const stripeWebhooks = async (args: {
     config: PayloadConfig;
@@ -16,26 +45,15 @@ export const stripeWebhooks = async (args: {
     let returnStatus = 200;
     const shopId = getTenantFromCookie(req.headers);
 
-    // Fetch a specific Payments document corresponding to the shopId
-    const paymentsDocument = await req.payload.find({
-        collection: "payments",
-        where: {
-            shop: {
-                equals: shopId,
-            },
-        },
-    });
+    if (!shopId) {
+        return Response.json(
+            { error: "Invalid shop configuration" },
+            { status: 400 }
+        );
+    }
+    const stripeBlock = await getStripeBlock({ req, shopId });
 
-    const stripeBlock = paymentsDocument.docs[0]?.providers?.find(
-        (provider: any) => provider.blockType === "stripeProvider"
-    );
-
-    if (
-        !stripeBlock ||
-        typeof stripeBlock !== "object" ||
-        !("secretKey" in stripeBlock) ||
-        !("webhooksEndpointSecret" in stripeBlock)
-    ) {
+    if (!stripeBlock) {
         req.payload.logger.error(
             `No Stripe settings found for shop: ${shopId}`
         );
@@ -46,17 +64,14 @@ export const stripeWebhooks = async (args: {
     }
 
     const { webhooks } = pluginConfig;
-    const {
-        secretKey: stripeSecretKey,
-        webhooksEndpointSecret: stripeWebhooksEndpointSecret,
-    } = stripeBlock;
+    const { stripeSecretKey, stripeWebhooksEndpointSecret } = stripeBlock;
 
     if (stripeWebhooksEndpointSecret) {
         const stripe = new Stripe(stripeSecretKey as string, {
             apiVersion: "2022-08-01",
             appInfo: {
-                name: "Stripe Payload Plugin",
-                url: "https://payloadcms.com",
+                name: "ShopNex Stripe Plugin",
+                url: "https://shopnex.ai",
             },
         });
 
@@ -82,15 +97,6 @@ export const stripeWebhooks = async (args: {
             }
 
             if (event) {
-                handleWebhooks({
-                    config,
-                    event,
-                    payload: req.payload,
-                    pluginConfig,
-                    req,
-                    stripe,
-                });
-
                 // Fire external webhook handlers if they exist
                 if (typeof webhooks === "function") {
                     webhooks({

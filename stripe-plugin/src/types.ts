@@ -37,10 +37,8 @@ export type StripePluginConfig = {
     isTestKey?: boolean;
     logs?: boolean;
     /** @default false */
-    rest?: boolean;
     stripeSecretKey: string;
     stripeWebhooksEndpointSecret?: string;
-    sync?: SyncConfig[];
     webhooks?: StripeWebhookHandler | StripeWebhookHandlers;
     collectionOverrides?: {
         access: CollectionConfig["access"];
@@ -52,9 +50,7 @@ export type StripePluginConfig = {
     secretAccess?: SecretAccess;
 };
 
-export type SanitizedStripePluginConfig = {
-    sync: SyncConfig[]; // convert to required
-} & StripePluginConfig;
+export type SanitizedStripePluginConfig = {} & StripePluginConfig;
 
 export type StripeProxy = (args: {
     stripeArgs: any[];
