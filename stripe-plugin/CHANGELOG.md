@@ -1,5 +1,19 @@
 # @shopnex/stripe-plugin
 
+## 3.31.6
+
+### Patch Changes
+
+- Updated dependencies
+    - @shopnex/types@0.0.3
+
+## 3.31.5
+
+### Patch Changes
+
+- Updated dependencies
+    - @shopnex/types@0.0.2
+
 ## 3.31.4
 
 ### Patch Changes

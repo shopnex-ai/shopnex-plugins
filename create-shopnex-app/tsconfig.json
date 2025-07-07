@@ -8,7 +8,7 @@
             "dom"
         ] /* Specify a set of bundled library declaration files that describe the target runtime environment. */,
         "module": "node16" /* Specify what module code is generated. */,
-        "rootDir": "src",
+        "rootDir": "./src",
         "resolveJsonModule": true /* Enable importing .json files. */,
         // "allowArbitraryExtensions": true,                 /* Enable importing files with any extension, provided a declaration file is present. */
         // "noResolve": true,                                /* Disallow 'import's, 'require's or '<reference>'s from expanding the number of files TypeScript should add to a project. */

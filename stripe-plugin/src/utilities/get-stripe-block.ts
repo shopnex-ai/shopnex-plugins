@@ -8,14 +8,14 @@ export const getStripeBlock = async ({
     req: PayloadRequest;
     shopId: number;
 }) => {
-    const paymentsDocument: PaginatedDocs<Payment> = await req.payload.find({
+    const paymentsDocument = (await req.payload.find({
         collection: "payments",
         where: {
             shop: {
                 equals: shopId,
             },
         },
-    });
+    })) as PaginatedDocs<Payment>;
 
     const stripeBlock = paymentsDocument.docs[0]?.providers?.find(
         (provider: any) => provider.blockType === "stripe"
