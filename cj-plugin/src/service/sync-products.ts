@@ -102,7 +102,7 @@ async function mapMockProductToSchema({
         );
 
         variants.push({
-            gallery: [imageId],
+            gallery: [+imageId],
             options: variant.variantKey?.split("-").map((key, index) => ({
                 option: index === 0 ? "Color" : "Size",
                 value: key,

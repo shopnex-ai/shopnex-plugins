@@ -1,5 +1,19 @@
 # @shoplyjs/cj-plugin
 
+## 1.0.9
+
+### Patch Changes
+
+- Updated dependencies
+    - @shopnex/types@0.0.3
+
+## 1.0.8
+
+### Patch Changes
+
+- Updated dependencies
+    - @shopnex/types@0.0.2
+
 ## 1.0.7
 
 ### Patch Changes
