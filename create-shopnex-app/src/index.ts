@@ -36,13 +36,20 @@ const flags = {
         }
         return undefined;
     })(),
-    envs: args
-        .filter((arg) => arg.startsWith("--env="))
-        .reduce((acc: Record<string, string>, arg) => {
-            const [key, value] = arg.split("=").slice(1);
-            acc[key] = value;
-            return acc;
-        }, {}),
+    envs: (() => {
+        const envs: Record<string, string> = {};
+        for (let i = 0; i < args.length; i++) {
+            const isEnvFlag = args[i] === "--env" || args[i] === "-e";
+            if (isEnvFlag && args[i + 1]) {
+                const [key, value] = args[i + 1].split("=");
+                if (key && value !== undefined) {
+                    envs[key] = value;
+                    i++; // Skip the next one since it's the env value
+                }
+            }
+        }
+        return envs;
+    })(),
 };
 
 // --- Graceful Exit Handler Setup (if not done in cleanup-and-exit.js) ---
@@ -250,8 +257,24 @@ const run = async () => {
     await displayBanner();
 
     // Get CLI args (skip flags)
+    let dbType: string;
     const nonFlagArgs = args.filter((arg) => !arg.startsWith("--"));
     let projectName = nonFlagArgs[0];
+
+    if (!projectName && !flags.db) {
+        const answers = await askProjectDetails();
+        projectName = answers.projectName;
+        dbType = answers.dbType;
+    } else if (projectName && !flags.db && !flags.onlyStorefront) {
+        dbType = await askDatabaseType();
+    } else if (!projectName && flags.db) {
+        const answers = await askProjectDetails();
+        projectName = answers.projectName;
+        dbType = flags.db;
+    } else {
+        dbType = flags.db!;
+    }
+
     const projectPath = path.resolve(process.cwd(), projectName);
 
     if (flags.onlyStorefront) {
@@ -264,22 +287,6 @@ const run = async () => {
         setStoreEnvs(flags.envs, projectPath);
         return;
     }
-    let dbType: string;
-
-    if (!projectName && !flags.db) {
-        const answers = await askProjectDetails();
-        projectName = answers.projectName;
-        dbType = answers.dbType;
-    } else if (projectName && !flags.db) {
-        dbType = await askDatabaseType();
-    } else if (!projectName && flags.db) {
-        const answers = await askProjectDetails();
-        projectName = answers.projectName;
-        dbType = flags.db;
-    } else {
-        dbType = flags.db!;
-    }
-
     await cloneRepository(projectName, REPO_URL);
     try {
         process.chdir(projectPath);

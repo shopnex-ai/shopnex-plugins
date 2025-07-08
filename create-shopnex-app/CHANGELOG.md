@@ -1,5 +1,11 @@
 # create-shopnex-app
 
+## 1.0.6
+
+### Patch Changes
+
+- Add only store flag
+
 ## 1.0.5
 
 ### Patch Changes
