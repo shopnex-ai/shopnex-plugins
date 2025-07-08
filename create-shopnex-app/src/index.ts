@@ -19,12 +19,15 @@ import { startDevServer } from "./start-dev-server.js";
 import { askToRunDevServer } from "./ask-to-run-dev-server.js";
 import { askThemeTemplate } from "./ask-theme-template.js";
 import { checkoutBranch } from "./checkout-branch.js";
+import { scaffoldStorefront } from "./scaffold-storefront.js";
+import { setStoreEnvs } from "./set-store-eanvs.js";
 
 const args = process.argv.slice(2);
 const flags = {
     fresh: args.includes("--fresh"),
     skipEnv: args.includes("--skip-env"),
     noDev: args.includes("--skip-dev"),
+    onlyStorefront: args.includes("--only-storefront"),
     db: (() => {
         const dbArg = args.find((arg) => arg.startsWith("--db="));
         if (dbArg) {
@@ -33,6 +36,13 @@ const flags = {
         }
         return undefined;
     })(),
+    envs: args
+        .filter((arg) => arg.startsWith("--env="))
+        .reduce((acc: Record<string, string>, arg) => {
+            const [key, value] = arg.split("=").slice(1);
+            acc[key] = value;
+            return acc;
+        }, {}),
 };
 
 // --- Graceful Exit Handler Setup (if not done in cleanup-and-exit.js) ---
@@ -47,7 +57,8 @@ process.on("uncaughtException", (error) => {
 // --- End Graceful Exit Handler ---
 
 // --- Configuration ---
-const REPO_URL = "https://github.com/shopnex-ai/shopnex.git"; // User provided repo
+const REPO_URL = "https://github.com/shopnex-ai/shopnex.git";
+const STORE_FRONT_REPO_URL = "https://github.com/shopnex-ai/next-storefront";
 const ORG_NAME = chalk.hex("#1687b9").bold("ShopNex");
 
 // --- Helper Functions ---
@@ -241,7 +252,18 @@ const run = async () => {
     // Get CLI args (skip flags)
     const nonFlagArgs = args.filter((arg) => !arg.startsWith("--"));
     let projectName = nonFlagArgs[0];
+    const projectPath = path.resolve(process.cwd(), projectName);
 
+    if (flags.onlyStorefront) {
+        await scaffoldStorefront(projectName, STORE_FRONT_REPO_URL);
+        console.log(chalk.green("Storefront scaffolded successfully!"));
+
+        process.chdir(projectPath);
+        console.log(chalk.blue(`Changed directory to: ${process.cwd()}`));
+
+        setStoreEnvs(flags.envs, projectPath);
+        return;
+    }
     let dbType: string;
 
     if (!projectName && !flags.db) {
@@ -257,8 +279,6 @@ const run = async () => {
     } else {
         dbType = flags.db!;
     }
-
-    const projectPath = path.resolve(process.cwd(), projectName);
 
     await cloneRepository(projectName, REPO_URL);
     try {
