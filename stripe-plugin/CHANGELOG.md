@@ -1,5 +1,11 @@
 # @shopnex/stripe-plugin
 
+## 3.31.7
+
+### Patch Changes
+
+- Add checkout session hook to orders collection
+
 ## 3.31.6
 
 ### Patch Changes
