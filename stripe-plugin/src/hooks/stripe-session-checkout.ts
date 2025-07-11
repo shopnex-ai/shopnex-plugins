@@ -18,11 +18,19 @@ export const stripeSessionCheckout: CollectionBeforeChangeHook<Order> = async ({
     const serverUrl = req.payload.config.serverURL;
     const cancelUrl = `${serverUrl}/cart?canceled=true`;
     const successUrl = `${serverUrl}/order/confirmed/{CHECKOUT_SESSION_ID}`;
-    const cartItems = typeof data.cart === "object" ? data.cart?.cartItems : [];
-    if (!cartItems?.length) {
+    const cart = await req.payload.find({
+        collection: "carts",
+        where: {
+            id: {
+                equals: data.cart,
+            },
+        },
+        req,
+    });
+    if (!cart.docs?.[0].cartItems?.length) {
         return data;
     }
-    const lineItems = mapToStripeLineItems(cartItems);
+    const lineItems = mapToStripeLineItems(cart.docs[0].cartItems);
 
     const session = await createCheckoutSession({
         lineItems,
