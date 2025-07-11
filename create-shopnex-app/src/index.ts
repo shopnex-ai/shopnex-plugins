@@ -282,7 +282,6 @@ const run = async () => {
         console.log(chalk.green("Storefront scaffolded successfully!"));
 
         process.chdir(projectPath);
-        console.log(chalk.blue(`Changed directory to: ${process.cwd()}`));
 
         setStoreEnvs(flags.envs, projectPath);
         return;
