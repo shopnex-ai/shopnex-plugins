@@ -47,6 +47,7 @@ export type StripePluginConfig = {
      * The collection slug for the payments collection
      */
     paymentCollectionSlug?: string;
+    ordersCollectionSlug?: string;
     secretAccess?: SecretAccess;
 };
 
