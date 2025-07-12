@@ -1,5 +1,11 @@
 # create-shopnex-app
 
+## 1.0.7
+
+### Patch Changes
+
+- Fix flow according to mono repo structure
+
 ## 1.0.6
 
 ### Patch Changes
