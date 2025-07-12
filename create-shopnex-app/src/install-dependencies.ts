@@ -8,7 +8,6 @@ export const installDependencies = async (projectPath: string) => {
         `Installing base dependencies with ${chalk.cyan("pnpm")}... (This may take a few minutes)`
     ).start();
     try {
-        process.chdir(projectPath); // Change directory to the new project
         execSync("pnpm install", { stdio: "pipe" });
         spinner.succeed(
             chalk.green("Base dependencies installed successfully!")

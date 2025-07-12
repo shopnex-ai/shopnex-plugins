@@ -18,9 +18,9 @@ import { askAndUpdateEnvUri } from "./ask-and-update-env-uri.js";
 import { startDevServer } from "./start-dev-server.js";
 import { askToRunDevServer } from "./ask-to-run-dev-server.js";
 import { askThemeTemplate } from "./ask-theme-template.js";
-import { checkoutBranch } from "./checkout-branch.js";
 import { scaffoldStorefront } from "./scaffold-storefront.js";
 import { setStoreEnvs } from "./set-store-eanvs.js";
+import { fetchSubmoduleByPath } from "./fetch-submodule-by-name.js";
 
 const args = process.argv.slice(2);
 const flags = {
@@ -298,8 +298,13 @@ const run = async () => {
         process.exit(1);
     }
     const themeType = await askThemeTemplate();
+    process.chdir(projectPath);
+    console.log(chalk.blue(`Changed directory to: $projectPath}`));
     if (themeType === "builder") {
-        await checkoutBranch(projectPath, "builder-io");
+        await fetchSubmoduleByPath("apps/builder-shop");
+    }
+    if (themeType === "custom") {
+        await fetchSubmoduleByPath("apps/shop");
     }
     await runProjectCommand(
         "git remote rename origin shopnex",
