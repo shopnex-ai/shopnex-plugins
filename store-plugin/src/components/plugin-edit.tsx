@@ -10,12 +10,12 @@ import {
 } from "@payloadcms/ui";
 import { useParams } from "next/navigation";
 import "./plugin-edit.scss";
-import Markdown from "react-markdown";
 import { Puzzle } from "lucide-react";
 import Image from "next/image";
 import { getPlugin } from "../actions/actions";
 import "./markdown-styles.scss";
 import { SetStepNav } from "@payloadcms/ui";
+import { RichText } from "@payloadcms/richtext-lexical/react";
 
 const baseClass = "plugin-edit-view";
 
@@ -45,15 +45,12 @@ export function PluginEditView() {
             if (!packageName?.value) {
                 toast("Plugin not found!");
             }
-            const readmeResult = await fetch(
-                `https://cdn.jsdelivr.net/npm/${packageName.value}@latest/README.md`
-            );
-            const readme = await readmeResult.text();
+
+            debugger;
 
             setPlugin({
                 ...data,
                 ...packageName,
-                description: readme,
             });
         })();
     }, [pluginId]);
@@ -110,11 +107,11 @@ export function PluginEditView() {
 
                 <div className={`${baseClass}__inputs`}>
                     <TextInput
-                        path="installPlugin"
-                        label="Install Plugin"
-                        readOnly
+                        path="pluginAuthorName"
+                        label="Plugin Author"
+                        value={plugin?.authorName || "Unknown"}
                         className={`${baseClass}__input`}
-                        value={`pnpm install ${plugin?.value}`}
+                        readOnly
                     />
                     <TextInput
                         label="Plugin Version"
@@ -125,8 +122,7 @@ export function PluginEditView() {
                     />
                 </div>
                 <div className={`${baseClass}__textarea`}>
-                    {/*// @ts-ignore */}
-                    <Markdown>{plugin?.description}</Markdown>
+                    <RichText data={plugin?.description} />
                 </div>
             </Gutter>
         </>
