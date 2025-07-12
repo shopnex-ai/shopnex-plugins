@@ -309,8 +309,10 @@ const run = async () => {
     await installDbDependencies(dbType);
     await setupDatabaseConfig(projectPath, dbType);
 
+    const cmsAppPath = path.join(projectPath, "apps", "cms");
+
     if (!flags.skipEnv) {
-        await askAndUpdateEnvUri(projectPath, dbType);
+        await askAndUpdateEnvUri(cmsAppPath, dbType);
     } else {
         console.log(
             chalk.yellow("⚠️ Skipping environment configuration (--no-env)")
@@ -319,7 +321,7 @@ const run = async () => {
 
     if (!flags.fresh) {
         await runProjectCommand(
-            "npm run db:seed",
+            "pnpm run db:seed",
             "Attempting to seed database"
         );
     } else {

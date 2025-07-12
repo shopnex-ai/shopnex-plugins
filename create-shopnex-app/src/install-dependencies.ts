@@ -9,7 +9,7 @@ export const installDependencies = async (projectPath: string) => {
     ).start();
     try {
         process.chdir(projectPath); // Change directory to the new project
-        execSync("pnpm --ignore-workspace install", { stdio: "pipe" });
+        execSync("pnpm install", { stdio: "pipe" });
         spinner.succeed(
             chalk.green("Base dependencies installed successfully!")
         );
