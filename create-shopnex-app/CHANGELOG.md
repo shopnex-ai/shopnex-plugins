@@ -1,5 +1,11 @@
 # create-shopnex-app
 
+## 1.0.8
+
+### Patch Changes
+
+- Change branches to submodules
+
 ## 1.0.7
 
 ### Patch Changes
