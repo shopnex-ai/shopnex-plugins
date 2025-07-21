@@ -15,9 +15,9 @@ export const stripeSessionCheckout: CollectionBeforeChangeHook<Order> = async ({
     ) {
         return data;
     }
-    const serverUrl = req.payload.config.serverURL;
-    const cancelUrl = `${serverUrl}/cart?canceled=true`;
-    const successUrl = `${serverUrl}/order/confirmed/{CHECKOUT_SESSION_ID}`;
+    const shopUrl = req.payload.config?.custom?.shopUrl;
+    const cancelUrl = `${shopUrl}/cart?canceled=true`;
+    const successUrl = `${shopUrl}/order/confirmed/{CHECKOUT_SESSION_ID}`;
     const cart = await req.payload.find({
         collection: "carts",
         where: {

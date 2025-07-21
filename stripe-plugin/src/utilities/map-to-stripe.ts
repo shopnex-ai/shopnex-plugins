@@ -11,7 +11,7 @@ export const mapToStripeLineItems = (
         const variant = variants.find(
             (variant) => variant.id === item.variantId
         );
-        const imageUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}${variant?.gallery?.[0]}`;
+        // const imageUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}${variant?.gallery?.[0]}`;
         return {
             price_data: {
                 currency: "usd", // Adjust if needed
@@ -20,7 +20,7 @@ export const mapToStripeLineItems = (
                     description: variant?.options
                         ?.map((opt) => `${opt.option}: ${opt.value}`)
                         .join(", "),
-                    images: variant?.gallery?.length ? [imageUrl] : [],
+                    images: variant?.gallery?.length ? [] : [],
                 },
                 unit_amount: +new Decimal(variant?.price || 0)
                     .times(100)
