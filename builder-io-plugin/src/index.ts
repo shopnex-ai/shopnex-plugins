@@ -63,31 +63,32 @@ export const builderIoPlugin =
             });
         }
 
-        if (!pagesCollection || typeof pagesCollection !== "object") {
-            throw new Error("Pages collection not found");
-        }
+        // TODO: Remove this after we have a proper way to import pages
+        // if (!pagesCollection || typeof pagesCollection !== "object") {
+        //     throw new Error("Pages collection not found");
+        // }
 
-        if (!pagesCollection.hooks) {
-            pagesCollection.hooks = {};
-        }
+        // if (!pagesCollection.hooks) {
+        //     pagesCollection.hooks = {};
+        // }
 
-        if (!Array.isArray(pagesCollection.hooks.afterChange)) {
-            pagesCollection.hooks.afterChange = [];
-        }
+        // if (!Array.isArray(pagesCollection.hooks.afterChange)) {
+        //     pagesCollection.hooks.afterChange = [];
+        // }
 
-        pagesCollection.hooks.afterChange.push(async ({ doc, operation }) => {
-            if (operation !== "create") {
-                return;
-            }
-            if (!finalConfig.privateKey || !finalConfig.publicKey) {
-                throw new Error("Private or public API key is not set");
-            }
-            await importPageHook(
-                finalConfig.privateKey,
-                finalConfig.publicKey,
-                doc.handle
-            );
-        });
+        // pagesCollection.hooks.afterChange.push(async ({ doc, operation }) => {
+        //     if (operation !== "create") {
+        //         return;
+        //     }
+        //     if (!finalConfig.privateKey || !finalConfig.publicKey) {
+        //         throw new Error("Private or public API key is not set");
+        //     }
+        //     await importPageHook(
+        //         finalConfig.privateKey,
+        //         finalConfig.publicKey,
+        //         doc.handle
+        //     );
+        // });
 
         if (!enabled) {
             return incomingConfig;
