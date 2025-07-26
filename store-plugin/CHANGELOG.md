@@ -1,5 +1,11 @@
 # @shoplyjs/store-plugin
 
+## 1.0.15
+
+### Patch Changes
+
+- Improve plugin flow
+
 ## 1.0.14
 
 ### Patch Changes
