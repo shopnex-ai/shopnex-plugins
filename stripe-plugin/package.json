@@ -1,6 +1,6 @@
 {
     "name": "@shopnex/stripe-plugin",
-    "version": "3.31.7",
+    "version": "3.31.9",
     "description": "Stripe plugin for Payload",
     "keywords": [
         "payload",

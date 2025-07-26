@@ -6,8 +6,6 @@ import { stripeWebhooks } from "./routes/webhooks";
 import { StripeBlock } from "./blocks/StripeBlock";
 import { stripeSessionCheckout } from "./hooks/stripe-session-checkout";
 
-export { stripeProxy } from "./utilities/stripeProxy";
-
 export const stripePlugin =
     (incomingStripeConfig: StripePluginConfig) =>
     (config: Config): Config => {

@@ -1,5 +1,17 @@
 # @shopnex/stripe-plugin
 
+## 3.31.9
+
+### Patch Changes
+
+- Improve plugin flow
+
+## 3.31.8
+
+### Patch Changes
+
+- Temp fix
+
 ## 3.31.7
 
 ### Patch Changes
