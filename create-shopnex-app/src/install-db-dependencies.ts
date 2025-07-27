@@ -27,7 +27,7 @@ export const installDbDependencies = async (dbType: string) => {
         const spinner = ora(
             `Installing ${chalk.cyan(dbName)} specific dependencies (${chalk.dim(depsString)})...`
         ).start();
-        const command = `pnpm add ${depsString}`;
+        const command = `pnpm add ${depsString} -w`;
         try {
             execSync(command, { stdio: "pipe" });
             spinner.succeed(

@@ -101,6 +101,7 @@ const setupDatabaseConfig = async (projectPath: string, dbType: string) => {
     const payloadConfigFilename = "payload.config.ts"; // Assuming TS template
     const payloadConfigPath = path.join(
         projectPath,
+        "apps/cms",
         "src",
         payloadConfigFilename
     );
