@@ -1,0 +1,45 @@
+.CommandBar {
+    .CommandBar__animator {
+        width: 300px;
+        background-color: var(--theme-elevation-50);
+        border-radius: var(--style-radius-m);
+        box-shadow: 0 2px 16px -2px #0003;
+    }
+
+    .action-button-list {
+        padding: 0.5rem;
+    }
+
+    .action-button {
+        padding: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+        border-radius: var(--style-radius-m);
+        &.active,
+        &:hover,
+        &:focus-visible,
+        &:focus-within {
+            background-color: var(--theme-elevation-300);
+        }
+    }
+
+    .list-controls__wrapper {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 12px;
+    }
+    .search {
+    }
+
+    .results {
+    }
+
+    .item {
+    }
+
+    .section {
+    }
+}
