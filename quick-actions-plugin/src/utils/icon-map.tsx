@@ -18,6 +18,7 @@ import {
     BookOpen,
     ClipboardMinus,
 } from "lucide-react";
+import React from "react";
 
 export const iconMap = {
     users: <User size={16} />,
