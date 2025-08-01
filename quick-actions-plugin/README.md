@@ -1,250 +1,221 @@
-Here's a professional and well-structured `README.md` for your Payload SDK:
+# Quick Actions Plugin for Payload CMS
 
----
-
-# Payload SDK
-
-A fully type-safe SDK for interacting with the Payload CMS REST API. This package simplifies working with Payload by offering a seamless, strongly typed developer experience—closely mirroring the Local API interface.
+A powerful and extensible command palette plugin for Payload CMS that provides instant access to collections, globals, and custom actions through a searchable interface.
 
 ## ✨ Features
 
-- 🔒 **Full Type Safety** – powered by your generated Payload types.
-- 🔁 **Support for all core operations** – including collections, globals, auth, versions, and file uploads.
-- 🔍 **Query filters & population** – type-safe `where`, `select`, and `populate` support.
-- 📁 **File uploads** – simplified with native `Blob`, `File`, or URL input.
-- 🧩 **Custom endpoints** – easy access to non-standard REST routes.
-- ⚙️ **Custom fetch and request config** – extend or replace fetch logic and share common options.
+- ⚡ **Instant Access** – Quick search and navigation to any collection or global
+- 🎨 **Customizable** – Full control over actions, icons, and positioning
+- 🔧 **Extensible** – Plugin hooks, custom action builders, and filtering
+- 🎯 **Type Safe** – Full TypeScript support with comprehensive type definitions
+- 🚀 **Performance** – Optimized rendering and minimal bundle impact
 
 ## 🚀 Installation
 
 ```bash
-npm install @payloadcms/sdk
+npm install @shopnex/quick-actions-plugin
 # or
-pnpm add @payloadcms/sdk
+pnpm add @shopnex/quick-actions-plugin
 ```
 
-## 🛠️ Usage
+## 🛠️ Basic Usage
 
 ```ts
-import { PayloadSDK } from "@payloadcms/sdk";
-import type { Config } from "./payload-types";
+import { quickActionsPlugin } from "@shopnex/quick-actions-plugin";
 
-const sdk = new PayloadSDK<Config>({
-    baseURL: "https://example.com/api",
-});
-```
-
-### ✅ Core Operations
-
-#### Find Documents
-
-```ts
-const posts = await sdk.find({
-    collection: "posts",
-    draft: true,
-    limit: 10,
-    locale: "en",
-    page: 1,
-    where: { _status: { equals: "published" } },
+export default buildConfig({
+    plugins: [
+        quickActionsPlugin({
+            position: "actions", // 'actions' | 'before-nav-links' | 'after-nav-links'
+            defaultCreateActions: true,
+        }),
+        // ... other plugins
+    ],
+    // ... rest of config
 });
 ```
 
-#### Find by ID
+## 🔧 Advanced Configuration
+
+### Custom Actions
 
 ```ts
-const post = await sdk.findByID({
-    collection: "posts",
-    id,
-    draft: true,
-    locale: "en",
+import { quickActionsPlugin, QuickActionBuilder } from '@shopnex/quick-actions-plugin';
+import { Settings, Users } from 'lucide-react';
+
+const customActions = [
+  QuickActionBuilder
+    .create('settings', 'System Settings')
+    .withIcon(<Settings size={16} />)
+    .withLink('/admin/settings')
+    .withKeywords('config system settings')
+    .withGroup('admin')
+    .build(),
+
+  QuickActionBuilder
+    .create('users-export', 'Export Users')
+    .withIcon(<Users size={16} />)
+    .withLink('/admin/collections/users/export')
+    .withPriority(10)
+    .build()
+];
+
+export default buildConfig({
+  plugins: [
+    quickActionsPlugin({
+      additionalActions: customActions,
+      excludeCollections: ['sensitive-data'],
+    }),
+  ],
 });
 ```
 
-#### Count Documents
+### Plugin Hooks
 
 ```ts
-const result = await sdk.count({
-    collection: "posts",
-    where: { id: { equals: post.id } },
-});
-```
-
-#### Create Document
-
-```ts
-const result = await sdk.create({
-    collection: "posts",
-    data: { text: "hello" },
-});
-```
-
-#### Create with File Upload
-
-```ts
-const result = await sdk.create({
-    collection: "media",
-    file, // File | Blob | string (URL)
-    data: {},
-});
-```
-
-#### Update Document by ID
-
-```ts
-const result = await sdk.update({
-    collection: "posts",
-    id: post.id,
-    data: { text: "updated" },
-});
-```
-
-#### Bulk Update
-
-```ts
-const result = await sdk.update({
-    collection: "posts",
-    where: { id: { equals: post.id } },
-    data: { text: "bulk-updated" },
-});
-```
-
-#### Delete by ID
-
-```ts
-const result = await sdk.delete({
-    collection: "posts",
-    id: post.id,
-});
-```
-
-#### Bulk Delete
-
-```ts
-const result = await sdk.delete({
-    collection: "posts",
-    where: { id: { equals: post.id } },
-});
-```
-
----
-
-### 🌐 Global Operations
-
-```ts
-await sdk.findGlobal({ slug: "global" });
-await sdk.updateGlobal({ slug: "global", data: { text: "updated" } });
-```
-
----
-
-### 🔐 Auth Operations
-
-```ts
-// Login
-await sdk.login({
-    collection: "users",
-    data: { email: "dev@payloadcms.com", password: "123456" },
-});
-
-// Me
-await sdk.me(
-    { collection: "users" },
-    {
-        headers: { Authorization: `JWT ${token}` },
-    }
-);
-
-// Refresh Token
-await sdk.refreshToken(
-    { collection: "users" },
-    {
-        headers: { Authorization: `JWT ${token}` },
-    }
-);
-
-// Forgot Password
-await sdk.forgotPassword({
-    collection: "users",
-    data: { email: "dev@payloadcms.com" },
-});
-
-// Reset Password
-await sdk.resetPassword({
-    collection: "users",
-    data: { token, password: "new-password" },
-});
-```
-
----
-
-### 🕓 Versions
-
-```ts
-await sdk.findVersions({
-    collection: "posts",
-    where: { parent: { equals: post.id } },
-});
-
-await sdk.findVersionByID({
-    collection: "posts",
-    id: version.id,
-});
-
-await sdk.restoreVersion({
-    collection: "posts",
-    id,
-});
-
-// Global Versions
-await sdk.findGlobalVersions({ slug: "global" });
-await sdk.findGlobalVersionByID({ slug: "global", id: version.id });
-await sdk.restoreGlobalVersion({ slug: "global", id });
-```
-
----
-
-### 🧩 Custom Requests
-
-```ts
-await sdk.request({
-    method: "POST",
-    path: "/send-data",
-    json: { id: 1 },
-});
-```
-
----
-
-### ⚙️ Custom Fetch + Shared Init
-
-```ts
-const sdk = new PayloadSDK<Config>({
-    baseURL: "https://example.com/api",
-    baseInit: {
-        credentials: "include",
-    },
-    fetch: async (url, init) => {
-        console.log("Request started");
-        const response = await fetch(url, init);
-        console.log("Request completed");
-        return response;
+quickActionsPlugin({
+    hooks: {
+        beforeActionsGenerated: (config) => {
+            console.log("Generating actions for config:", config);
+        },
+        afterActionsGenerated: (actions) => {
+            return actions.filter((action) => !action.name.includes("test"));
+        },
+        onActionExecute: async (action) => {
+            console.log("Executing action:", action.name);
+            // Custom analytics or logging
+        },
     },
 });
 ```
 
----
+### Custom Action Builder
 
-## 📘 Notes
+```ts
+quickActionsPlugin({
+    customActionBuilder: (config) => {
+        const actions = [];
 
-- All operations support a third optional parameter to customize `fetch` options (headers, etc.).
-- Fully compatible with `RequestInit`, enabling cookies, custom headers, CORS config, and more.
+        // Custom logic to generate actions based on config
+        config.collections?.forEach((collection) => {
+            if (collection.admin?.useAsTitle) {
+                actions.push({
+                    id: `search-${collection.slug}`,
+                    name: `Search ${collection.slug}`,
+                    link: `/admin/collections/${collection.slug}?search=`,
+                    priority: 90,
+                });
+            }
+        });
 
----
+        return actions;
+    },
+});
+```
+
+### Action Filtering and Utilities
+
+```ts
+import {
+    filterActions,
+    sortActionsByPriority,
+    groupActionsByCategory,
+} from "@shopnex/quick-actions-plugin";
+
+// Filter actions by criteria
+const filteredActions = filterActions(actions, {
+    byGroup: "collections",
+    byPriority: 50,
+    excludeGroups: ["admin"],
+});
+
+// Sort by priority
+const sortedActions = sortActionsByPriority(actions);
+
+// Group by category
+const groupedActions = groupActionsByCategory(actions);
+```
+
+### Custom Icons
+
+```ts
+import { quickActionsPlugin } from '@shopnex/quick-actions-plugin';
+import { Database, FileText, Image } from 'lucide-react';
+
+quickActionsPlugin({
+  overrideIconsMap: {
+    posts: <FileText size={16} />,
+    media: <Image size={16} />,
+    categories: <Database size={16} />
+  }
+});
+```
+
+## ⌨️ Keyboard Shortcuts
+
+- **Cmd/Ctrl + K** - Open command palette
+- **Arrow Keys** - Navigate actions
+- **Enter** - Execute selected action
+- **Escape** - Close command palette
+
+## 🎨 Styling
+
+The plugin includes default SCSS styles that can be customized:
+
+```scss
+.CommandBar {
+    // Custom styles for the command bar
+}
+
+.quick-actions {
+    // Custom styles for the trigger button
+}
+```
+
+## 📚 API Reference
+
+### QuickActionsPluginConfig
+
+```ts
+interface QuickActionsPluginConfig {
+    position?: "actions" | "before-nav-links" | "after-nav-links";
+    overrideActions?: QuickAction[];
+    additionalActions?: QuickAction[];
+    overrideIconsMap?: Record<string, JSX.Element>;
+    defaultCreateActions?: boolean;
+    kbarOptions?: KBarOptions;
+    hooks?: PluginHooks;
+    enableDefaultActions?: boolean;
+    customActionBuilder?: (config: any) => QuickAction[];
+    excludeCollections?: string[];
+    excludeGlobals?: string[];
+}
+```
+
+### QuickAction Interface
+
+```ts
+interface QuickAction {
+    id: ActionId;
+    name: string;
+    shortcut?: string[];
+    keywords?: string;
+    section?: ActionSection;
+    icon?: string | React.ReactElement | React.ReactNode;
+    subtitle?: string;
+    perform?: (currentActionImpl: ActionImpl) => any;
+    parent?: ActionId;
+    priority?: Priority;
+    link?: string;
+    group?: string;
+    custom?: boolean;
+}
+```
+
+## 🤝 Contributing
+
+Contributions are welcome! Please read our contributing guidelines and submit pull requests to the main repository.
 
 ## 📄 License
 
-MIT – © 2025 Payload CMS contributors
-
----
-
-Let me know if you'd like me to publish this to npm, generate a `tsdoc` documentation site, or help integrate into your CI/CD!
+MIT – © 2025 ShopNex.ai
