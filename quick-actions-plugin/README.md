@@ -1,5 +1,7 @@
 # Quick Actions Plugin for Payload CMS
 
+<img width="1238" height="655" alt="image" src="https://github.com/user-attachments/assets/5c84d549-d983-45a1-abd1-3da747ec1a24" />
+
 A powerful and extensible command palette plugin for Payload CMS that provides instant access to collections, globals, and custom actions through a searchable interface.
 
 ## ✨ Features
