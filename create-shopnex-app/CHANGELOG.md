@@ -1,5 +1,11 @@
 # create-shopnex-app
 
+## 1.0.9
+
+### Patch Changes
+
+- Update app path and modify pnpm install command
+
 ## 1.0.8
 
 ### Patch Changes

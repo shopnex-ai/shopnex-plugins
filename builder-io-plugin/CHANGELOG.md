@@ -1,5 +1,11 @@
 # @shopnex/stripe-plugin
 
+## 1.0.11
+
+### Patch Changes
+
+- Comment pages auto import temp
+
 ## 1.0.10
 
 ### Patch Changes
