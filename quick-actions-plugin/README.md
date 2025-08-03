@@ -11,6 +11,7 @@ A powerful and extensible command palette plugin for Payload CMS that provides i
 - 🔧 **Extensible** – Plugin hooks, custom action builders, and filtering
 - 🎯 **Type Safe** – Full TypeScript support with comprehensive type definitions
 - 🚀 **Performance** – Optimized rendering and minimal bundle impact
+- 🔍 **Fuzzy Search** – Search for actions with fuzzy matching
 
 ## 🚀 Installation
 

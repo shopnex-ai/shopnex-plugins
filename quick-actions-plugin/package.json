@@ -1,6 +1,6 @@
 {
     "name": "@shopnex/quick-actions-plugin",
-    "version": "0.0.1",
+    "version": "0.0.3",
     "description": "Quick Actions Plugin for Payload CMS",
     "keywords": [
         "payload",
@@ -61,6 +61,7 @@
         "ts-essentials": "10.0.3"
     },
     "publishConfig": {
+        "access": "public",
         "exports": {
             ".": {
                 "import": "./dist/index.js",

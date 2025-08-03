@@ -30,7 +30,7 @@ function RenderResults() {
                             </div>
                         );
                     }
-                    
+
                     return (
                         <div
                             className={`action-button ${active ? "active" : ""}`}
@@ -39,13 +39,18 @@ function RenderResults() {
                             aria-selected={active}
                         >
                             {item.icon && (
-                                <span className="action-icon" aria-hidden="true">
+                                <span
+                                    className="action-icon"
+                                    aria-hidden="true"
+                                >
                                     {item.icon}
                                 </span>
                             )}
                             <span className="action-name">{item.name}</span>
                             {item.subtitle && (
-                                <span className="action-subtitle">{item.subtitle}</span>
+                                <span className="action-subtitle">
+                                    {item.subtitle}
+                                </span>
                             )}
                         </div>
                     );
@@ -73,19 +78,22 @@ export function CommandBar({
 }: CommandBarProps) {
     const router = useRouter();
 
-    const handleActionPerform = useCallback(async (action: QuickAction) => {
-        try {
-            if (hooks?.onActionExecute) {
-                await hooks.onActionExecute(action);
+    const handleActionPerform = useCallback(
+        async (action: QuickAction) => {
+            try {
+                if (hooks?.onActionExecute) {
+                    await hooks.onActionExecute(action);
+                }
+
+                if (action.link) {
+                    router.push(action.link);
+                }
+            } catch (error) {
+                console.error("Error executing action:", error);
             }
-            
-            if (action.link) {
-                router.push(action.link);
-            }
-        } catch (error) {
-            console.error('Error executing action:', error);
-        }
-    }, [hooks, router]);
+        },
+        [hooks, router]
+    );
 
     const allActions = actions.map((action) => ({
         ...action,
