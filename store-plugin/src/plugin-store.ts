@@ -16,7 +16,6 @@ export const PluginStore: CollectionConfig = {
                     root: {
                         Component:
                             "@shopnex/store-plugin/client#PluginEditView",
-                        path: "/plugins/:pluginId",
                     },
                 },
             },

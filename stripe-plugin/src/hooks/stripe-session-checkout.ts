@@ -9,9 +9,10 @@ export const stripeSessionCheckout: CollectionBeforeChangeHook<Order> = async ({
     req,
 }) => {
     if (
-        operation !== "create" ||
-        data.orderStatus !== "pending" ||
-        data.paymentGateway !== "stripe"
+        typeof data.payment === "object" &&
+        (operation !== "create" ||
+            data.orderStatus !== "pending" ||
+            data.payment?.name !== "stripe")
     ) {
         return data;
     }

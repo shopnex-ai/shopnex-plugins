@@ -72,6 +72,7 @@ export function PluginListView(
     return (
         <ListQueryProvider onQueryChange={handleSearchChange} {...{ data }}>
             <DefaultListView
+                viewType="list"
                 {...props}
                 newDocumentURL=""
                 hasCreatePermission={false}
