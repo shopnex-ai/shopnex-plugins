@@ -44,7 +44,7 @@ export async function GlobalViewRedirect(props: Args) {
         tenantFieldName,
         tenantsCollectionSlug,
         useAsTitle,
-        user,
+        user: user as any,
         view: viewType,
     });
 
