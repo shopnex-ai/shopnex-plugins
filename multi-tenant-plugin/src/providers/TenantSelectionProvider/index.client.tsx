@@ -87,15 +87,24 @@ export const TenantSelectionProviderClient = ({
 
     const router = useRouter();
 
-    const setCookie = React.useCallback((value?: string) => {
-        const expires = "; expires=Fri, 31 Dec 9999 23:59:59 GMT";
-        document.cookie =
-            "payload-tenant=" + (value || "") + expires + "; path=/";
-    }, []);
+    const setCookie = React.useCallback(
+        (tenantId?: string, tenantSlug?: string, key = "payload-tenant") => {
+            const expires = "; expires=Fri, 31 Dec 9999 23:59:59 GMT";
+            document.cookie =
+                `${key}=` + (tenantId || "") + expires + "; path=/";
+            if (tenantSlug) {
+                document.cookie =
+                    `shop-handle=` + tenantSlug + expires + "; path=/";
+            }
+        },
+        []
+    );
 
     const deleteCookie = React.useCallback(() => {
         document.cookie =
             "payload-tenant=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+        document.cookie =
+            "shop-handle=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
     }, []);
 
     const setTenant = React.useCallback<ContextType["setTenant"]>(
@@ -105,12 +114,16 @@ export const TenantSelectionProviderClient = ({
                     setSelectedTenantID(undefined);
                     deleteCookie();
                 } else {
-                    setSelectedTenantID(tenantOptions[0]?.value);
-                    setCookie(String(tenantOptions[0]?.value));
+                    const { value, slug } = tenantOptions[0] || {};
+                    setSelectedTenantID(value);
+                    setCookie(String(value), slug);
                 }
             } else {
+                const selectedTenant = tenantOptions.find(
+                    (option) => option.value === id
+                );
                 setSelectedTenantID(id);
-                setCookie(String(id));
+                setCookie(String(id), selectedTenant?.slug);
             }
             if (!preventRefreshOnChange && refresh) {
                 router.refresh();
