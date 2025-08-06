@@ -101,12 +101,6 @@ export const PasswordSignup = async (
         return new EmailAlreadyExistError();
     }
 
-    const {
-        hash: hashedPassword,
-        salt,
-        iterations,
-    } = await hashPassword(body.password);
-
     logger.info("Creating shop", "My Shop");
     const newShop = await payload.create({
         collection: "shops" as any,
@@ -123,10 +117,7 @@ export const PasswordSignup = async (
         collection: internal.usersCollectionSlug as any,
         data: {
             email: body.email,
-            emailVerified: false,
-            password: hashedPassword,
-            hashIterations: iterations,
-            salt,
+            password: body.password,
             shops: [
                 {
                     shop: newShop.id,
@@ -139,11 +130,6 @@ export const PasswordSignup = async (
         req: request,
     });
     logger.debug("User created", user);
-    // send verification email
-    const verificationResult = await payload.verifyEmail({
-        collection: internal.usersCollectionSlug as any,
-        token: user._verificationToken,
-    });
 
     logger.info("Creating account entry");
     await payload.create({
@@ -368,17 +354,13 @@ export const ResetPassword = async (
         return new InvalidCredentials();
     }
 
-    const {
-        hash: hashedPassword,
-        salt,
-        iterations,
-    } = await hashPassword(body.newPassword);
+    const { salt, iterations } = await hashPassword(body.newPassword);
 
     await payload.update({
         collection: internal.usersCollectionSlug as any,
         id: user.id,
         data: {
-            hashedPassword,
+            password: body.newPassword,
             salt,
             hashIterations: iterations,
         },
