@@ -27,16 +27,13 @@ export const TenantDetails = () => {
     }, [selectedTenantName]);
 
     const tenantDomain = useMemo(() => {
-        const originDomain = process.env.NEXT_PUBLIC_SERVER_URL?.replace(
-            "https://",
-            ""
-        )
-            .replace("http://", "")
-            .replace("app.", "");
-        const protocol = process.env.NEXT_PUBLIC_SERVER_URL?.includes("https")
-            ? "https://"
-            : "http://";
-        return `${protocol}${data.selectedTenantSlug ? data.selectedTenantSlug + "." : ""}${originDomain}`;
+        try {
+            const url = new URL(process.env.NEXT_PUBLIC_STOREFRONT_URL || "");
+            url.hostname = `${data.selectedTenantSlug ? data.selectedTenantSlug + "." : ""}${url.hostname.replace(/^app\./, "")}`;
+            return url.toString();
+        } catch {
+            return "";
+        }
     }, [data.selectedTenantSlug]);
 
     return (
@@ -51,7 +48,7 @@ export const TenantDetails = () => {
                     href={tenantDomain}
                     className="store-domain"
                 >
-                    {tenantDomain.replace("https://", "")}
+                    {tenantDomain.replace(/^https?:\/\//, "")}
                 </Link>
             </div>
         </div>
