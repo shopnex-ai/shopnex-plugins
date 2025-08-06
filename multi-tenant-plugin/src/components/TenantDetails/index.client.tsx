@@ -28,7 +28,7 @@ export const TenantDetails = () => {
 
     const tenantDomain = useMemo(() => {
         try {
-            const url = new URL(process.env.NEXT_PUBLIC_STOREFRONT_URL || "");
+            const url = new URL(process.env.NEXT_PUBLIC_SERVER_URL || "");
             url.hostname = `${data.selectedTenantSlug ? data.selectedTenantSlug + "." : ""}${url.hostname.replace(/^app\./, "")}`;
             return url.toString();
         } catch {
