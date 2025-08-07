@@ -46,8 +46,6 @@ export function PluginEditView() {
                 toast("Plugin not found!");
             }
 
-            debugger;
-
             setPlugin({
                 ...data,
                 ...packageName,
