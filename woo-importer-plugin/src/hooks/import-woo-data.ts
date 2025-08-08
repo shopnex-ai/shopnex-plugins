@@ -13,7 +13,7 @@ import { mapWooProduct } from "../mappers/product-mapper";
 import { mapWooCustomer } from "../mappers/customer-mapper";
 import { mapWooOrder } from "../mappers/order-mapper";
 import { getShopId } from "@shopnex/utils/helpers";
-import { Product } from "packages/types/src";
+import { Product } from "@shopnex/types";
 import { mapWooCart } from "../mappers/cart-mapper";
 import { mapWooTag } from "../mappers/tag-mapper";
 import { mapWooGiftCard } from "../mappers/gift-card-mapper";
