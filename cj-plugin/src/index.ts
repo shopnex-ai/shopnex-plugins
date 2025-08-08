@@ -43,11 +43,24 @@ export const cjPlugin =
             (collection) => collection.slug === "products"
         );
 
-        const sourceField = productCollection?.fields?.find(
+        const orderCollection = config.collections?.find(
+            (collection) => collection.slug === "orders"
+        );
+
+        const productSourceField = productCollection?.fields?.find(
             (field) => (field as SelectField).name === "source"
         ) as SelectField;
 
-        sourceField.options.push({
+        const orderSourceField = orderCollection?.fields?.find(
+            (field) => (field as SelectField).name === "source"
+        ) as SelectField;
+
+        productSourceField.options.push({
+            label: "CJ",
+            value: "cj",
+        });
+
+        orderSourceField.options.push({
             label: "CJ",
             value: "cj",
         });

@@ -1,22 +1,12 @@
 import type { BasePayload, CollectionAfterChangeHook, Document } from "payload";
 import { cjSdk } from "../sdk/cj-sdk";
+import { Order, Shop } from "@shopnex/types";
 
-export interface Orders extends Document {
-    id: string;
-    items: Array<{
-        productUrl: string;
-        quantity: number;
-        variant: {
-            variantId: string;
-        };
-    }>;
-}
-
-export const createOrderHook: CollectionAfterChangeHook<Orders> = async ({
+export const createOrderHook: CollectionAfterChangeHook<Order> = async ({
     doc,
     req,
 }) => {
-    if (doc.orderStatus !== "processing") {
+    if (doc.orderStatus !== "processing" || doc.source !== "cj") {
         return;
     }
     const payload: BasePayload = req.payload;
@@ -24,7 +14,7 @@ export const createOrderHook: CollectionAfterChangeHook<Orders> = async ({
         collection: "cj-settings" as any,
         where: {
             shop: {
-                equals: doc.shopId,
+                equals: (doc.shop as Shop)?.id,
             },
         },
     });
@@ -49,10 +39,10 @@ export const createOrderHook: CollectionAfterChangeHook<Orders> = async ({
         logisticName: "CJPacket Liquid US",
         orderNumber: doc.orderId,
         payType: 2,
-        products: doc.items.map((item) => ({
-            quantity: item.quantity,
-            vid: item.variant.variantId,
-        })),
+        // products: doc.items.map((item) => ({
+        //     quantity: item.quantity,
+        //     vid: item.variant.variantId,
+        // })),
         podProperties,
         remark: "",
         shippingAddress: doc.shippingAddress?.address?.line1 || "",
