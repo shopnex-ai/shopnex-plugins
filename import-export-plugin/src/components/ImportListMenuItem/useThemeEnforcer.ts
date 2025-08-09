@@ -5,8 +5,12 @@ const useThemeEnforcer = (preferredTheme: string) => {
         const htmlEl = document.documentElement;
 
         const enforceTheme = () => {
-            if (htmlEl.getAttribute("data-theme") !== preferredTheme) {
+            if (
+                htmlEl.getAttribute("data-theme") !== preferredTheme ||
+                htmlEl.style.colorScheme !== preferredTheme
+            ) {
                 htmlEl.setAttribute("data-theme", preferredTheme);
+                htmlEl.style.colorScheme = preferredTheme;
             }
         };
 
