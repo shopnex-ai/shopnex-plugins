@@ -1,7 +1,3 @@
-Here's a professional and well-structured `README.md` for your Payload SDK:
-
----
-
 # Payload SDK
 
 A fully type-safe SDK for interacting with the Payload CMS REST API. This package simplifies working with Payload by offering a seamless, strongly typed developer experience—closely mirroring the Local API interface.
@@ -243,8 +239,4 @@ const sdk = new PayloadSDK<Config>({
 
 ## 📄 License
 
-MIT – © 2025 Payload CMS contributors
-
----
-
-Let me know if you'd like me to publish this to npm, generate a `tsdoc` documentation site, or help integrate into your CI/CD!
+MIT – © 2025 ShopNex
