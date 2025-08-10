@@ -20,7 +20,7 @@ import { askToRunDevServer } from "./ask-to-run-dev-server.js";
 import { askThemeTemplate } from "./ask-theme-template.js";
 import { scaffoldStorefront } from "./scaffold-storefront.js";
 import { setStoreEnvs } from "./set-store-eanvs.js";
-import { fetchSubmoduleByPath } from "./fetch-submodule-by-name.js";
+import { setupSparseCheckout } from "./fetch-submodule-by-name.js";
 
 const args = process.argv.slice(2);
 const flags = {
@@ -302,14 +302,14 @@ const run = async () => {
     process.chdir(projectPath);
     console.log(chalk.blue(`Changed directory to: $projectPath}`));
     if (themeType === "builder") {
-        await fetchSubmoduleByPath("apps/builder-shop");
+        await setupSparseCheckout("apps/builder-shop");
     }
     if (themeType === "custom") {
-        await fetchSubmoduleByPath("apps/shop");
+        await setupSparseCheckout("apps/shop");
     }
     await runProjectCommand(
-        "git remote rename origin shopnex",
-        "Updating git remote name to shopnex"
+        "git remote remove origin",
+        "Removing old origin remote"
     );
     await installDependencies(projectPath);
     await installDbDependencies(dbType);

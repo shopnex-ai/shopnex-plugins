@@ -10,18 +10,47 @@ function runCommand(cmd: string) {
 }
 
 /**
- * Ensures a specific submodule is initialized, synced, and updated.
- * @param submodulePath - Path as defined in `.gitmodules`, e.g. 'apps/shop'
+ * Setup sparse checkout for a specific storefront path
+ * @param storefrontPath - Path to checkout, e.g. 'apps/shop' or 'apps/builder-shop'
+ */
+export async function setupSparseCheckout(storefrontPath: string) {
+    try {
+        // Enable sparse checkout
+        runCommand(`git config core.sparseCheckout true`);
+
+        // Create sparse-checkout file with the selected storefront and core paths
+        const sparseCheckoutContent = [
+            "/*",
+            "!/apps/*",
+            "apps/cms",
+            `/${storefrontPath}`,
+        ].join("\n");
+
+        // Write to .git/info/sparse-checkout
+        const sparseCheckoutPath = ".git/info/sparse-checkout";
+        fs.writeFileSync(sparseCheckoutPath, sparseCheckoutContent);
+
+        // Apply sparse checkout
+        runCommand(`git read-tree -m -u HEAD`);
+
+        console.log(
+            `✅ Sparse checkout configured for "${storefrontPath}" successfully.`
+        );
+    } catch (err) {
+        console.error(
+            `❌ Error setting up sparse checkout for "${storefrontPath}":`,
+            err
+        );
+    }
+}
+
+/**
+ * Legacy function - kept for backward compatibility but deprecated
+ * @deprecated Use setupSparseCheckout instead
  */
 export async function fetchSubmoduleByPath(submodulePath: string) {
-    try {
-        // Initialize all (required once)
-        runCommand(`git submodule init`);
-        runCommand(`git submodule sync`);
-        runCommand(`git submodule update --remote -- ${submodulePath}`);
-
-        console.log(`✅ Submodule "${submodulePath}" updated successfully.`);
-    } catch (err) {
-        console.error(`❌ Error updating submodule "${submodulePath}":`, err);
-    }
+    console.warn(
+        "⚠️ fetchSubmoduleByPath is deprecated. Using sparse checkout instead."
+    );
+    await setupSparseCheckout(submodulePath);
 }
