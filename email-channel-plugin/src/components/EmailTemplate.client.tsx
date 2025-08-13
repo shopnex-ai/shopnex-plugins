@@ -1,8 +1,8 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { LoadingOverlay, SetStepNav, toast, useTheme } from "@payloadcms/ui";
-import { EmailEditorProps } from "@shopnex/editor-sample";
-import { useEffect, useState } from "react";
+import { EmailEditorProps, EmailEditor } from "@shopnex/editor-sample";
 import { PayloadSDK } from "@shopnex/payload-sdk";
 
 type EmailTemplateProps = {
@@ -24,24 +24,12 @@ export const EmailTemplate = ({
         baseURL: `${serverURL}/api`,
     });
     const { theme } = useTheme();
-    const [EmailEditorComp, setEmailEditorComp] =
-        useState<React.ComponentType<any> | null>(null);
-    useEffect(() => {
-        import("@shopnex/editor-sample").then((mod) => {
-            // @ts-ignore
-            setEmailEditorComp(() => mod.default);
-        });
-    }, []);
 
-    if (!EmailEditorComp) {
-        return <LoadingOverlay />;
-    }
     const handleSave = async (output: {
         html: string;
         json: EmailEditorProps["configuration"];
         name: string;
     }) => {
-        setTimeout(() => {}, 100);
         toast.loading("Email template saving...", {
             cancel: false,
         });
@@ -74,6 +62,7 @@ export const EmailTemplate = ({
             toast.error("Failed to save email template. Please try again.");
         }
     };
+
     const handleChange: EmailEditorProps["onChange"] = ({ html, json }) => {};
 
     const navItems = [
@@ -90,7 +79,7 @@ export const EmailTemplate = ({
     return (
         <>
             <SetStepNav nav={navItems} />
-            <EmailEditorComp
+            <EmailEditor
                 configuration={json}
                 onChange={handleChange}
                 onSave={handleSave}
