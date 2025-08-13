@@ -1,6 +1,5 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { LoadingOverlay, SetStepNav, toast, useTheme } from "@payloadcms/ui";
 import { EmailEditorProps, EmailEditor } from "@shopnex/editor-sample";
 import { PayloadSDK } from "@shopnex/payload-sdk";
