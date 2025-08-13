@@ -56,7 +56,7 @@
         "prepublishOnly": "pnpm clean && pnpm turbo build"
     },
     "dependencies": {
-        "@shopnex/editor-sample": "workspace:*",
+        "@shopnex/editor-sample": "0.0.4",
         "@shopnex/payload-sdk": "workspace:*"
     },
     "publishConfig": {

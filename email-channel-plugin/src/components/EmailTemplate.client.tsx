@@ -1,7 +1,7 @@
 "use client";
 
 import { LoadingOverlay, SetStepNav, toast, useTheme } from "@payloadcms/ui";
-import { EmailEditorProps, EmailEditor } from "@shopnex/editor-sample";
+import { type EmailEditorProps, EmailEditor } from "@shopnex/editor-sample";
 import { PayloadSDK } from "@shopnex/payload-sdk";
 
 type EmailTemplateProps = {
