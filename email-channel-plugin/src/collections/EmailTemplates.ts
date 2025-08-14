@@ -16,24 +16,19 @@ export const EmailTemplates = (): CollectionConfig => {
                     },
                 },
             },
+
             defaultColumns: ["name", "createdAt", "updatedAt"],
             useAsTitle: "name",
         },
         fields: [
+            { name: "name", type: "text" },
             {
-                label: "Email Template",
-                type: "collapsible",
-                fields: [
-                    { name: "name", type: "text" },
-                    {
-                        name: "html",
-                        type: "text",
-                    },
-                    {
-                        name: "json",
-                        type: "json",
-                    },
-                ],
+                name: "html",
+                type: "text",
+            },
+            {
+                name: "json",
+                type: "json",
             },
         ],
     };

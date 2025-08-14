@@ -1,0 +1,18 @@
+.email-template {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+    }
+    .email-template-iframe {
+        flex: 1;
+        border: none;
+        height: 100%;
+        margin: 0 20px;
+        margin-bottom: 20px;
+    }
+}
