@@ -1,7 +1,13 @@
-import { CollectionConfig } from "payload";
+import { CollectionConfig, deepMergeWithCombinedArrays } from "payload";
 
-export const EmailTemplates = (): CollectionConfig => {
-    return {
+type EmailTemplatesProps = {
+    overrides?: Partial<CollectionConfig>;
+};
+
+export const EmailTemplates = ({
+    overrides = {},
+}: EmailTemplatesProps): CollectionConfig => {
+    const baseConfig: CollectionConfig = {
         slug: "email-templates",
         access: {
             create: () => true,
@@ -64,4 +70,5 @@ export const EmailTemplates = (): CollectionConfig => {
             },
         ],
     };
+    return deepMergeWithCombinedArrays(baseConfig, overrides);
 };

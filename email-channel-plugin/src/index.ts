@@ -1,13 +1,20 @@
-import type { Config } from "payload";
+import type { CollectionConfig, Config } from "payload";
 import { EmailTemplates } from "./collections/EmailTemplates";
 
-type EmailChannelPluginConfig = {};
+type EmailChannelPluginConfig = {
+    enabled?: boolean;
+    collectionOverrides?: Partial<CollectionConfig>;
+};
 
 export const emailTemplatesPlugin = (
     pluginConfig: EmailChannelPluginConfig
 ) => {
     return (config: Config): Config => {
-        config.collections?.push(EmailTemplates());
+        config.collections?.push(
+            EmailTemplates({
+                overrides: pluginConfig.collectionOverrides,
+            })
+        );
         return config;
     };
 };
