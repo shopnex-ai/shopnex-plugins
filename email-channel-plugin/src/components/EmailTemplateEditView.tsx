@@ -6,9 +6,15 @@ export const EmailTemplateEditView = ({
     doc,
     payload,
     routeSegments,
+    user,
     ...rest
 }: any) => {
     const identifier = routeSegments?.at(-1);
+    const token = payload.encrypt(
+        JSON.stringify({
+            user,
+        })
+    );
 
     // Use existing template data for edit mode, empty template for create mode
     const templateJson =
@@ -21,6 +27,7 @@ export const EmailTemplateEditView = ({
             serverURL={payload.config.serverURL}
             templateName={doc?.name || ""}
             identifier={identifier}
+            token={token}
             iframeOrigin={
                 process.env.EASY_EMAIL_IFRAME_ORIGIN || "http://localhost:3040"
             }

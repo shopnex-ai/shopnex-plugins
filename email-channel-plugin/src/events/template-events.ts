@@ -1,5 +1,5 @@
-import { MESSAGE_TYPES } from '../utils/constants';
-import { IframeMessageEvent, SaveOutput } from '../types/email-template.types';
+import { MESSAGE_TYPES } from "../utils/constants";
+import { IframeMessageEvent, SaveOutput } from "../types/email-template.types";
 
 export type TemplateEventHandler = (data: any) => void;
 export type SaveEventHandler = (data: SaveOutput) => void;
@@ -29,9 +29,9 @@ export class TemplateEventProcessor {
                 console.log("Processing save request:", payload);
                 if (this.onSaveRequest && payload) {
                     this.onSaveRequest({
-                        json: payload,
-                        name: payload.subject || 'Untitled Template',
-                        html: ''
+                        json: payload.template,
+                        name: payload.subject || "Untitled Template",
+                        html: payload.html,
                     });
                 }
                 break;

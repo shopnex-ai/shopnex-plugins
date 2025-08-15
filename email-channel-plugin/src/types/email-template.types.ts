@@ -8,6 +8,7 @@ export interface EmailTemplateProps {
     html: string;
     json: any;
     serverURL: string;
+    token: string;
     templateName: string;
     identifier: string;
     iframeOrigin: string;
