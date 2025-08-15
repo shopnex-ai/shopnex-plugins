@@ -9,21 +9,6 @@ export const EmailTemplates = ({
 }: EmailTemplatesProps): CollectionConfig => {
     const baseConfig: CollectionConfig = {
         slug: "email-templates",
-        access: {
-            create: () => true,
-            read: () => true,
-            update: ({ req }) => {
-                const shopHandle = req.headers.get("x-payload-sdk-token");
-                const user = shopHandle
-                    ? req.payload.decrypt(shopHandle!)
-                    : req.user;
-                if (user) {
-                    return true;
-                }
-                return false;
-            },
-            delete: () => true,
-        },
         admin: {
             group: "Plugins",
             components: {

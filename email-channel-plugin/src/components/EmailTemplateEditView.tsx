@@ -10,11 +10,7 @@ export const EmailTemplateEditView = ({
     ...rest
 }: any) => {
     const identifier = routeSegments?.at(-1);
-    const token = payload.encrypt(
-        JSON.stringify({
-            user,
-        })
-    );
+    const token = payload.encrypt(JSON.stringify(user));
 
     // Use existing template data for edit mode, empty template for create mode
     const templateJson =
