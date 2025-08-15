@@ -53,7 +53,7 @@ export const EmailTemplates = (): CollectionConfig => {
             { name: "name", type: "text" },
             {
                 name: "html",
-                type: "text",
+                type: "textarea",
                 admin: {
                     disabled: true,
                 },
