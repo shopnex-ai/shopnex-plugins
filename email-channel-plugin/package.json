@@ -53,10 +53,11 @@
         "copyfiles": "copyfiles -u 1 \"src/**/*.{html,css,scss,ttf,woff,woff2,eot,svg,jpg,png,json}\" dist/",
         "lint": "eslint .",
         "lint:fix": "eslint . --fix",
-        "postinstall": "patch-package",
         "prepublishOnly": "pnpm clean && pnpm turbo build"
     },
-    "dependencies": {},
+    "dependencies": {
+        "@shopnex/utils": "workspace:*"
+    },
     "publishConfig": {
         "access": "public",
         "exports": {
@@ -78,8 +79,5 @@
         },
         "registry": "https://registry.npmjs.org/"
     },
-    "devDependencies": {
-        "patch-package": "^8.0.0",
-        "postinstall-postinstall": "^2.1.0"
-    }
+    "devDependencies": {}
 }
