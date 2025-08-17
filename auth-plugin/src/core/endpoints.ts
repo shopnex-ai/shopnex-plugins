@@ -21,7 +21,7 @@ interface EndpointStrategy {
 }
 
 /**
- * Oauth endpoint strategy to implement dynamic enpoints for all type of Oauth providers
+ * Simplified OAuth endpoint strategy for Google and GitHub providers
  *
  * @export
  * @class OAuthEndpointStrategy
@@ -51,25 +51,25 @@ export class OAuthEndpointStrategy implements EndpointStrategy {
                 handler: (request: PayloadRequest) => {
                     const provider = this.providers[
                         request.routeParams?.provider as string
-                    ] as OAuthProviderConfig;
+                    ];
+
+                    if (!provider) {
+                        throw new Error(`Provider ${request.routeParams?.provider} not found`);
+                    }
 
                     return OAuthHandlers(
                         pluginType,
                         request,
                         request.routeParams?.resource as string,
                         provider,
-                        (
-                            oauthAccountInfo: AccountInfo,
-                            clientOrigin: string
-                        ) => {
-                            return sessionCallback(
+                        (oauthAccountInfo: AccountInfo, clientOrigin: string) =>
+                            sessionCallback(
                                 oauthAccountInfo,
                                 provider.scope,
                                 provider.name,
                                 request,
                                 clientOrigin
-                            );
-                        },
+                            ),
                         request.searchParams.get("clientOrigin") ?? undefined
                     );
                 },

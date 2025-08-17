@@ -74,23 +74,14 @@ export interface OAuthBaseProviderConfig {
     params?: Record<string, string>;
 }
 
-export interface OIDCProviderConfig
+export interface OAuthProviderConfig
     extends OAuthProviderOutput,
         OAuthBaseProviderConfig {
-    issuer: string;
-    algorithm: "oidc";
+    algorithm: "oauth2" | "oidc";
     kind: "oauth";
+    issuer?: string;
+    authorization_server?: AuthorizationServer;
 }
-
-export interface OAuth2ProviderConfig
-    extends OAuthProviderOutput,
-        OAuthBaseProviderConfig {
-    authorization_server: AuthorizationServer;
-    algorithm: "oauth2";
-    kind: "oauth";
-}
-
-export type OAuthProviderConfig = OIDCProviderConfig | OAuth2ProviderConfig;
 
 export interface AccountInfo {
     sub: string;

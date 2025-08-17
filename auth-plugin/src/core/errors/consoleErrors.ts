@@ -26,13 +26,6 @@ export class ProviderAlreadyExists extends PluginError {
     }
 }
 
-export class InvalidOAuthAlgorithm extends PluginError {
-    constructor() {
-        super(
-            "Invalid OAuth Algorithm. Plugin only support OIDC and OAuth2 algorithms"
-        );
-    }
-}
 
 export class InvalidOAuthResource extends PluginError {
     constructor() {

@@ -1,6 +1,6 @@
 import type * as oauth from "oauth4webapi";
 import type {
-    OAuth2ProviderConfig,
+    OAuthProviderConfig,
     AccountInfo,
     OAuthBaseProviderConfig,
 } from "../../types.js";
@@ -67,7 +67,7 @@ type GitHubAuthConfig = OAuthBaseProviderConfig;
  *
  */
 
-function GitHubAuthProvider(config: GitHubAuthConfig): OAuth2ProviderConfig {
+function GitHubAuthProvider(config: GitHubAuthConfig): OAuthProviderConfig {
     return {
         ...config,
         id: "github",

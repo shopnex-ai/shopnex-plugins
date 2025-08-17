@@ -7,7 +7,7 @@ import {
 } from "../types";
 
 /**
- * Reducer function to extract the OAuth providers
+ * Simplified function to extract OAuth providers (Google and GitHub)
  *
  * @internal
  * @param {ProvidersConfig[]} providers
@@ -17,47 +17,33 @@ export function getOAuthProviders(
     providers: ProvidersConfig[]
 ): Record<string, OAuthProviderConfig> {
     const records: Record<string, OAuthProviderConfig> = {};
-    providers.map((provider: ProvidersConfig) => {
-        if (records[provider.id]) {
-            throw new ProviderAlreadyExists();
-        }
+    
+    providers.forEach((provider) => {
         if (provider.kind === "oauth") {
+            if (records[provider.id]) {
+                throw new ProviderAlreadyExists();
+            }
             records[provider.id] = provider;
         }
     });
+    
     return records;
 }
 
 /**
- * Function to get the Passkey provider
- *
- * @export
- * @param {ProvidersConfig[]} providers
- * @returns {(PasskeyProviderConfig | null)}
+ * Simplified function to get the Passkey provider
  */
 export function getPasskeyProvider(
     providers: ProvidersConfig[]
 ): PasskeyProviderConfig | null {
-    const passkeyProvider = providers.find(
-        (provider) => provider.kind === "passkey"
-    );
-    if (passkeyProvider) {
-        return passkeyProvider;
-    }
-    return null;
+    return providers.find(provider => provider.kind === "passkey") as PasskeyProviderConfig || null;
 }
 
 /**
- * Function to get the Password provider
- *
- * @internal
+ * Simplified function to get the Password provider
  */
 export function getPasswordProvider(
     providers: ProvidersConfig[]
 ): PasswordProviderConfig | null {
-    const provider = providers.find((provider) => provider.kind === "password");
-    if (provider) {
-        return provider;
-    }
-    return null;
+    return providers.find(provider => provider.kind === "password") as PasswordProviderConfig || null;
 }
