@@ -4,7 +4,8 @@ import type { SanitizedStripePluginConfig, StripePluginConfig } from "./types";
 
 import { stripeWebhooks } from "./routes/webhooks";
 import { StripeBlock } from "./blocks/StripeBlock";
-import { stripeSessionCheckout } from "./hooks/stripe-session-checkout";
+
+export { stripeCheckout } from "./services/stripe-checkout";
 
 export const stripePlugin =
     (incomingStripeConfig: StripePluginConfig) =>
@@ -47,21 +48,7 @@ export const stripePlugin =
                 StripeBlock({ secretAccess: pluginConfig.secretAccess })
             );
         }
-        const ordersCollection = collections?.find(
-            (c) =>
-                c.slug ===
-                (incomingStripeConfig?.ordersCollectionSlug || "orders")
-        );
 
-        if (ordersCollection) {
-            ordersCollection.hooks = {
-                ...(ordersCollection.hooks || {}),
-                beforeChange: [
-                    ...(ordersCollection.hooks?.beforeChange || []),
-                    stripeSessionCheckout,
-                ],
-            };
-        }
 
         const incomingOnInit = config.onInit;
 
