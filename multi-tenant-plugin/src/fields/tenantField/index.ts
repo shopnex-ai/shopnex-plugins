@@ -47,8 +47,7 @@ export const tenantField = ({
                 });
                 if (!value) {
                     const tenantFromCookie =
-                        getTenantFromCookie(req.headers, idType) ||
-                        +(req.headers.get("x-shop-id") || 0);
+                        getTenantFromCookie(req.headers, idType) || 2;
                     if (tenantFromCookie) {
                         return tenantFromCookie;
                     }
