@@ -2,6 +2,7 @@ import type { Config, SelectField } from "payload";
 import { setTenantCredentials } from "./sdk/access-token";
 import { createOrderHook } from "./service/create-order.hook";
 import { CjCollectionProps, CjCollection } from "./CjCollection";
+import pkg from "../package.json";
 
 interface PluginOptions {
     isEnabled?: boolean;
@@ -78,6 +79,16 @@ export const cjPlugin =
             if (incomingOnInit) {
                 await incomingOnInit(payload);
             }
+
+            await config.custom?.syncPlugin?.(payload, {
+                name: pkg.name,
+                version: pkg.version,
+                description: pkg.description,
+                license: pkg.license,
+                author: pkg.author,
+                icon: pkg.icon,
+                category: pkg.category,
+            });
 
             const cjSettingsDocs: any = [];
 

@@ -101,5 +101,7 @@
         "registry": "https://registry.npmjs.org/",
         "types": "./dist/index.d.ts"
     },
-    "homepage:": "https://payloadcms.com"
+    "homepage:": "https://payloadcms.com",
+    "icon": "https://cdn.shopnex.ai/shopnex-assets/builder-io-plugin-icon.svg",
+    "category": "Storefronts"
 }

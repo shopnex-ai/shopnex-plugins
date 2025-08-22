@@ -3,6 +3,8 @@
     "version": "1.0.9",
     "description": "A blank template to get started with Payload 3.0",
     "type": "module",
+    "license": "MIT",
+    "author": "ShopNex <support@shopnex.ai> (https://shopnex.ai)",
     "exports": {
         ".": {
             "import": "./src/index.ts",
@@ -67,5 +69,7 @@
     },
     "devDependencies": {
         "@types/jsdom": "^21.1.7"
-    }
+    },
+    "icon": "https://cdn.shopnex.ai/shopnex-assets/cj-plugin-icon.svg",
+    "category": "Integrations"
 }

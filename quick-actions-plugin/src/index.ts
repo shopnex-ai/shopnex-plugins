@@ -3,6 +3,7 @@ import { QuickAction, QuickActionsPluginConfig } from "./types";
 import { buildActions } from "./utils/build-actions";
 import { iconMap } from "./utils/icon-map";
 import { validateConfig } from "./utils/validate-config";
+import pkg from "../package.json";
 
 export type {
     QuickAction,
@@ -109,6 +110,23 @@ export const quickActionsPlugin = (
                 });
                 break;
         }
+
+        const incomingOnInit = config.onInit;
+
+        config.onInit = async (payload) => {
+            if (incomingOnInit) {
+                await incomingOnInit(payload);
+            }
+            await config.custom?.syncPlugin?.(payload, {
+                name: pkg.name,
+                version: pkg.version,
+                description: pkg.description,
+                license: pkg.license,
+                author: pkg.author,
+                icon: pkg.icon,
+                category: pkg.category,
+            });
+        };
 
         return config;
     };

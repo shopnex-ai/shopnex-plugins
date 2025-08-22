@@ -105,5 +105,7 @@
         "registry": "https://registry.npmjs.org/",
         "types": "./dist/index.d.ts"
     },
-    "homepage:": "https://payloadcms.com"
+    "homepage:": "https://payloadcms.com",
+    "icon": "https://cdn.shopnex.ai/shopnex-assets/stripe-plugin-icon.svg",
+    "category": "Commerce"
 }

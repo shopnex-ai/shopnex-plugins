@@ -79,5 +79,7 @@
         },
         "registry": "https://registry.npmjs.org/"
     },
-    "devDependencies": {}
+    "devDependencies": {},
+    "icon": "https://cdn.shopnex.ai/shopnex-assets/easy-email-plugin-icon.svg",
+    "category": "Marketing"
 }

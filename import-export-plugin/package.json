@@ -1,7 +1,7 @@
 {
     "name": "@shopnex/import-export-plugin",
     "version": "3.31.6",
-    "description": "Import-Export plugin for Payload",
+    "description": "Import-Export plugin for ShopNex and Payload CMS",
     "keywords": [
         "payload",
         "cms",
@@ -18,7 +18,7 @@
         "directory": "import-export-plugin"
     },
     "license": "MIT",
-    "author": "ShopNex <dev@shopnex.com> (https://shopnex.ai)",
+    "author": "ShopNex <arseniy@shopnex.com> (https://shopnex.ai)",
     "maintainers": [
         {
             "name": "ShopNex",
@@ -89,5 +89,7 @@
         "main": "./dist/index.js",
         "types": "./dist/index.d.ts"
     },
-    "homepage:": "https://shopnex.ai"
+    "homepage:": "https://shopnex.ai",
+    "icon": "https://cdn.shopnex.ai/shopnex-assets/import-export-plugin-icon.svg",
+    "category": "Operations"
 }

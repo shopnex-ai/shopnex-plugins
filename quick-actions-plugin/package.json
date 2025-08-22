@@ -80,5 +80,7 @@
             }
         },
         "registry": "https://registry.npmjs.org/"
-    }
+    },
+    "icon": "https://cdn.shopnex.ai/shopnex-assets/quick-actions-plugin-icon.svg",
+    "category": "Productivity"
 }

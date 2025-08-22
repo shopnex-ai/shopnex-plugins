@@ -14,6 +14,7 @@
         "url": "https://github.com/shopnex-ai/shopnex.git",
         "directory": "plugins/woo-importer-plugin"
     },
+    "license": "MIT",
     "author": "ShopNex.ai Arseniy <arseniy@shopnex.ai>",
     "maintainers": [
         {
@@ -80,5 +81,7 @@
             }
         },
         "registry": "https://registry.npmjs.org/"
-    }
+    },
+    "icon": "https://cdn.shopnex.ai/shopnex-assets/woo-importer-plugin-icon.svg",
+    "category": "Integrations"
 }

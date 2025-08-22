@@ -8,6 +8,7 @@ import { getCreateCollectionExportTask } from "./export/getCreateExportCollectio
 import { getExportCollection } from "./getExportCollection";
 import { translations } from "./translations/index";
 import { importHandler } from "./import/importHandler";
+import pkg from "../package.json";
 
 export const importExportPlugin =
     (pluginConfig: ImportExportPluginConfig) =>
@@ -105,6 +106,23 @@ export const importExportPlugin =
             translations,
             config.i18n?.translations ?? {}
         );
+
+        const incomingOnInit = config.onInit;
+
+        config.onInit = async (payload) => {
+            if (incomingOnInit) {
+                await incomingOnInit(payload);
+            }
+            await config.custom?.syncPlugin?.(payload, {
+                name: pkg.name,
+                version: pkg.version,
+                description: pkg.description,
+                license: pkg.license,
+                author: pkg.author,
+                icon: pkg.icon,
+                category: pkg.category,
+            });
+        };
 
         return config;
     };

@@ -1,8 +1,9 @@
-import type { Block, BlocksField, Config } from "payload";
-import { importPageHook, importSymbolsInit } from "./hooks/import-page";
+import type { BlocksField, Config } from "payload";
 import { ThemesListField } from "./fields/ThemesListField";
 import { BuilderIoBlock } from "./blocks/builder-io-block";
 import { uploadThemeHandler } from "./endpoints/upload-theme";
+import pkg from "../package.json";
+
 export { importSymbolsInit } from "./hooks/import-page";
 
 export interface BuilderIoConfig {
@@ -25,19 +26,19 @@ export const defaultConfig: BuilderIoConfig = {
 
 export const builderIoPlugin =
     (pluginConfig: BuilderIoConfig = defaultConfig) =>
-    (incomingConfig: Config): Config => {
+    (config: Config): Config => {
         const finalConfig: BuilderIoConfig = {
             ...defaultConfig,
             ...pluginConfig,
         };
         const { enabled } = finalConfig;
 
-        const pagesCollection = incomingConfig.collections?.find(
+        const pagesCollection = config.collections?.find(
             (collection) => collection.slug === finalConfig.collectionPagesSlug
         );
 
         if (finalConfig.collectionDesignSlug) {
-            const designCollection = incomingConfig.collections?.find(
+            const designCollection = config.collections?.find(
                 (collection) =>
                     collection.slug === finalConfig.collectionDesignSlug
             );
@@ -91,16 +92,25 @@ export const builderIoPlugin =
         // });
 
         if (!enabled) {
-            return incomingConfig;
+            return config;
         }
 
-        const incomingOnInit = incomingConfig.onInit;
+        const incomingOnInit = config.onInit;
 
-        incomingConfig.onInit = async (payload) => {
+        config.onInit = async (payload) => {
             if (incomingOnInit) {
                 await incomingOnInit(payload);
             }
+            await config.custom?.syncPlugin?.(payload, {
+                name: pkg.name,
+                version: pkg.version,
+                description: pkg.description,
+                license: pkg.license,
+                author: pkg.author,
+                icon: pkg.icon,
+                category: pkg.category,
+            });
         };
 
-        return incomingConfig;
+        return config;
     };

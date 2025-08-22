@@ -1,5 +1,6 @@
 import type { CollectionConfig, Config } from "payload";
 import { EmailTemplates } from "./collections/EmailTemplates";
+import pkg from "../package.json";
 
 type EmailChannelPluginConfig = {
     enabled?: boolean;
@@ -13,6 +14,22 @@ export const easyEmailPlugin = (pluginConfig: EmailChannelPluginConfig) => {
                 overrides: pluginConfig.collectionOverrides,
             })
         );
+        const incomingOnInit = config.onInit;
+
+        config.onInit = async (payload) => {
+            if (incomingOnInit) {
+                await incomingOnInit(payload);
+            }
+            await config.custom?.syncPlugin?.(payload, {
+                name: pkg.name,
+                version: pkg.version,
+                description: pkg.description,
+                license: pkg.license,
+                author: pkg.author,
+                icon: pkg.icon,
+                category: pkg.category,
+            });
+        };
         return config;
     };
 };
