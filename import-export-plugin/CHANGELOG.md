@@ -1,5 +1,11 @@
 # @shopnex/import-export-plugin
 
+## 3.31.7
+
+### Patch Changes
+
+- Add sync plugins on init
+
 ## 3.31.6
 
 ### Patch Changes

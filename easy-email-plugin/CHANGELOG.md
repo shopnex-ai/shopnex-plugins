@@ -1,5 +1,11 @@
 # @shopnex/quick-actions-plugin
 
+## 0.0.6
+
+### Patch Changes
+
+- Add sync plugins on init
+
 ## 0.0.5
 
 ### Patch Changes

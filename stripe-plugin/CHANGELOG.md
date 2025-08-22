@@ -1,5 +1,11 @@
 # @shopnex/stripe-plugin
 
+## 3.31.10
+
+### Patch Changes
+
+- Add sync plugins on init
+
 ## 3.31.9
 
 ### Patch Changes

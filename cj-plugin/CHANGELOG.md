@@ -1,5 +1,11 @@
 # @shoplyjs/cj-plugin
 
+## 1.0.10
+
+### Patch Changes
+
+- Add sync plugins on init
+
 ## 1.0.9
 
 ### Patch Changes
