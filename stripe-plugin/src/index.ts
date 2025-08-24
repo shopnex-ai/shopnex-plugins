@@ -38,7 +38,7 @@ export const stripePlugin =
         config.endpoints = endpoints;
 
         const paymentsCollection = collections?.find(
-            (c) => c.slug === incomingStripeConfig?.paymentCollectionSlug
+            (c) => c?.slug === incomingStripeConfig?.paymentCollectionSlug
         );
 
         if (paymentsCollection) {
