@@ -1,7 +1,7 @@
 {
     "name": "@shopnex/builder-io-plugin",
     "version": "1.0.12",
-    "description": "PayPal plugin for Payload",
+    "description": "Builder.io Plugin for ShopNex and Payload CMS",
     "keywords": [
         "payload",
         "paypal",
