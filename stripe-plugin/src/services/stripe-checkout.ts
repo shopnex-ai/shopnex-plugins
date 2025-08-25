@@ -23,7 +23,10 @@ export async function stripeCheckout({
     total,
     orderId,
 }: StripeCheckoutProps) {
-    const shopUrl = req.payload.config?.custom?.shopUrl;
+    const shopUrl = req.payload.config?.custom?.shopUrl.replace(
+        "app",
+        shop.handle
+    );
     const order = await req.payload.create({
         collection: "orders",
         data: {
