@@ -35,7 +35,7 @@ const fetchOrders = async (
     payload: BasePayload,
     startDate: Date,
     endDate: Date,
-    shopIds: number[]
+    shopIds?: number[]
 ) => {
     const result = await payload.find({
         collection: "orders",
@@ -46,9 +46,7 @@ const fetchOrders = async (
                 greater_than: startDate.toISOString(),
                 less_than: endDate.toISOString(),
             },
-            shop: {
-                in: shopIds,
-            },
+            ...(shopIds && { shop: { in: shopIds } }),
         },
     });
     return result.docs;
