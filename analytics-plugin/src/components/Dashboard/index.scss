@@ -1,0 +1,55 @@
+@import "~@payloadcms/ui/scss";
+
+@layer payload-default {
+    .card {
+        background: var(--theme-elevation-50);
+        padding: base(0.8);
+        width: 100%;
+        min-height: base(4);
+        position: relative;
+        border-radius: var(--style-radius-m);
+        border: 1px solid var(--theme-border-color);
+        transition-property: border, box-shadow, background;
+        transition-duration: 100ms;
+        transition-timing-function: cubic-bezier(0, 0.2, 0.2, 1);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: base(0.8);
+
+        &__card-list {
+            width: 100%;
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        &__title {
+            @extend %h5;
+            letter-spacing: 0;
+            font-weight: 600;
+            line-height: base(0.8);
+            width: 100%;
+            margin: base(0.1) 0;
+        }
+
+        &__amount {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        &__change {
+            font-size: 14px;
+
+            &--positive {
+                color: var(--color-success-500); // Green for positive change
+                font-weight: bold;
+                margin-right: 4px;
+            }
+            &--negative {
+                color: var(--theme-error-500); // Red for negative change
+                font-weight: bold;
+                margin-right: 4px;
+            }
+        }
+    }
+}

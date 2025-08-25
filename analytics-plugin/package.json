@@ -1,0 +1,87 @@
+{
+    "name": "@shopnex/analytics-plugin",
+    "version": "0.0.2",
+    "description": "Analytics plugin for ShopNext",
+    "keywords": [
+        "payload",
+        "cms",
+        "plugin",
+        "shopnex",
+        "analytics"
+    ],
+    "homepage": "https://shopnex.ai",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/shopnex-ai/shopnex.git",
+        "directory": "plugins/analytics-plugin"
+    },
+    "license": "MIT",
+    "author": "ShopNex.ai Arseniy <arseniy@shopnex.ai>",
+    "maintainers": [
+        {
+            "name": "ArseniyX",
+            "email": "arseniy@shopnex.ai"
+        }
+    ],
+    "type": "module",
+    "exports": {
+        ".": {
+            "import": "./src/index.ts",
+            "types": "./src/index.ts",
+            "default": "./src/index.ts"
+        },
+        "./rsc": {
+            "import": "./src/exports/rsc.ts",
+            "types": "./src/exports/rsc.ts",
+            "default": "./src/exports/rsc.ts"
+        },
+        "./client": {
+            "import": "./src/exports/client.ts",
+            "types": "./src/exports/client.ts",
+            "default": "./src/exports/client.ts"
+        }
+    },
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "build": "pnpm copyfiles && pnpm build:types && pnpm build:swc",
+        "build:swc": "swc ./src -d ./dist --config-file .swcrc --strip-leading-paths",
+        "build:types": "tsc --emitDeclarationOnly --outDir dist",
+        "clean": "rimraf {dist,*.tsbuildinfo}",
+        "copyfiles": "copyfiles -u 1 \"src/**/*.{html,css,scss,ttf,woff,woff2,eot,svg,jpg,png,json}\" dist/",
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix",
+        "prepublishOnly": "pnpm clean && pnpm turbo build"
+    },
+    "dependencies": {
+        "recharts": "^2.15.3",
+        "@shopnex/types": "workspace:*"
+    },
+    "publishConfig": {
+        "access": "public",
+        "exports": {
+            ".": {
+                "import": "./dist/index.js",
+                "types": "./dist/index.d.ts",
+                "default": "./dist/index.js"
+            },
+            "./rsc": {
+                "import": "./dist/exports/rsc.js",
+                "types": "./dist/exports/rsc.d.ts",
+                "default": "./dist/exports/rsc.js"
+            },
+            "./client": {
+                "import": "./dist/exports/client.js",
+                "types": "./dist/exports/client.d.ts",
+                "default": "./dist/exports/client.js"
+            }
+        },
+        "registry": "https://registry.npmjs.org/"
+    },
+    "devDependencies": {},
+    "icon": "https://cdn.shopnex.ai/shopnex-assets/easy-email-plugin-icon.svg",
+    "category": "Marketing"
+}
